@@ -1,0 +1,20 @@
+/* General styles for the signup container */
+.signup-container {
+    max-width: 400px; /* Adjust as necessary */
+    margin: 0 auto; /* Center the form */
+    background-color: #1f2937; /* bg-gray-800 */
+    border-radius: 0.5rem; /* Rounded corners */
+    padding: 1.5rem; /* Spacing inside the container */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Shadow effect */
+  }
+  
+  /* Button hover effect */
+  button:hover {
+    background-color: #3b82f6; /* Darker blue on hover */
+  }
+  
+  /* Input placeholder color */
+  input::placeholder {
+    color: #9ca3af; /* Placeholder color */
+  }
+  

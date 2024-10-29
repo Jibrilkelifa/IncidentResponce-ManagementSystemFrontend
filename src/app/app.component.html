@@ -1,12 +1,12 @@
-<!-- app.component.html or layout component -->
-<div class="app-container">
+<div class="flex h-screen bg-gray-900 text-gray-300">
   <app-sidebar></app-sidebar>
-
-  <div class="main-section">
+  <div class="flex-1 flex flex-col">
     <app-header></app-header>
-    <div class="main-content">
+    <main class="flex-1 p-6 bg-gray-800 text-gray-300">
       <router-outlet></router-outlet>
-    </div>
-    <app-foote></app-foote> <!-- Corrected spelling from app-foote to app-footer -->
+    </main>
+    
+    <app-foote></app-foote>
   </div>
+  <i class="fas fa-check"></i>
 </div>

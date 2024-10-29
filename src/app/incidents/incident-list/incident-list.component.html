@@ -1,24 +1,54 @@
-<h2>Incident List</h2>
-<p-table [value]="incidents" [paginator]="true" [rows]="10" responsiveLayout="scroll">
+<h2 class="text-gray-200 text-xl font-semibold mb-4">Incident List</h2>
+
+<!-- "Create New Incident" button at the top -->
+<button
+  pButton
+  label="Create New Incident"
+  icon="pi pi-plus"
+  class="p-button-success mb-4"
+  [routerLink]="['/create']"
+></button>
+
+<!-- Incident List Table -->
+<p-table
+  [value]="incidents"
+  [paginator]="false"
+  [rows]="10"
+  responsiveLayout="scroll"
+  class="bg-gray-800 text-gray-300 p-table"
+>
   <ng-template pTemplate="header">
     <tr>
-      <th>ID</th>
-      <th>Description</th>
-      <th>Status</th>
-      <th>Actions</th>
+      <th class="bg-gray-900 text-gray-200 p-2">ID</th>
+      <th class="bg-gray-900 text-gray-200 p-2">Description</th>
+      <th class="bg-gray-900 text-gray-200 p-2">Status</th>
+      <th class="bg-gray-900 text-gray-200 p-2">Actions</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-incident>
-    <tr>
-      <td>{{ incident.id }}</td>
-      <td>{{ incident.description }}</td>
-      <td>{{ incident.status }}</td>
-      <td>
-        <button pButton label="View" (click)="viewIncident(incident.id)" class="p-button-secondary"></button>
+    <tr class="hover:bg-gray-700">
+      <td class="p-2">{{ incident.id }}</td>
+      <td class="p-2">{{ incident.description }}</td>
+      <td class="p-2">
+        <!-- Status badge -->
+        <span
+          class="px-2 py-1 rounded text-sm"
+          [ngClass]="{
+            'bg-green-500 text-gray-900': incident.status === 'Open',
+            'bg-yellow-500 text-gray-900': incident.status === 'In Progress',
+            'bg-red-500 text-gray-100': incident.status === 'Closed'
+          }"
+          >{{ incident.status }}</span
+        >
+      </td>
+      <td class="p-2">
+        <button
+          pButton
+          label="View"
+          (click)="viewIncident(incident.id)"
+          class="p-button-secondary"
+        ></button>
       </td>
     </tr>
   </ng-template>
 </p-table>
-
-<!-- Add "Create New Incident" button at the top -->
-<button pButton label="Create New Incident" icon="pi pi-plus" class="p-button-success" [routerLink]="['/create']"></button>

@@ -1,22 +1,20 @@
-<h2>Incident Management Dashboard</h2>
+<div class="dashboard-container max-w-4xl mx-auto bg-gray-900 rounded-lg p-6 shadow-lg">
+  <h2 class="dashboard-title text-3xl font-semibold text-gray-200 mb-6 text-center">Incident Management Dashboard</h2>
 
-<div class="dashboard-summary">
-  <div class="card">
-    <h3>Total Incidents</h3>
-    <p>{{ totalIncidents }}</p>
-  </div>
-  <div class="card">
-    <h3>Open Incidents</h3>
-    <p>{{ openIncidents }}</p>
-  </div>
-  <div class="card">
-    <h3>Closed Incidents</h3>
-    <p>{{ closedIncidents }}</p>
+  <div class="dashboard-summary grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="card bg-gray-800 rounded-lg p-4 shadow-lg transition-transform duration-300 hover:scale-105">
+      <h3 class="text-xl font-medium text-gray-300">Total Incidents</h3>
+      <p class="incident-count text-4xl font-bold text-blue-500">{{ totalIncidents }}</p>
+    </div>
+    
+    <div class="card bg-gray-800 rounded-lg p-4 shadow-lg transition-transform duration-300 hover:scale-105">
+      <h3 class="text-xl font-medium text-gray-300">Open Incidents</h3>
+      <p class="incident-count text-4xl font-bold text-yellow-500">{{ openIncidents }}</p>
+    </div>
+    
+    <div class="card bg-gray-800 rounded-lg p-4 shadow-lg transition-transform duration-300 hover:scale-105">
+      <h3 class="text-xl font-medium text-gray-300">Closed Incidents</h3>
+      <p class="incident-count text-4xl font-bold text-green-500">{{ closedIncidents }}</p>
+    </div>
   </div>
 </div>
-
-<!-- <div class="quick-actions">
-  <h3>Quick Actions</h3>
-  <button pButton label="Create New Incident" class="p-button-success" [routerLink]="['/incidents/create']"></button>
-  <button pButton label="View All Incidents" class="p-button-info" [routerLink]="['/incidents']"></button>
-</div> -->

@@ -1,35 +1,50 @@
-<aside class="sidebar">
-  <c-sidebar class="sidebar" show="true" color="primary">
-    <c-sidebar-brand>
-      <h2 class="sidebar-title">IRMS</h2>
-    </c-sidebar-brand>
-    <nav>
-      <c-nav>
-        <c-nav-item routerLink="/dashboard">
-          <i class="fas fa-tachometer-alt"></i> Dashboard
-        </c-nav-item>
-        <c-nav-item routerLink="/incidents">
-          <i class="fas fa-exclamation-triangle"></i> Incidents
-        </c-nav-item>
-        <c-nav-item routerLink="/create">
-          <i class="fas fa-plus"></i> Create Incident
-        </c-nav-item>
-        <c-nav-item routerLink="/escalation">
-          <i class="fas fa-arrow-up"></i> Escalation
-        </c-nav-item>
-        <c-nav-item routerLink="/signin">
-          <i class="fas fa-cog"></i> Signin
-        </c-nav-item>
-        <c-nav-item routerLink="/signup">
-          <i class="fas fa-cog"></i> Signup
-        </c-nav-item>
-        <c-nav-item routerLink="/reports">
-          <i class="fas fa-file-alt"></i> Reports
-        </c-nav-item>
-        <c-nav-item routerLink="/settings">
-          <i class="fas fa-cog"></i> Settings
-        </c-nav-item>
-      </c-nav>
-    </nav>
-  </c-sidebar>
+<aside class="flex flex-col bg-gray-800 text-gray-300 w-64 h-screen p-4 shadow-md"> <!-- Changed h-full to h-screen -->
+  <div class="mb-6 flex items-center justify-start">
+    <i class="fas fa-shield-alt text-blue-400 text-5xl mr-2"></i>
+    <h2 class="text-2xl font-bold text-blue-400">IRMS</h2>
+  </div>
+  <nav class="flex-grow"> <!-- Added flex-grow to make the nav take remaining space -->
+    <ul class="space-y-2">
+      <li>
+        <a routerLink="/dashboard" class="flex items-center p-2 rounded hover:bg-gray-700 text-gray-300">
+          <i class="fas fa-tachometer-alt text-blue-400 mr-2"></i> Dashboard
+        </a>
+      </li>
+      <li>
+        <a routerLink="/incidents" class="flex items-center p-2 rounded hover:bg-gray-700 text-gray-300">
+          <i class="fas fa-exclamation-triangle text-blue-400 mr-2"></i> Incidents
+        </a>
+      </li>
+      <li>
+        <a routerLink="/create" class="flex items-center p-2 rounded hover:bg-gray-700 text-gray-300">
+          <i class="fas fa-plus text-blue-400 mr-2"></i> Create Incident
+        </a>
+      </li>
+      <li>
+        <a routerLink="/escalation" class="flex items-center p-2 rounded hover:bg-gray-700 text-gray-300">
+          <i class="fas fa-arrow-up text-blue-400 mr-2"></i> Escalation
+        </a>
+      </li>
+      <li>
+        <a routerLink="/signin" class="flex items-center p-2 rounded hover:bg-gray-700 text-gray-300">
+          <i class="fas fa-sign-in-alt text-blue-400 mr-2"></i> Signin
+        </a>
+      </li>
+      <li>
+        <a routerLink="/signup" class="flex items-center p-2 rounded hover:bg-gray-700 text-gray-300">
+          <i class="fas fa-user-plus text-blue-400 mr-2"></i> Signup
+        </a>
+      </li>
+      <li>
+        <a routerLink="/reports" class="flex items-center p-2 rounded hover:bg-gray-700 text-gray-300">
+          <i class="fas fa-file-alt text-blue-400 mr-2"></i> Reports
+        </a>
+      </li>
+      <li>
+        <a routerLink="/settings" class="flex items-center p-2 rounded hover:bg-gray-700 text-gray-300">
+          <i class="fas fa-cog text-blue-400 mr-2"></i> Settings
+        </a>
+      </li>
+    </ul>
+  </nav>
 </aside>

@@ -8,7 +8,7 @@ import { SigninComponent } from './incidents/auth/signin/signin.component';
 import { SignupComponent } from './incidents/auth/signup/signup.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: '/signin', pathMatch: 'full' }, // Redirect to Signin
   { path: 'dashboard', component: DashboardComponent },
   { path: 'incidents', component: IncidentListComponent },
   { path: 'create', component: CreateIncidentComponent },

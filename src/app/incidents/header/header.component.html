@@ -1,29 +1,21 @@
 <ng-container>
-  <c-header>
-    <c-container [fluid]="true" class="header-container">
-      <!-- Toggle Button -->
-      <button toggle="visible" cHeaderToggler class="toggle-button">
-        <svg cIcon name="cilMenu" size="lg" class="menu-icon"></svg>
-      </button>
+  <!-- Header -->
+  <header class="bg-gray-800 text-gray-300 p-4 flex items-center justify-between shadow-md">
+    <!-- Toggle Button -->
+    <button (click)="onToggleSidebar()" class="lg:hidden p-2 text-2xl">
+      <i class="fas fa-bars text-gray-300"></i>
+    </button>
 
-      <!-- Welcome Message (Centered) -->
-      <c-header-nav class="nav-center">
-        <c-nav-item>
-          <span>Welcome Jibril</span>
-        </c-nav-item>
-      </c-header-nav>
+    <!-- Welcome Message (Centered) -->
+    <div class="flex-grow text-center">
+      <span class="text-gray-300">Welcome, Jibril</span>
+    </div>
 
-      <!-- Logout Button -->
-      <c-header-nav class="nav-right ms-3">
-        <button class="logout-button">Logout</button>
-      </c-header-nav>
-    </c-container>
+    <!-- Logout Button -->
+    <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+      Logout
+    </button>
+  </header>
 
-    <c-header-divider></c-header-divider>
-
-    <!-- Breadcrumb Section -->
-    <c-container [fluid]="true">
-      <c-breadcrumb-router class="ms-2"></c-breadcrumb-router>
-    </c-container>
-  </c-header>
+  <div class="border-b border-gray-700"></div>
 </ng-container>

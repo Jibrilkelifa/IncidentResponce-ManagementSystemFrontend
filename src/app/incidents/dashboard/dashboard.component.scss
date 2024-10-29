@@ -1,23 +1,19 @@
-.dashboard-summary {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
-  }
-  
-  .card {
-    background-color: #f1f1f1;
-    padding: 20px;
-    border-radius: 5px;
-    text-align: center;
-    width: 150px;
-  }
-  
-  .quick-actions {
-    display: flex;
-    justify-content: space-around;
-  }
-  
-  .quick-actions button {
-    margin-right: 10px;
-  }
-  
+/* Dashboard container style */
+.dashboard-container {
+  max-width: 1200px; /* Adjust as necessary */
+  margin: 0 auto; /* Center the container */
+  background-color: #1f2937; /* Dark background for the dashboard */
+  border-radius: 0.5rem; /* Rounded corners */
+  padding: 1.5rem; /* Internal spacing */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Shadow effect */
+}
+
+/* Card hover effect */
+.card:hover {
+  transform: scale(1.05); /* Scale effect on hover */
+}
+
+/* Incident count color styles */
+.incident-count {
+  color: #60a5fa; /* Default color for incident counts */
+}

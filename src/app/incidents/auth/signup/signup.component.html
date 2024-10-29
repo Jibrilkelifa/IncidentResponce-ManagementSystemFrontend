@@ -1,9 +1,73 @@
-<form (ngSubmit)="signup()">
-  <input type="text" [(ngModel)]="fullName" name="fullName" placeholder="Full Name" required>
-  <input type="text" [(ngModel)]="jobTitle" name="jobTitle" placeholder="Job Title" required>
-  <input type="text" [(ngModel)]="username" name="username" placeholder="Username" required>
-  <input type="password" [(ngModel)]="password" name="password" placeholder="Password" required>
-  <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
-  <button type="submit">Sign Up</button>
-  <p *ngIf="errorMessage">{{ errorMessage }}</p>
-</form>
+<div class="signup-container max-w-md mx-auto bg-gray-800 rounded-lg p-6 shadow-lg">
+  <h2 class="text-2xl font-semibold text-gray-200 mb-4 text-center">Sign Up</h2>
+  
+  <form (ngSubmit)="signup()">
+    <div class="form-group mb-4">
+      <input
+        type="text"
+        [(ngModel)]="fullName"
+        name="fullName"
+        placeholder="Full Name"
+        required
+        class="w-full p-2 rounded bg-gray-700 text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+
+    <div class="form-group mb-4">
+      <input
+        type="text"
+        [(ngModel)]="jobTitle"
+        name="jobTitle"
+        placeholder="Job Title"
+        required
+        class="w-full p-2 rounded bg-gray-700 text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+
+    <div class="form-group mb-4">
+      <input
+        type="text"
+        [(ngModel)]="username"
+        name="username"
+        placeholder="Username"
+        required
+        class="w-full p-2 rounded bg-gray-700 text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+
+    <div class="form-group mb-4">
+      <input
+        type="password"
+        [(ngModel)]="password"
+        name="password"
+        placeholder="Password"
+        required
+        class="w-full p-2 rounded bg-gray-700 text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+
+    <div class="form-group mb-4">
+      <input
+        type="password"
+        [(ngModel)]="confirmPassword"
+        name="confirmPassword"
+        placeholder="Confirm Password"
+        required
+        class="w-full p-2 rounded bg-gray-700 text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+
+    <button
+      type="submit"
+      class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 rounded transition duration-200"
+    >
+      Sign Up
+    </button>
+
+    <p *ngIf="errorMessage" class="mt-4 text-red-500 text-center">{{ errorMessage }}</p>
+  </form>
+
+  <p class="mt-4 text-gray-400 text-center">
+    Already have an account? <a routerLink="/signin" class="text-blue-500 hover:underline">Sign In</a>
+  </p>
+</div>

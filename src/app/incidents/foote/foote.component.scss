@@ -1,23 +1,23 @@
-/* Global font setting */
-body, div {
-  font-family: Arial, sans-serif;
-  margin: 0;                /* Remove body margin to avoid gaps */
-  padding: 0;
-}
+// /* Global font setting */
+// body, div {
+//   font-family: Arial, sans-serif;
+//   margin: 0;                /* Remove body margin to avoid gaps */
+//   padding: 0;
+// }
 
-.footer {
-  position: fixed;           /* Make footer fixed at the bottom */
-  bottom: 0;
-  width: calc(100% - 250px); /* Account for sidebar width */
-  left: 250px;               /* Align footer next to sidebar */
-  background-color: #f1f1f1;
-  padding: 10px 20px;
-  text-align: center;
-  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* Shadow on top of footer */
-}
+// .footer {
+//   position: fixed;           /* Make footer fixed at the bottom */
+//   bottom: 0;
+//   width: calc(100% - 250px); /* Account for sidebar width */
+//   left: 250px;               /* Align footer next to sidebar */
+//   background-color: #f1f1f1;
+//   padding: 10px 20px;
+//   text-align: center;
+//   box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* Shadow on top of footer */
+// }
 
-.footer p {
-  margin: 0;
-  color: #333;
-  font-size: 0.9rem;
-}
+// .footer p {
+//   margin: 0;
+//   color: #333;
+//   font-size: 0.9rem;
+// }

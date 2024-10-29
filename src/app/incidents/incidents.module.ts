@@ -10,6 +10,9 @@ import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { FooteComponent } from './foote/foote.component';
 import { DropdownModule } from 'primeng/dropdown';
+import { PaginatorModule } from 'primeng/paginator';
+
+
 import { ButtonModule } from 'primeng/button';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
@@ -46,6 +49,7 @@ import { SidebarModule } from '@coreui/angular';
     MessageModule,
     CommonModule,
     ProgressSpinnerModule,
+    PaginatorModule
    
 
   ]

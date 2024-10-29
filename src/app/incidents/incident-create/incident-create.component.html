@@ -1,8 +1,8 @@
-<form #incidentForm="ngForm" (ngSubmit)="onSubmit(incidentForm)">
-  <div class="flex flex-wrap gap-3 mb-2">
-
+<form #incidentForm="ngForm" (ngSubmit)="onSubmit(incidentForm)" class="bg-gray-800 p-6 rounded-lg shadow-md">
+  <div class="flex flex-wrap gap-3 mb-2 text-gray-200">
+    <!-- Title -->
     <div class="flex-auto">
-      <label for="title" class="block mb-2">Title:</label>
+      <label for="title" class="block mb-2 font-semibold">Title:</label>
       <input
         type="text"
         id="title"
@@ -10,12 +10,13 @@
         [(ngModel)]="incident.title"
         required
         pInputText
-        [style]="{ width: '30vw', height: '45px' }"
+        class="dark-input"
       />
     </div>
 
+    <!-- Description -->
     <div class="flex-auto">
-      <label for="description" class="block mb-2">Description:</label>
+      <label for="description" class="block mb-2 font-semibold">Description:</label>
       <input
         type="text"
         id="description"
@@ -23,16 +24,18 @@
         [(ngModel)]="incident.description"
         required
         pInputText
-        [style]="{ width: '30vw', height: '45px' }"
+        class="dark-input"
       />
     </div>
 
+    <!-- Status -->
     <div class="flex-auto">
-      <p>Status: <strong>{{ incident.status }}</strong></p> <!-- Display current status -->
+      <p>Status: <strong class="text-green-400">{{ incident.status }}</strong></p>
     </div>
 
+    <!-- Severity -->
     <div class="flex-auto">
-      <label for="severity" class="block mb-2">Severity:</label>
+      <label for="severity" class="block mb-2 font-semibold">Severity:</label>
       <input
         type="text"
         id="severity"
@@ -40,12 +43,13 @@
         [(ngModel)]="incident.severity"
         required
         pInputText
-        [style]="{ width: '30vw', height: '45px' }"
+        class="dark-input"
       />
     </div>
 
+    <!-- Assignee -->
     <div class="flex-auto">
-      <label for="assignee" class="block mb-2">Assigned To:</label>
+      <label for="assignee" class="block mb-2 font-semibold">Assigned To:</label>
       <input
         type="text"
         id="assignee"
@@ -53,12 +57,13 @@
         [(ngModel)]="incident.assignee"
         required
         pInputText
-        [style]="{ width: '30vw', height: '45px' }"
+        class="dark-input"
       />
     </div>
 
+    <!-- Affected System -->
     <div class="flex-auto">
-      <label for="affectedSystem" class="block mb-2">Affected System:</label>
+      <label for="affectedSystem" class="block mb-2 font-semibold">Affected System:</label>
       <input
         type="text"
         id="affectedSystem"
@@ -66,12 +71,13 @@
         [(ngModel)]="incident.affectedSystem"
         required
         pInputText
-        [style]="{ width: '30vw', height: '45px' }"
+        class="dark-input"
       />
     </div>
 
+    <!-- Location -->
     <div class="flex-auto">
-      <label for="location" class="block mb-2">Location:</label>
+      <label for="location" class="block mb-2 font-semibold">Location:</label>
       <input
         type="text"
         id="location"
@@ -79,17 +85,18 @@
         [(ngModel)]="incident.location"
         required
         pInputText
-        [style]="{ width: '30vw', height: '45px' }"
+        class="dark-input"
       />
     </div>
 
+    <!-- Created At -->
     <div class="flex-auto">
-      <label for="createdAt" class="block mb-2">Created At:</label>
+      <label for="createdAt" class="block mb-2 font-semibold">Created At:</label>
       <p-calendar
         id="createdAt"
         name="createdAt"
         [(ngModel)]="incident.createdAt"
-        [style]="{ width: '30vw', height: '45px' }"
+        class="dark-input"
         [showIcon]="true"
         [dateFormat]="'yy-mm-dd'"
         [showTime]="false"
@@ -98,13 +105,14 @@
       ></p-calendar>
     </div>
 
+    <!-- Last Updated At -->
     <div class="flex-auto">
-      <label for="updatedAt" class="block mb-2">Last Updated At:</label>
+      <label for="updatedAt" class="block mb-2 font-semibold">Last Updated At:</label>
       <p-calendar
         id="updatedAt"
         name="updatedAt"
         [(ngModel)]="incident.updatedAt"
-        [style]="{ width: '30vw', height: '45px' }"
+        class="dark-input"
         [showIcon]="true"
         [dateFormat]="'yy-mm-dd'"
         [showTime]="false"
@@ -112,16 +120,15 @@
         [required]="true"
       ></p-calendar>
     </div>
-
   </div>
 
-  <!-- Show loading indicator when generating schedule -->
-  <div *ngIf="loading" class="loading-container">
+  <!-- Loading indicator -->
+  <div *ngIf="loading" class="loading-container text-gray-300">
     <p>Generating Incident...</p>
     <p-progressSpinner strokeWidth="5" styleClass="custom-spinner"></p-progressSpinner>
   </div>
 
-  <!-- Display message using Toast -->
+  <!-- Toast notification -->
   <p-toast></p-toast>
 
   <div class="flex flex-wrap gap-3 mt-4 mb-5">
@@ -129,7 +136,7 @@
       label="Create Incident"
       type="submit"
       [disabled]="incidentForm.invalid || loading"
-      class="createButton"
+      class="p-button-success createButton"
     ></p-button>
   </div>
 </form>
