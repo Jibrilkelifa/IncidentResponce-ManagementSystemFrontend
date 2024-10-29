@@ -1,0 +1,9 @@
+<form (ngSubmit)="signup()">
+  <input type="text" [(ngModel)]="fullName" name="fullName" placeholder="Full Name" required>
+  <input type="text" [(ngModel)]="jobTitle" name="jobTitle" placeholder="Job Title" required>
+  <input type="text" [(ngModel)]="username" name="username" placeholder="Username" required>
+  <input type="password" [(ngModel)]="password" name="password" placeholder="Password" required>
+  <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+  <button type="submit">Sign Up</button>
+  <p *ngIf="errorMessage">{{ errorMessage }}</p>
+</form>

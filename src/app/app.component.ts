@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'incident-response-management-system';
+  title = 'Incident Response Management System';
+  visibleSidebar: boolean = false;
 }

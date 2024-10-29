@@ -1,0 +1,64 @@
+<div *ngIf="incident" class="container">
+  <h2 class="text-primary">Incident #{{incident?.id}}</h2>
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <p><strong>Status:</strong> <span class="badge badge-info">{{incident?.status}}</span></p>
+      <p><strong>Severity:</strong> <span class="badge badge-danger">{{incident?.severity}}</span></p>
+      <p><strong>Assigned To:</strong> <span>{{incident?.assignee}}</span></p>
+      <p><strong>Affected System:</strong> <span>{{incident?.affectedSystem}}</span></p>
+      <p><strong>Location:</strong> <span>{{incident?.location}}</span></p>
+      <p><strong>Created At:</strong> {{incident?.createdAt | date:'short'}}</p>
+      <p><strong>Last Updated:</strong> {{incident?.updatedAt | date:'short'}}</p>
+    </div>
+  </div>
+  
+  <div class="mb-3">
+    <button pButton label="Escalate" icon="pi pi-exclamation-triangle" class="p-button-warning" (click)="escalateIncident()"></button>
+  </div>
+  
+  <!-- Full Description -->
+  <div class="card mb-3">
+    <div class="card-header">
+      <h3 class="mb-0">Description</h3>
+    </div>
+    <div class="card-body">
+      <p>{{incident?.description}}</p>
+    </div>
+  </div>
+
+  <!-- Update Form -->
+  <div class="card mb-3">
+    <div class="card-header">
+      <h3 class="mb-0">Add Update</h3>
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)="onSubmit()">
+        <div class="p-fluid grid">
+          <div class="field col-12 md:col-6">
+            <label for="message">Update Message:</label>
+            <textarea pInputTextarea [(ngModel)]="newUpdate.message" name="message" required placeholder="Add your update message here..." rows="5"></textarea>
+          </div>
+          <div class="field col-12 md:col-6">
+            <label for="status">New Status:</label>
+            <input type="text" pInputText [(ngModel)]="newUpdate.newStatus" name="status" placeholder="Enter new status (optional)" />
+          </div>
+        </div>
+        <button type="submit" pButton label="Submit Update" class="p-button-success"></button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Recent Updates Section -->
+  <div class="card mb-3">
+    <div class="card-header">
+      <h3 class="mb-0">Recent Updates</h3>
+    </div>
+    <div class="card-body">
+      <ul class="list-group">
+        <li *ngFor="let update of incident?.updates" class="list-group-item">
+          <strong>{{update.timestamp | date:'short'}}</strong>: {{update.message}} (Status: <span class="badge badge-secondary">{{update.newStatus}}</span>)
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

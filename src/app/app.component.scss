@@ -1,0 +1,75 @@
+/* Base layout using CSS Grid */
+.app-container {
+  display: grid;
+  grid-template-columns: 250px 1fr; /* Fixed sidebar and flexible main section */
+  grid-template-rows: auto 1fr auto; /* Header, main content, footer */
+  height: 100vh;
+}
+
+/* Sidebar */
+app-sidebar {
+  grid-row: 1 / 4;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+/* Header */
+app-header {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* Main Content */
+.main-content {
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+/* Footer */
+app-footer {
+  grid-column: 2 / 3;
+  grid-row: 3 / 4;
+  margin-top: auto;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  /* Stack layout on smaller screens */
+  .app-container {
+    grid-template-columns: 1fr; /* Single column layout */
+    grid-template-rows: auto auto 1fr auto; /* Sidebar on top, followed by header, content, footer */
+  }
+
+  /* Sidebar styles for mobile view */
+  app-sidebar {
+    grid-row: 1 / 2; /* Position at the top */
+    grid-column: 1 / 2;
+    height: auto; /* Allow sidebar to expand naturally */
+    width: 100%; /* Full width on mobile */
+  }
+
+  /* Header adjustments */
+  app-header {
+    grid-row: 2 / 3; /* Below sidebar */
+    grid-column: 1 / 2;
+  }
+
+  /* Main Content */
+  .main-content {
+    grid-row: 3 / 4; /* Below header */
+    grid-column: 1 / 2;
+    padding: 10px;
+  }
+
+  /* Footer */
+  app-footer {
+    grid-row: 4 / 5; /* Positioned at the bottom */
+    grid-column: 1 / 2;
+  }
+}

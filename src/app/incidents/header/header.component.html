@@ -1,0 +1,29 @@
+<ng-container>
+  <c-header>
+    <c-container [fluid]="true" class="header-container">
+      <!-- Toggle Button -->
+      <button toggle="visible" cHeaderToggler class="toggle-button">
+        <svg cIcon name="cilMenu" size="lg" class="menu-icon"></svg>
+      </button>
+
+      <!-- Welcome Message (Centered) -->
+      <c-header-nav class="nav-center">
+        <c-nav-item>
+          <span>Welcome Jibril</span>
+        </c-nav-item>
+      </c-header-nav>
+
+      <!-- Logout Button -->
+      <c-header-nav class="nav-right ms-3">
+        <button class="logout-button">Logout</button>
+      </c-header-nav>
+    </c-container>
+
+    <c-header-divider></c-header-divider>
+
+    <!-- Breadcrumb Section -->
+    <c-container [fluid]="true">
+      <c-breadcrumb-router class="ms-2"></c-breadcrumb-router>
+    </c-container>
+  </c-header>
+</ng-container>
