@@ -12,8 +12,9 @@ export interface Incident {
   severity: string;
   assignee: string;
   escalatedTo:string;
-  escalatedBy:string;
   escalated: boolean;
+  escalatedToEmail?: string;
+  escalatedBy?: string;
   affectedSystem: string;
   location: string;
   createdAt: Date;

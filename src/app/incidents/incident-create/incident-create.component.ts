@@ -24,6 +24,7 @@ export class CreateIncidentComponent implements OnInit {
     updates: [],
     escalatedTo:'',
     escalatedBy:'',
+    escalatedToEmail: '',
     escalated: false // Initialize updates as an empty array
   };
 

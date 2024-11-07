@@ -1,0 +1,29 @@
+<div class="bg-gray-800 p-6 rounded-lg shadow-md">
+  <h2 class="text-gray-200 text-xl font-semibold mb-4">Escalate Incident #{{ incidentId }}</h2>
+
+  <form (ngSubmit)="escalateIncident()">
+    <!-- Escalated To -->
+    <div class="mb-3">
+      <label for="escalatedTo" class="block font-semibold mb-1 text-gray-200">Escalated To:</label>
+      <input type="text" id="escalatedTo" [(ngModel)]="escalationData.escalatedTo" name="escalatedTo" required class="dark-input" />
+    </div>
+
+    <!-- Escalated To Email -->
+    <div class="mb-3">
+      <label for="escalatedToEmail" class="block font-semibold mb-1 text-gray-200">Escalated To Email:</label>
+      <input type="email" id="escalatedToEmail" [(ngModel)]="escalationData.escalatedToEmail" name="escalatedToEmail" required class="dark-input" />
+    </div>
+
+    <!-- Escalated By -->
+    <div class="mb-3">
+      <label for="escalatedBy" class="block font-semibold mb-1 text-gray-200">Escalated By:</label>
+      <input type="text" id="escalatedBy" [(ngModel)]="escalationData.escalatedBy" name="escalatedBy" required class="dark-input" />
+    </div>
+
+    <!-- Submit Button -->
+    <p-button label="Escalate Incident" icon="pi pi-exclamation-triangle" type="submit" class="p-button-danger mt-3" [disabled]="loading"></p-button>
+  </form>
+</div>
+
+<!-- Toast for Notifications -->
+<p-toast></p-toast>

@@ -1,0 +1,45 @@
+<div class="content p-6">
+  <h2 class="text-gray-200 text-2xl font-semibold mb-4">Escalated Incidents</h2>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="loading-container text-gray-300">
+    <p>Loading escalated incidents...</p>
+    <p-progressSpinner strokeWidth="5"></p-progressSpinner>
+  </div>
+
+  <!-- Escalated Incidents Table -->
+  <p-table *ngIf="!loading && escalatedIncidents.length > 0" [value]="escalatedIncidents" class="p-mb-3">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Status</th>
+        <th>Severity</th>
+        <th>Escalated To</th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-incident>
+      <tr>
+        <td>{{ incident.id }}</td>
+        <td>{{ incident.title }}</td>
+        <td>{{ incident.status }}</td>
+        <td>{{ incident.severity }}</td>
+        <td>{{ incident.escalatedTo }}</td>
+        <td>
+          <button pButton 
+                  label="View Details" 
+                  icon="pi pi-eye" 
+                  class="p-button-info p-mr-2" 
+                  [routerLink]="['/incident', incident.id]">
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <!-- No Escalated Incidents Message -->
+  <div *ngIf="!loading && escalatedIncidents.length === 0" class="text-gray-300">
+    <p>No escalated incidents found for the logged-in user.</p>
+  </div>
+</div>

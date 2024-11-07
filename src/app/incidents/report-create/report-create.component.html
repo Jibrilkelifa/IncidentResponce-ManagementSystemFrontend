@@ -1,0 +1,158 @@
+<!-- Toast for Notifications -->
+<p-toast></p-toast>
+
+<!-- Form container -->
+<form #socReportForm="ngForm" (ngSubmit)="createReport()" class="bg-gray-800 p-6 rounded-lg shadow-md">
+  <div class="flex flex-wrap gap-3 mb-2 text-gray-200">
+    
+    <!-- Shift Selection -->
+    <div class="flex-auto">
+      <label for="shift" class="block mb-2 font-semibold">Shift:</label>
+      <p-dropdown
+        id="shift"
+        name="shift"
+        [(ngModel)]="report.shift"
+        [options]="shifts"
+        optionLabel="label"
+        optionValue="value"
+        class="dark-input"
+        placeholder="Select Shift"
+        required
+      ></p-dropdown>
+    </div>
+
+    <!-- Offense Name -->
+    <div class="flex-auto">
+      <label for="offenseName" class="block mb-2 font-semibold">Offense Name:</label>
+      <input
+        type="text"
+        id="offenseName"
+        name="offenseName"
+        [(ngModel)]="newIncident.offenceName"
+        required
+        pInputText
+        class="dark-input"
+      />
+    </div>
+
+    <!-- Root Cause -->
+    <div class="flex-auto">
+      <label for="rootCause" class="block mb-2 font-semibold">Root Cause:</label>
+      <input
+        type="text"
+        id="rootCause"
+        name="rootCause"
+        [(ngModel)]="newIncident.rootCause"
+        required
+        pInputText
+        class="dark-input"
+      />
+    </div>
+
+    <!-- Affected Asset -->
+    <div class="flex-auto">
+      <label for="affectedAsset" class="block mb-2 font-semibold">Affected Asset:</label>
+      <input
+        type="text"
+        id="affectedAsset"
+        name="affectedAsset"
+        [(ngModel)]="newIncident.affectedAsset"
+        required
+        pInputText
+        class="dark-input"
+      />
+    </div>
+
+    <!-- IP Address -->
+    <div class="flex-auto">
+      <label for="ipAddress" class="block mb-2 font-semibold">IP Address:</label>
+      <input
+        type="text"
+        id="ipAddress"
+        name="ipAddress"
+        [(ngModel)]="newIncident.ipAddress"
+        required
+        pInputText
+        class="dark-input"
+      />
+    </div>
+
+    <!-- Recommended Action -->
+    <div class="flex-auto">
+      <label for="recommendedAction" class="block mb-2 font-semibold">Recommended Action:</label>
+      <input
+        type="text"
+        id="recommendedAction"
+        name="recommendedAction"
+        [(ngModel)]="newIncident.recommendedAction"
+        required
+        pInputText
+        class="dark-input"
+      />
+    </div>
+  </div>
+
+  <!-- Add Incident Button -->
+  <div class="flex justify-end mt-4">
+    <p-button
+      label="Add Incident"
+      icon="pi pi-plus"
+      class="p-button-secondary"
+      (click)="addIncident()"
+    ></p-button>
+  </div>
+
+  <!-- Table to Display Added Incidents -->
+  <div *ngIf="report.incidents.length > 0" class="mt-5">
+    <h3 class="text-gray-200 mb-3">Added Incidents</h3>
+    <p-table [value]="report.incidents" class="dark-table">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Offense Name</th>
+          <th>Root Cause</th>
+          <th>Affected Asset</th>
+          <th>IP Address</th>
+          <th>Recommended Action</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-incident>
+        <tr>
+          <td>{{ incident.offenceName }}</td>
+          <td>{{ incident.rootCause }}</td>
+          <td>{{ incident.affectedAsset }}</td>
+          <td>{{ incident.ipAddress }}</td>
+          <td>{{ incident.recommendedAction }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <!-- Loading Indicator and Submit Button -->
+  <div *ngIf="loading" class="text-gray-300 mt-4">
+    <p>Generating SOC Report...</p>
+    <p-progressSpinner strokeWidth="5" styleClass="custom-spinner"></p-progressSpinner>
+  </div>
+
+  <!-- Submit and Download Buttons -->
+  <div class="flex gap-3 mt-4">
+    <div class="flex gap-3 mt-4">
+      <!-- Submit button is only enabled if form is valid and there is at least one incident -->
+      <p-button
+        label="Create Report"
+        icon="pi pi-save"
+        type="submit"
+        class="p-button-success"
+      ></p-button>
+    
+      <!-- Download button is only shown if report has been created (report.id exists) -->
+      <!-- <p-button
+        *ngIf="report.id"
+        label="Download PDF"
+        icon="pi pi-download"
+        (click)="downloadReport(report.id)"
+        class="p-button-secondary"
+        [disabled]="loading"
+      ></p-button> -->
+    </div>
+  </div>
+</form>

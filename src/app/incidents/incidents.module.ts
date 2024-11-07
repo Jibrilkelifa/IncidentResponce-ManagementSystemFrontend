@@ -23,6 +23,11 @@ import { IncidentDetailComponent } from './incident-detail/incident-detail.compo
 import { SigninComponent } from './auth/signin/signin.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { SidebarModule } from '@coreui/angular';
+import { SOCReportComponent } from './report-create/report-create.component';
+import { DownloadComponent } from './download/download.component';
+import { EscalationFormComponent } from './escalation-create/escalation-create.component';
+import { EscalationListComponent } from './escalation-list/escalation-list.component';
+import { ChartModule } from 'primeng/chart';
 
 
 @NgModule({
@@ -32,7 +37,13 @@ import { SidebarModule } from '@coreui/angular';
     DashboardComponent,
     IncidentDetailComponent,
     SigninComponent,
-    SignupComponent
+    SignupComponent,
+    SOCReportComponent,
+    DownloadComponent,
+    EscalationFormComponent,
+    EscalationListComponent
+    
+
     // HeaderComponent,
     // SidebarComponent,
     // FooteComponent
@@ -49,7 +60,9 @@ import { SidebarModule } from '@coreui/angular';
     MessageModule,
     CommonModule,
     ProgressSpinnerModule,
-    PaginatorModule
+    PaginatorModule,
+    ChartModule,
+    
    
 
   ]

@@ -1,0 +1,57 @@
+<!-- Toast for Notifications -->
+<p-toast></p-toast>
+
+<!-- Form container -->
+<form (ngSubmit)="downloadReport()" class="bg-gray-800 p-6 rounded-lg shadow-md">
+  <div class="flex flex-wrap gap-3 mb-2 text-gray-200">
+    
+    <!-- Shift Selection -->
+    <div class="flex-auto">
+      <label for="shift" class="block mb-2 font-semibold">Shift:</label>
+      <p-dropdown
+        id="shift"
+        [(ngModel)]="selectedShift"
+        name="shift" 
+        [options]="shifts"
+        optionLabel="label"
+        optionValue="value"
+        class="dark-input"
+        placeholder="Select Shift"
+        required
+      ></p-dropdown>
+    </div>
+
+    <!-- Report Date Selection -->
+    <div class="flex-auto">
+      <label for="createdAt" class="block mb-2 font-semibold">Report Date:</label>
+      <p-calendar
+        id="createdAt"
+        [(ngModel)]="reportDate"
+        name="reportDate" 
+        class="dark-input"
+        [showIcon]="true"
+        [dateFormat]="'yy-mm-dd'"
+        [showTime]="false"
+        [selectionMode]="'single'"
+        required
+      ></p-calendar>
+    </div>
+  </div>
+  
+  <!-- Loading Indicator -->
+  <div *ngIf="loading" class="text-gray-300 mt-4">
+    <p>Generating SOC Report...</p>
+    <p-progressSpinner strokeWidth="5" styleClass="custom-spinner"></p-progressSpinner>
+  </div>
+
+  <!-- Submit and Download Button -->
+  <div class="flex gap-3 mt-4">
+    <p-button
+      label="Download PDF"
+      icon="pi pi-download"
+      type="submit" 
+      class="p-button-secondary"
+      [disabled]="loading"
+    ></p-button>
+  </div>
+</form>

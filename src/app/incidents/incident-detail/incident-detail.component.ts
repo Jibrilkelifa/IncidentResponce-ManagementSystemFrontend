@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IncidentService } from '../../services/incident.service';
 import { Incident } from '../../models/incident-model';
-import { Update } from '../../models/update'; 
+import { Update } from '../../models/update';
 
 @Component({
   selector: 'app-incident-detail',
@@ -10,28 +10,41 @@ import { Update } from '../../models/update';
   styleUrls: ['incident-detail.component.css']
 })
 export class IncidentDetailComponent implements OnInit {
-  incident: Incident; // Now incident is not undefined
+  incident: Incident = {
+    id: 0,
+    status: '',
+    escalatedTo: '',
+    escalatedBy: '',
+    escalated: false,
+    severity: '',
+    title: '',
+    assignee: '',
+    affectedSystem: '',
+    location: '',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    description: '',
+    updates: []
+  };
   newUpdate: Update = { message: '', newStatus: '' };
+  incidentId!: number;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private incidentService: IncidentService
-  ) {
-    // Initialize incident with default properties or just leave it as undefined if you're fetching it later
-    this.incident = { id: 0, status: '',escalatedTo:'',escalatedBy:'', escalated:false, severity: '',title:'', assignee: '', affectedSystem: '', location: '', createdAt: new Date(), updatedAt: new Date(), description: '', updates: [] }; 
-  }
-  ;
+  ) {}
+
   ngOnInit(): void {
+    this.incidentId = +this.route.snapshot.paramMap.get('id')!;
     this.getIncidentDetails();
   }
 
   getIncidentDetails(): void {
-    const id: string | null = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      const incidentId = Number(id);
-      this.incidentService.getIncidentById(incidentId).subscribe(
+    if (this.incidentId) {
+      this.incidentService.getIncidentById(this.incidentId).subscribe(
         (response: Incident) => {
-          this.incident = response; // Set the selected incident
+          this.incident = response;
         },
         error => {
           console.error('Error fetching incident details', error);
@@ -40,14 +53,23 @@ export class IncidentDetailComponent implements OnInit {
     }
   }
 
+  escalateIncident() {
+    // Ensure incidentId is defined before navigating
+    if (this.incidentId) {
+      this.router.navigate(['/incident', this.incidentId, 'escalate']);
+    } else {
+      console.error('Incident ID is undefined');
+    }
+  }
+
   onSubmit(): void {
-    const incidentId = this.incident.id; // Now guaranteed to be defined
+    const incidentId = this.incident.id;
     this.incidentService.addUpdate(incidentId, this.newUpdate).subscribe(
       (update: Update) => {
+        update.timestamp = new Date();
         if (!this.incident.updates) {
           this.incident.updates = [];
         }
-        update.timestamp = new Date();
         this.incident.updates.push(update);
         this.newUpdate = { message: '', newStatus: '' }; // Reset form
       },
@@ -55,20 +77,5 @@ export class IncidentDetailComponent implements OnInit {
         console.error('Error adding update', error);
       }
     );
-  }
-   escalateIncident() {
-    if (this.incident) {
-      const escalatedTo = 'Analyst and Manager'; // Update this as necessary based on your logic
-      this.incidentService.escalateIncident(this.incident.id, escalatedTo).subscribe(
-        (updatedIncident) => {
-          this.incident = updatedIncident; // Update the local incident state
-          // this.notificationService.showSuccess('Incident escalated successfully!'); // Optional success notification
-        },
-        (error) => {
-          console.error('Error escalating incident:', error);
-          // this.notificationService.showError('Failed to escalate the incident.'); // Optional error notification
-        }
-      );
-    }
   }
 }
