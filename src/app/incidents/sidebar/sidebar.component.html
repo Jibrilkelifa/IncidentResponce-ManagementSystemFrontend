@@ -1,55 +1,69 @@
-<aside class="flex flex-col bg-gray-800 text-gray-300 w-64 h-screen p-4 shadow-md"> <!-- Changed h-full to h-screen -->
+<!-- sidebar.component.html -->
+<aside class="flex flex-col bg-gray-800 text-gray-300 w-64 h-screen p-4 shadow-md">
   <div class="mb-6 flex items-center justify-start">
     <i class="fas fa-shield-alt text-blue-400 text-5xl mr-2"></i>
     <h2 class="text-2xl font-bold text-blue-400">IRMS</h2>
   </div>
-  <nav class="flex-grow"> <!-- Added flex-grow to make the nav take remaining space -->
+  <nav class="flex-grow">
     <ul class="space-y-2">
-      <li>
+      <!-- Protected links, only visible if user is logged in -->
+      <li *ngIf="authService.getToken()">
         <a routerLink="/dashboard" class="flex items-center p-2 rounded hover:bg-gray-700 text-gray-300">
           <i class="fas fa-tachometer-alt text-blue-400 mr-2"></i> Dashboard
         </a>
       </li>
-      <li>
+      <li *ngIf="authService.getToken()">
         <a routerLink="/incidents" class="flex items-center p-2 rounded hover:bg-gray-700 text-gray-300">
           <i class="fas fa-exclamation-triangle text-blue-400 mr-2"></i> Incidents
         </a>
       </li>
-      <li>
+      <li *ngIf="authService.getToken()">
         <a routerLink="/create" class="flex items-center p-2 rounded hover:bg-gray-700 text-gray-300">
           <i class="fas fa-plus text-blue-400 mr-2"></i> Create Incident
         </a>
       </li>
-      <li>
+      <li *ngIf="authService.getToken()">
         <a routerLink="/escalation" class="flex items-center p-2 rounded hover:bg-gray-700 text-gray-300">
           <i class="fas fa-arrow-up text-blue-400 mr-2"></i> Escalation
         </a>
       </li>
-      <li>
+
+      <!-- Auth-related links -->
+      <!-- <li *ngIf="!authService.getToken()">
         <a routerLink="/signin" class="flex items-center p-2 rounded hover:bg-gray-700 text-gray-300">
           <i class="fas fa-sign-in-alt text-blue-400 mr-2"></i> Signin
         </a>
       </li>
-      <li>
+      <li *ngIf="!authService.getToken()">
         <a routerLink="/signup" class="flex items-center p-2 rounded hover:bg-gray-700 text-gray-300">
           <i class="fas fa-user-plus text-blue-400 mr-2"></i> Signup
         </a>
-      </li>
-      <li>
+      </li> -->
+
+      <!-- Additional protected links -->
+      <li *ngIf="authService.getToken()">
         <a routerLink="/reports" class="flex items-center p-2 rounded hover:bg-gray-700 text-gray-300">
-          <i class="fas fa-file-alt text-blue-400 mr-2"></i>Create SOC Report
+          <i class="fas fa-file-alt text-blue-400 mr-2"></i> Create SOC Report
         </a>
       </li>
-      <li>
+      <li *ngIf="authService.getToken()">
         <a routerLink="/download" class="flex items-center p-2 rounded hover:bg-gray-700 text-gray-300">
           <i class="fas fa-file-alt text-blue-400 mr-2"></i> Download SOC Report
         </a>
       </li>
-      <li>
+       <!-- Logout button only if user is logged in -->
+       <li *ngIf="authService.getToken()">
+        <button (click)="authService.logout()" class="flex items-center p-2 rounded hover:bg-gray-700 text-gray-300">
+          <i class="fas fa-sign-out-alt text-blue-400 mr-2"></i> Logout
+        </button>
+      </li>
+      <li *ngIf="authService.getToken()">
         <a routerLink="/settings" class="flex items-center p-2 rounded hover:bg-gray-700 text-gray-300">
           <i class="fas fa-cog text-blue-400 mr-2"></i> Settings
         </a>
       </li>
+
+     
     </ul>
   </nav>
 </aside>

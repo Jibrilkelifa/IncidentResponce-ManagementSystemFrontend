@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 // PrimeNG imports
@@ -36,6 +36,7 @@ import { IncidentsModule } from './incidents/incidents.module';
 import { HeaderComponent } from './incidents/header/header.component';
 import { FooteComponent } from './incidents/foote/foote.component';
 import { SidebarComponent } from './incidents/sidebar/sidebar.component';
+import { AuthInterceptor } from './services/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -75,8 +76,10 @@ import { SidebarComponent } from './incidents/sidebar/sidebar.component';
   ],
   providers: [
     {
-      provide: LocationStrategy,
-      useClass: HashLocationStrategy,
+      // provide: LocationStrategy,
+      // useClass: HashLocationStrategy,
+      provide: HTTP_INTERCEPTORS, 
+      useClass: AuthInterceptor, multi: true
       
     },
     MessageService

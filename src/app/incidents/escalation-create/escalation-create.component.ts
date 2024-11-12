@@ -18,6 +18,7 @@ export class EscalationFormComponent implements OnInit {
   escalationData = {
     escalatedTo: '',
     escalatedToEmail: '',
+    escalatedToPhoneNumber: '',
     escalatedBy: ''
   };
 

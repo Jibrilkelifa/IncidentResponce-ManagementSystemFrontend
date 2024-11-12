@@ -28,6 +28,8 @@ import { DownloadComponent } from './download/download.component';
 import { EscalationFormComponent } from './escalation-create/escalation-create.component';
 import { EscalationListComponent } from './escalation-list/escalation-list.component';
 import { ChartModule } from 'primeng/chart';
+import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 
 
 @NgModule({
@@ -37,6 +39,8 @@ import { ChartModule } from 'primeng/chart';
     DashboardComponent,
     IncidentDetailComponent,
     SigninComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
     SignupComponent,
     SOCReportComponent,
     DownloadComponent,

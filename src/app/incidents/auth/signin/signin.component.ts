@@ -16,7 +16,7 @@ export class SigninComponent {
   signin(): void {
     this.authService.signin(this.username, this.password).subscribe(
       response => {
-        this.router.navigate(['/incidents']);
+        this.router.navigate(['/dashboard']);
       },
       error => {
         if (error.status === 403) {

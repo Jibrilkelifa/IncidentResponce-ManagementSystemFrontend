@@ -10,19 +10,25 @@ import { DownloadComponent } from './incidents/download/download.component';
 import { EscalationFormComponent } from './incidents/escalation-create/escalation-create.component';
 import { IncidentListComponent } from './incidents/incident-list/incident-list.component';
 import { EscalationListComponent } from './incidents/escalation-list/escalation-list.component';
+import { AuthGuard } from './services/AuthGuard';
+import { ForgotPasswordComponent } from './incidents/auth/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './incidents/auth/reset-password/reset-password.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/signin', pathMatch: 'full' }, // Redirect to Signin
   { path: 'dashboard', component: DashboardComponent },
   { path: 'incidents', component: IncidentListComponent },
-  { path: 'escalation', component: EscalationListComponent },
+  { path: 'escalation', component: EscalationListComponent, canActivate: [AuthGuard] },
   { path: 'create', component: CreateIncidentComponent },
   { path: 'incident/:id/escalate', component: EscalationFormComponent },
   { path: 'reports', component: SOCReportComponent },
   { path: 'download', component: DownloadComponent },
   { path: 'incident/:id', component: IncidentDetailComponent },
   { path: 'signin', component: SigninComponent },
-  { path: 'signup', component: SignupComponent }
+  { path: 'signup', component: SignupComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'reset-password', component: ResetPasswordComponent },
+
 ];
 
 @NgModule({
