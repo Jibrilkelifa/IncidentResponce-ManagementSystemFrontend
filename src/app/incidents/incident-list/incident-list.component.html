@@ -11,32 +11,37 @@
 
 <!-- Incident List Table -->
 <p-table
-  [value]="incidents"
-  [paginator]="false"
-  [rows]="10"
+  [value]="paginatedIncidents"
+  [paginator]="true"
+  [rows]="rows"
+  [rowsPerPageOptions]="[10, 20, 30]"
+  [(first)]="first"
+  [totalRecords]="totalRecords"
+  (onPage)="onPageChange($event)"
   responsiveLayout="scroll"
   class="bg-gray-800 text-gray-300 p-table"
 >
   <ng-template pTemplate="header">
     <tr>
-      <th class="bg-gray-900 text-gray-200 p-2">ID</th>
+      <th class="bg-gray-900 text-gray-200 p-2">Title</th>
       <th class="bg-gray-900 text-gray-200 p-2">Description</th>
+      <th class="bg-gray-900 text-gray-200 p-2">Affected System</th>
       <th class="bg-gray-900 text-gray-200 p-2">Status</th>
       <th class="bg-gray-900 text-gray-200 p-2">Actions</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-incident>
     <tr class="hover:bg-gray-700">
-      <td class="p-2">{{ incident.id }}</td>
+      <td class="p-2">{{ incident.id}}</td>
       <td class="p-2">{{ incident.description }}</td>
+      <td class="p-2">{{ incident.affectedSystem }}</td>
       <td class="p-2">
-        <!-- Status badge -->
         <span
           class="px-2 py-1 rounded text-sm"
           [ngClass]="{
             'bg-green-500 text-gray-900': incident.status === 'Open',
-            'bg-yellow-500 text-gray-900': incident.status === 'In Progress',
-            'bg-red-500 text-gray-100': incident.status === 'Closed'
+            'bg-yellow-500 text-gray-900': incident.status === 'Escalated',
+            'bg-red-500 text-gray-100': incident.status === 'Resolved'
           }"
           >{{ incident.status }}</span
         >
@@ -44,9 +49,10 @@
       <td class="p-2">
         <button
           pButton
-          label="View"
+          label="View Details"
+          icon="pi pi-eye"
+          class="p-button-outlined p-button-secondary"
           (click)="viewIncident(incident.id)"
-          class="p-button-secondary"
         ></button>
       </td>
     </tr>

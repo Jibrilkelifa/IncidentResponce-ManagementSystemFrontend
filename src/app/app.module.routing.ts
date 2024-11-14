@@ -16,18 +16,18 @@ import { ResetPasswordComponent } from './incidents/auth/reset-password/reset-pa
 
 const routes: Routes = [
   { path: '', redirectTo: '/signin', pathMatch: 'full' }, // Redirect to Signin
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'incidents', component: IncidentListComponent },
+  { path: 'dashboard', component: DashboardComponent,canActivate: [AuthGuard] },
+  { path: 'incidents', component: IncidentListComponent,canActivate: [AuthGuard] },
   { path: 'escalation', component: EscalationListComponent, canActivate: [AuthGuard] },
-  { path: 'create', component: CreateIncidentComponent },
-  { path: 'incident/:id/escalate', component: EscalationFormComponent },
-  { path: 'reports', component: SOCReportComponent },
-  { path: 'download', component: DownloadComponent },
-  { path: 'incident/:id', component: IncidentDetailComponent },
+  { path: 'create', component: CreateIncidentComponent ,canActivate: [AuthGuard]},
+  { path: 'incident/:id/escalate', component: EscalationFormComponent,canActivate: [AuthGuard] },
+  { path: 'reports', component: SOCReportComponent ,canActivate: [AuthGuard]},
+  { path: 'download', component: DownloadComponent ,canActivate: [AuthGuard]},
+  { path: 'incident/:id', component: IncidentDetailComponent,canActivate: [AuthGuard] },
   { path: 'signin', component: SigninComponent },
-  { path: 'signup', component: SignupComponent },
-  { path: 'forgot-password', component: ForgotPasswordComponent },
-  { path: 'reset-password', component: ResetPasswordComponent },
+  { path: 'signup', component: SignupComponent,canActivate: [AuthGuard] },
+  { path: 'forgot-password', component: ForgotPasswordComponent,canActivate: [AuthGuard] },
+  { path: 'reset-password', component: ResetPasswordComponent ,canActivate: [AuthGuard]},
 
 ];
 

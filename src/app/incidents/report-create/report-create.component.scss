@@ -40,3 +40,41 @@ p-toast {
 .custom-spinner .ui-progress-spinner {
   color: #10b981; /* green spinner for dark theme */
 }
+
+.dark-dropdown {
+  .p-dropdown-label {
+    background-color: #2d2d2d; /* Dark background */
+    color: #e0e0e0; /* Light text */
+  }
+
+  .p-dropdown-panel {
+    background-color: #2d2d2d; /* Dark panel background */
+    border: 1px solid #444; /* Darker border */
+  }
+
+  .p-dropdown-item {
+    background-color: #333; /* Dark item background */
+    color: #e0e0e0; /* Light item text */
+  }
+
+  .p-dropdown-item:hover {
+    background-color: #555; /* Lighter hover effect */
+  }
+
+  .p-dropdown-clear-icon {
+    color: #e0e0e0; /* Light color for clear icon */
+  }
+  .dark-input {
+    background-color: #2d2d2d;
+    color: white;
+    border: 1px solid #444;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .dark-input:focus {
+    border-color: #888;
+    outline: none;
+  }
+  
+}

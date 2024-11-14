@@ -9,38 +9,26 @@ import { Subscription } from 'rxjs';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit, OnDestroy {
-  isLoggedIn: boolean = false;
-  private authSubscription!: Subscription;
+export class HeaderComponent implements OnInit {
   toggleSidebar: boolean = false;
+  userName: string = '';
 
   constructor(private authService: AuthService, private router: Router) { }
-  ngOnDestroy() {
-    if (this.authSubscription) {
-      this.authSubscription.unsubscribe();
-    }
-  }
+
 
   ngOnInit(): void {
-    this.authSubscription = this.authService.authStatus$.subscribe((status) => {
-      this.isLoggedIn = status;
+    this.setUserName(); 
+  }
+ 
+  setUserName(): void {
+    this.authService.getCurrentUser().subscribe(user => {
+      this.userName = user.fullName;  
     });
   }
 
-  // Check if the user is logged in by checking the presence of the token in localStorage
-  checkLoginStatus(): void {
-    const token = this.authService.getToken(); 
-    this.isLoggedIn = token ? true : false; // If token exists, user is logged in
-  }
 
-  // Logout method
-  onLogout(): void {
-    this.authService.logout();
-  }
-
-  // Toggle sidebar visibility
   onToggleSidebar(): void {
     this.toggleSidebar = !this.toggleSidebar;
-    console.log("Sidebar toggled: ", this.toggleSidebar); // Example logging
+    console.log("Sidebar toggled: ", this.toggleSidebar); 
   }
 }

@@ -15,7 +15,7 @@ export class DownloadComponent {
     { label: 'Shift 3', value: 'Shift 3' }
   ];
 
-  reportDate: Date | null = null; // Changed to Date type
+  reportDate?: Date;
   selectedShift: string = this.shifts[0].value;
   loading: boolean = false;
 
@@ -33,10 +33,10 @@ export class DownloadComponent {
     this.loading = true;
 
     // Format reportDate to 'yyyy-MM-dd' before passing it to the service
-    const formattedDate = this.reportDate.toISOString().split('T')[0];
+    const formattedDate = this.formatDate(this.reportDate);
 
     // Fetch the reportId based on formattedDate and selectedShift
-    this.socReportService.getSOCReportId('2024-11-05 11:55:24.552829', this.selectedShift).subscribe(
+    this.socReportService.getSOCReportId(formattedDate, this.selectedShift).subscribe(
       (reportId) => {
         if (reportId) {
           // Download the report PDF using the obtained reportId
@@ -52,6 +52,57 @@ export class DownloadComponent {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to fetch report ID.' });
       }
     );
+  }
+
+  sendReportByEmail(): void {
+    if (!this.reportDate || !this.selectedShift) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'Please select a report date and shift.' });
+      return;
+    }
+
+    this.loading = true;
+
+    // Format reportDate to 'yyyy-MM-dd' before passing it to the service
+    const formattedDate = this.formatDate(this.reportDate);
+
+    // Fetch the reportId based on formattedDate and selectedShift
+    this.socReportService.getSOCReportId(formattedDate, this.selectedShift).subscribe(
+      (reportId) => {
+        if (reportId) {
+          // Send the report via email using the obtained reportId
+          this.sendSOCReportByEmail(reportId);
+        } else {
+          this.loading = false;
+          this.messageService.add({ severity: 'warn', summary: 'No Report Found', detail: 'No report found for the given date and shift.' });
+        }
+      },
+      (error) => {
+        this.loading = false;
+        console.error('Error fetching report ID:', error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to fetch report ID.' });
+      }
+    );
+  }
+
+  private sendSOCReportByEmail(reportId: number): void {
+    this.socReportService.sendSOCReportEmail(reportId).subscribe(
+      () => {
+        this.loading = false;
+        this.messageService.add({ severity: 'success', summary: 'Email Sent', detail: 'SOC Report sent via email successfully.' });
+      },
+      (error) => {
+        this.loading = false;
+        console.error('Error sending report email:', error);
+        this.messageService.add({ severity: 'error', summary: 'Email Error', detail: 'Failed to send the SOC Report by email.' });
+      }
+    );
+  }
+
+  private formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 
   private downloadSOCReport(reportId: number): void {

@@ -8,25 +8,34 @@
   </div>
 
   <!-- Escalated Incidents Table -->
-  <p-table *ngIf="!loading && escalatedIncidents.length > 0" [value]="escalatedIncidents" class="p-mb-3">
+  <p-table *ngIf="!loading && escalatedIncidents.length > 0" 
+           [value]="paginatedEscalatedIncidents" 
+           [paginator]="true" 
+           [rows]="rows"  
+           [rowsPerPageOptions]="[10, 20, 30]" 
+           [(first)]="first" 
+           [totalRecords]="totalRecords"  
+           (onPage)="onPageChange($event)"  
+           responsiveLayout="scroll" 
+           class="bg-gray-800 text-gray-300 p-table">
     <ng-template pTemplate="header">
       <tr>
-        <th>ID</th>
-        <th>Title</th>
-        <th>Status</th>
-        <th>Severity</th>
-        <th>Escalated To</th>
-        <th>Actions</th>
+        <th class="bg-gray-900 text-gray-200 p-2">ID</th>
+        <th class="bg-gray-900 text-gray-200 p-2">Title</th>
+        <th class="bg-gray-900 text-gray-200 p-2">Status</th>
+        <th class="bg-gray-900 text-gray-200 p-2">Severity</th>
+        <th class="bg-gray-900 text-gray-200 p-2">Escalated To</th>
+        <th class="bg-gray-900 text-gray-200 p-2">Actions</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-incident>
-      <tr>
-        <td>{{ incident.id }}</td>
-        <td>{{ incident.title }}</td>
-        <td>{{ incident.status }}</td>
-        <td>{{ incident.severity }}</td>
-        <td>{{ incident.escalatedTo }}</td>
-        <td>
+      <tr class="hover:bg-gray-700">
+        <td class="p-2">{{ incident.id }}</td>
+        <td class="p-2">{{ incident.title }}</td>
+        <td class="p-2">{{ incident.status }}</td>
+        <td class="p-2">{{ incident.severity }}</td>
+        <td class="p-2">{{ incident.escalatedTo }}</td>
+        <td class="p-2">
           <button pButton 
                   label="View Details" 
                   icon="pi pi-eye" 

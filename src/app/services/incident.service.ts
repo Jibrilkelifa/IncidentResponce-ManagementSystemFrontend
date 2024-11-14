@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Incident } from '../models/incident-model';
 import { Update } from '../models/update';
 import { SOCReport } from '../models/soc-report.model';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,7 @@ import { SOCReport } from '../models/soc-report.model';
 export class IncidentService {
 
   private apiUrl = 'http://localhost:8091/api/incidents';
+  private apiUrl2 = 'http://localhost:8091/api/soc';
 
   constructor(private http: HttpClient) { }
 
@@ -20,6 +22,9 @@ export class IncidentService {
   createIncident(incident: Incident): Observable<Incident> {
     return this.http.post<Incident>(`${this.apiUrl}/create`, incident);
   }
+  sendSOCReportEmail(reportId: number): Observable<any> {
+    return this.http.post(`${this.apiUrl2}/sendReport/${reportId}`, {});
+  }
 
   // Method to get all incidents
   getIncidents(): Observable<Incident[]> {
@@ -27,6 +32,9 @@ export class IncidentService {
   }
   escalateIncident(incidentId: number, escalationData: { escalatedTo: string; escalatedToEmail: string; escalatedBy: string }): Observable<any> {
     return this.http.put(`${this.apiUrl}/${incidentId}/escalate`, escalationData);
+  }
+  getUsers() {
+    return this.http.get<User[]>(`${this.apiUrl}/users`); // Adjust URL as needed
   }
 
   // Method to get escalated incidents for the logged-in user
@@ -37,15 +45,15 @@ export class IncidentService {
     return this.http.post<Update>(`${this.apiUrl}/${incidentId}/updates`, update);
   }
   createSOCReport(report: SOCReport): Observable<SOCReport> {
-    return this.http.post<SOCReport>(`${this.apiUrl}/report`, report);
+    return this.http.post<SOCReport>(`${this.apiUrl2}/report`, report);
   }
   getSOCReportId(reportDate: string, shiftType: string): Observable<number> {
     const params = { reportDate, shift: shiftType };
-    return this.http.get<number>(`${this.apiUrl}/reportId`, { params });
+    return this.http.get<number>(`${this.apiUrl2}/reportId`, { params });
   }
   
   downloadSOCReportPdf(reportId: number): Observable<Blob> { 
-    return this.http.get(`${this.apiUrl}/download/${reportId}`, {
+    return this.http.get(`${this.apiUrl2}/download/${reportId}`, {
       responseType: 'blob' 
     });
   }

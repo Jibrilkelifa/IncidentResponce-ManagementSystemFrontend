@@ -5,21 +5,36 @@
 <form (ngSubmit)="downloadReport()" class="bg-gray-800 p-6 rounded-lg shadow-md">
   <div class="flex flex-wrap gap-3 mb-2 text-gray-200">
     
-    <!-- Shift Selection -->
-    <div class="flex-auto">
-      <label for="shift" class="block mb-2 font-semibold">Shift:</label>
-      <p-dropdown
-        id="shift"
-        [(ngModel)]="selectedShift"
-        name="shift" 
-        [options]="shifts"
-        optionLabel="label"
-        optionValue="value"
-        class="dark-input"
-        placeholder="Select Shift"
-        required
-      ></p-dropdown>
-    </div>
+   <!-- Shift Selection -->
+<div class="flex-auto">
+  <label for="shift" class="block mb-2 font-semibold text-gray-200">Shift:</label>
+  <p-dropdown
+    id="shift"
+    [(ngModel)]="selectedShift"
+    name="shift"
+    [options]="shifts"
+    optionLabel="label"
+    optionValue="value"
+    [showClear]="true"
+    placeholder="Select Shift"
+    class="w-full"
+    styleClass="dark-dropdown p-password"
+    [style]="{ width: '30vw', height: '45px' }"
+    [required]="true"
+  >
+    <ng-template pTemplate="selectedItem">
+      <div class="flex align-items-center gap-2" *ngIf="selectedShift">
+        <div>{{ selectedShift }}</div>
+      </div>
+    </ng-template>
+    <ng-template let-shift pTemplate="item">
+      <div class="flex align-items-center gap-2">
+        <div>{{ shift.label }}</div>
+      </div>
+    </ng-template>
+  </p-dropdown>
+</div>
+
 
     <!-- Report Date Selection -->
     <div class="flex-auto">
@@ -51,6 +66,15 @@
       icon="pi pi-download"
       type="submit" 
       class="p-button-secondary"
+      [disabled]="loading"
+    ></p-button>
+
+    <!-- Send via Email Button -->
+    <p-button
+      label="Send via Email"
+      icon="pi pi-send"
+      (click)="sendReportByEmail()"
+      class="p-button-primary"
       [disabled]="loading"
     ></p-button>
   </div>

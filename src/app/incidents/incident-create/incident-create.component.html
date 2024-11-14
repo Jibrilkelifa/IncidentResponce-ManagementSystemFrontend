@@ -10,7 +10,7 @@
         [(ngModel)]="incident.title"
         required
         pInputText
-        class="dark-input"
+        class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500"
       />
     </div>
 
@@ -24,7 +24,7 @@
         [(ngModel)]="incident.description"
         required
         pInputText
-        class="dark-input"
+        class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500"
       />
     </div>
 
@@ -36,15 +36,35 @@
     <!-- Severity -->
     <div class="flex-auto">
       <label for="severity" class="block mb-2 font-semibold">Severity:</label>
-      <input
-        type="text"
-        id="severity"
-        name="severity"
-        [(ngModel)]="incident.severity"
-        required
-        pInputText
-        class="dark-input"
-      />
+      <p-dropdown
+      [options]="severityOptions"
+      name="severity"
+      ngModel
+      [(ngModel)]="incident.severity"
+      optionLabel="label"
+      optionValue="value"
+      [showClear]="true"
+      placeholder="Select Severity"
+      class="w-full"
+      styleClass="dark-dropdown p-password"
+      [style]="{ width: '30vw', height: '45px' }"
+      [required]="true"
+    >
+      <ng-template pTemplate="selectedItem">
+        <div class="flex align-items-center gap-2" *ngIf="incident.severity">
+          <div>{{ incident.severity }}</div>
+        </div>
+      </ng-template>
+      <ng-template let-severity pTemplate="item">
+        <div class="flex align-items-center gap-2">
+          <div>{{ severity.label }}</div>
+        </div>
+      </ng-template>
+    </p-dropdown>
+    
+    
+    
+    
     </div>
 
     <!-- Assignee -->
@@ -57,7 +77,8 @@
         [(ngModel)]="incident.assignee"
         required
         pInputText
-        class="dark-input"
+        class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+        readonly 
       />
     </div>
 
@@ -71,7 +92,7 @@
         [(ngModel)]="incident.affectedSystem"
         required
         pInputText
-        class="dark-input"
+        class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500"
       />
     </div>
 
@@ -85,7 +106,7 @@
         [(ngModel)]="incident.location"
         required
         pInputText
-        class="dark-input"
+        class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500"
       />
     </div>
 
@@ -96,7 +117,7 @@
         id="createdAt"
         name="createdAt"
         [(ngModel)]="incident.createdAt"
-        class="dark-input"
+        class="dark-input w-full bg-gray-700 text-gray-300 border border-gray-600 p-2 rounded-md focus:ring-2 focus:ring-blue-500"
         [showIcon]="true"
         [dateFormat]="'yy-mm-dd'"
         [showTime]="false"
@@ -112,7 +133,7 @@
         id="updatedAt"
         name="updatedAt"
         [(ngModel)]="incident.updatedAt"
-        class="dark-input"
+        class="dark-input w-full bg-gray-700 text-gray-300 border border-gray-600 p-2 rounded-md focus:ring-2 focus:ring-blue-500"
         [showIcon]="true"
         [dateFormat]="'yy-mm-dd'"
         [showTime]="false"

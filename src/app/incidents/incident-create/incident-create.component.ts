@@ -3,6 +3,8 @@ import { NgForm } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { IncidentService } from '../../services/incident.service';
 import { Incident } from '../../models/incident-model';
+import { AuthService } from 'src/app/services/AuthService';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-create-incident',
@@ -10,6 +12,7 @@ import { Incident } from '../../models/incident-model';
   styleUrls: ['incident-create.component.scss'],
 })
 export class CreateIncidentComponent implements OnInit {
+  users: User[] = [];
   incident: Incident = {
     id: 0, // Add a default value; it can be updated later if necessary
     title: '', // Initialize title property
@@ -29,10 +32,27 @@ export class CreateIncidentComponent implements OnInit {
   };
 
   loading: boolean = false; // Declare the loading property
+  severityOptions = [
+    { label: 'High', value: 'High' },
+    { label: 'Medium', value: 'Medium' },
+    { label: 'Low', value: 'Low' }
+  ];
 
-  constructor(private messageService: MessageService, private incidentService: IncidentService) {}
+  constructor(private messageService: MessageService, private incidentService: IncidentService, private authService:AuthService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.populateLoggedInUser();
+  }
+  populateLoggedInUser() {
+    this.authService.getCurrentUser().subscribe(
+      (user) => {
+        this.incident.assignee = user.fullName;
+      },
+      (error) => {
+        console.error('Error fetching logged-in user:', error);
+      }
+    );
+  }
 
   onSubmit(form: NgForm) {
     if (form.valid) {

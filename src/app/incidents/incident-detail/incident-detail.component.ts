@@ -26,6 +26,10 @@ export class IncidentDetailComponent implements OnInit {
     description: '',
     updates: []
   };
+  statusOptions = [
+    { label: 'Open', value: 'Open' },
+    { label: 'Resolved', value: 'Resolved' }
+  ];
   newUpdate: Update = { message: '', newStatus: '' };
   incidentId!: number;
 
@@ -63,19 +67,29 @@ export class IncidentDetailComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const incidentId = this.incident.id;
+    const incidentId = this.incident.id; // Get the incident ID
     this.incidentService.addUpdate(incidentId, this.newUpdate).subscribe(
       (update: Update) => {
+        // Add a timestamp to the new update
         update.timestamp = new Date();
+        
+        // Initialize updates array if it doesn't exist, then push the new update
         if (!this.incident.updates) {
           this.incident.updates = [];
         }
         this.incident.updates.push(update);
-        this.newUpdate = { message: '', newStatus: '' }; // Reset form
+  
+        // Reset the form fields after successful submission
+        this.newUpdate = { message: '', newStatus: '' };
+        
+        // Optionally, you could show a success message here
+        console.log('Update added successfully');
       },
       error => {
         console.error('Error adding update', error);
+        // Optionally, show an error message or handle the error UI
       }
     );
   }
+  
 }

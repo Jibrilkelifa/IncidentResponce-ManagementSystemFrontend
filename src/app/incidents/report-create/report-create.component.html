@@ -5,21 +5,36 @@
 <form #socReportForm="ngForm" (ngSubmit)="createReport()" class="bg-gray-800 p-6 rounded-lg shadow-md">
   <div class="flex flex-wrap gap-3 mb-2 text-gray-200">
     
-    <!-- Shift Selection -->
-    <div class="flex-auto">
-      <label for="shift" class="block mb-2 font-semibold">Shift:</label>
-      <p-dropdown
-        id="shift"
-        name="shift"
-        [(ngModel)]="report.shift"
-        [options]="shifts"
-        optionLabel="label"
-        optionValue="value"
-        class="dark-input"
-        placeholder="Select Shift"
-        required
-      ></p-dropdown>
-    </div>
+<!-- Shift Selection -->
+<div class="flex-auto">
+  <label for="shift" class="block mb-2 font-semibold text-gray-200">Shift:</label>
+  <p-dropdown
+    id="shift"
+    name="shift"
+    [(ngModel)]="report.shift"
+    [options]="shifts"
+    optionLabel="label"
+    optionValue="value"
+    [showClear]="true"
+    placeholder="Select Shift"
+    class="w-full"
+    styleClass="dark-dropdown p-password"
+    [style]="{ width: '30vw', height: '45px' }"
+    [required]="true"
+  >
+    <ng-template pTemplate="selectedItem">
+      <div class="flex align-items-center gap-2" *ngIf="report.shift">
+        <div>{{ report.shift }}</div>
+      </div>
+    </ng-template>
+    <ng-template let-shift pTemplate="item">
+      <div class="flex align-items-center gap-2">
+        <div>{{ shift.label }}</div>
+      </div>
+    </ng-template>
+  </p-dropdown>
+</div>
+
 
     <!-- Offense Name -->
     <div class="flex-auto">
@@ -38,15 +53,16 @@
     <!-- Root Cause -->
     <div class="flex-auto">
       <label for="rootCause" class="block mb-2 font-semibold">Root Cause:</label>
-      <input
-        type="text"
+      <textarea
         id="rootCause"
         name="rootCause"
         [(ngModel)]="newIncident.rootCause"
         required
-        pInputText
+        pInputTextarea
         class="dark-input"
-      />
+        rows="16" 
+        style="resize: vertical; width: 100%;"
+      ></textarea>
     </div>
 
     <!-- Affected Asset -->
@@ -80,15 +96,16 @@
     <!-- Recommended Action -->
     <div class="flex-auto">
       <label for="recommendedAction" class="block mb-2 font-semibold">Recommended Action:</label>
-      <input
-        type="text"
+      <textarea
         id="recommendedAction"
         name="recommendedAction"
         [(ngModel)]="newIncident.recommendedAction"
         required
-        pInputText
+        pInputTextarea
         class="dark-input"
-      />
+        rows="8" 
+        style="resize: vertical; width: 100%;"
+      ></textarea>
     </div>
   </div>
 
@@ -143,16 +160,7 @@
         type="submit"
         class="p-button-success"
       ></p-button>
-    
-      <!-- Download button is only shown if report has been created (report.id exists) -->
-      <!-- <p-button
-        *ngIf="report.id"
-        label="Download PDF"
-        icon="pi pi-download"
-        (click)="downloadReport(report.id)"
-        class="p-button-secondary"
-        [disabled]="loading"
-      ></p-button> -->
+  
     </div>
   </div>
 </form>

@@ -17,7 +17,6 @@
     <div class="mb-3">
       <button pButton label="Escalate" icon="pi pi-exclamation-triangle" class="p-button-warning" (click)="escalateIncident()"></button>
     </div>
-    
 
     <!-- Full Description -->
     <div class="card mb-3 bg-gray-700">
@@ -37,16 +36,61 @@
       <div class="card-body">
         <form (ngSubmit)="onSubmit()">
           <div class="p-fluid grid">
+            <!-- Update Message -->
             <div class="field col-12 md:col-6">
               <label for="message" class="text-gray-200">Update Message:</label>
-              <textarea pInputTextarea [(ngModel)]="newUpdate.message" name="message" required placeholder="Add your update message here..." rows="5" class="p-inputtext p-component"></textarea>
+              <textarea 
+                pInputTextarea 
+                [(ngModel)]="newUpdate.message" 
+                name="message" 
+                required 
+                placeholder="Add your update message here..." 
+                rows="5" 
+                class="p-inputtext p-component">
+              </textarea>
             </div>
-            <div class="field col-12 md:col-6">
-              <label for="status" class="text-gray-200">New Status:</label>
-              <input type="text" pInputText [(ngModel)]="newUpdate.newStatus" name="status" placeholder="Enter new status (optional)" class="p-inputtext p-component" />
+
+            <!-- Container for Status Dropdown and Submit Button -->
+            <div class="field col-12 md:col-6 flex items-center gap-3">
+              
+              <!-- New Status Dropdown -->
+              <div class="w-full">
+                <label for="status" class="text-gray-200">New Status:</label>
+                <p-dropdown 
+                  id="status" 
+                  name="newStatus" 
+                  [(ngModel)]="newUpdate.newStatus" 
+                  [options]="statusOptions" 
+                  optionLabel="label" 
+                  optionValue="value" 
+                  [showClear]="true"
+                  placeholder="Select new status" 
+                  class="w-full"
+                  styleClass="dark-dropdown p-password"
+                  [style]="{ height: '45px', width: 'calc(100% - 120px)' }"
+                  [required]="true">
+                  <ng-template pTemplate="selectedItem">
+                    <div class="flex align-items-center gap-2" *ngIf="newUpdate.newStatus">
+                      <div>{{ newUpdate.newStatus }}</div>
+                    </div>
+                  </ng-template>
+                  <ng-template let-status pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                      <div>{{ status.label }}</div>
+                    </div>
+                  </ng-template>
+                </p-dropdown>
+              </div>
+
+              <!-- Submit Button -->
+              <button 
+                type="submit" 
+                pButton 
+                label="Submit Update" >
+              </button>
+              
             </div>
           </div>
-          <button type="submit" pButton label="Submit Update" class="p-button-success"></button>
         </form>
       </div>
     </div>
