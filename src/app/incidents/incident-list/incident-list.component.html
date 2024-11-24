@@ -9,52 +9,113 @@
   [routerLink]="['/create']"
 ></button>
 
+<!-- Search Field -->
+<div class="mb-4 flex items-center">
+  <!-- Search Field -->
+  <input
+    type="text"
+    pInputText
+    placeholder="Search by anything"
+    [(ngModel)]="searchTerm"
+    class="p-inputtext w-full sm:w-3/4 md:w-1/2 lg:w-1/3 bg-gray-700 text-gray-300 rounded-md p-2 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+  />
+  <!-- Search Button -->
+  <button
+  (click)="onSearch()"
+  class="ml-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+>
+  <i class="pi pi-search"></i> Search
+</button>
+
+</div>
+
+<!-- Display Empty State -->
+<div *ngIf="paginatedIncidents.length === 0" class="text-center text-gray-300 mt-6">
+  <p>No incidents available to display.</p>
+</div>
+
 <!-- Incident List Table -->
 <p-table
+  *ngIf="paginatedIncidents.length > 0"
   [value]="paginatedIncidents"
-  [paginator]="true"
-  [rows]="rows"
-  [rowsPerPageOptions]="[10, 20, 30]"
-  [(first)]="first"
-  [totalRecords]="totalRecords"
-  (onPage)="onPageChange($event)"
   responsiveLayout="scroll"
   class="bg-gray-800 text-gray-300 p-table"
 >
   <ng-template pTemplate="header">
     <tr>
+      <th class="bg-gray-900 text-gray-200 p-2">ID</th>
       <th class="bg-gray-900 text-gray-200 p-2">Title</th>
-      <th class="bg-gray-900 text-gray-200 p-2">Description</th>
-      <th class="bg-gray-900 text-gray-200 p-2">Affected System</th>
+      <th class="bg-gray-900 text-gray-200 p-2">Assigned To</th>
+      <th class="bg-gray-900 text-gray-200 p-2">Escalated To</th>
+      <th class="bg-gray-900 text-gray-200 p-2">Created at</th>
       <th class="bg-gray-900 text-gray-200 p-2">Status</th>
       <th class="bg-gray-900 text-gray-200 p-2">Actions</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-incident>
-    <tr class="hover:bg-gray-700">
-      <td class="p-2">{{ incident.id}}</td>
-      <td class="p-2">{{ incident.description }}</td>
-      <td class="p-2">{{ incident.affectedSystem }}</td>
+    <tr class="hover:bg-gray-700 border-b border-gray-600">
+      <td class="p-2">{{ incident.id }}</td>
+      <td class="p-2">{{ incident.title }}</td>
+      <td class="p-2">{{ incident.assignee }}</td>
+      <td class="p-2">{{ incident.escalatedTo }}</td>
+      <td class="p-2">{{ incident.createdAt }}</td>
       <td class="p-2">
         <span
           class="px-2 py-1 rounded text-sm"
           [ngClass]="{
-            'bg-green-500 text-gray-900': incident.status === 'Open',
+            'bg-green-500 text-gray-900': incident.status === 'Resolved',
+            'bg-cyan-500 text-gray-900': incident.status === 'Closed',
             'bg-yellow-500 text-gray-900': incident.status === 'Escalated',
-            'bg-red-500 text-gray-100': incident.status === 'Resolved'
+            'bg-red-500 text-gray-100': incident.status === 'Open'
           }"
-          >{{ incident.status }}</span
         >
+          {{ incident.status }}
+        </span>
       </td>
       <td class="p-2">
         <button
-          pButton
-          label="View Details"
-          icon="pi pi-eye"
-          class="p-button-outlined p-button-secondary"
+          class="px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-md hover:bg-blue-600 transition duration-200"
           (click)="viewIncident(incident.id)"
-        ></button>
+        >
+          View Details
+        </button>
       </td>
     </tr>
   </ng-template>
 </p-table>
+
+<!-- Tailwind-based Pagination -->
+<div *ngIf="totalPages.length > 1" class="flex justify-center mt-4">
+  <ul class="inline-flex space-x-2">
+    <li>
+      <button
+        (click)="prevPage()"
+        class="px-3 py-2 bg-gray-700 text-gray-300 rounded-md hover:bg-gray-600 disabled:opacity-50"
+        [disabled]="currentPage === 0"
+      >
+        Previous
+      </button>
+    </li>
+    <li *ngFor="let page of totalPages; let i = index">
+      <button
+        (click)="goToPage(i)"
+        class="px-3 py-2 rounded-md"
+        [ngClass]="{
+          'bg-blue-500 text-white': i === currentPage,
+          'bg-gray-700 text-gray-300 hover:bg-gray-600': i !== currentPage
+        }"
+      >
+        {{ i + 1 }}
+      </button>
+    </li>
+    <li>
+      <button
+        (click)="nextPage()"
+        class="px-3 py-2 bg-gray-700 text-gray-300 rounded-md hover:bg-gray-600 disabled:opacity-50"
+        [disabled]="currentPage >= totalPages.length - 1"
+      >
+        Next
+      </button>
+    </li>
+  </ul>
+</div>

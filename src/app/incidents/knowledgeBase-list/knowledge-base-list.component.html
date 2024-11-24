@@ -1,16 +1,15 @@
-<div class="content p-6">
-  <h2 class="text-gray-200 text-2xl font-semibold mb-4">Escalated Incidents</h2>
+<div class="p-6 bg-gray-800 rounded-lg shadow-md">
+  <h2 class="text-gray-200 text-xl font-semibold mb-4">Knowledge Base</h2>
 
   <!-- Search Field -->
   <div class="mb-4 flex items-center">
     <input
       type="text"
       pInputText
-      placeholder="Search by anything"
+      placeholder="Search by title, category, or tag"
       [(ngModel)]="searchTerm"
       class="p-inputtext w-full sm:w-3/4 md:w-1/2 lg:w-1/3 bg-gray-700 text-gray-300 rounded-md p-2 border border-gray-600 focus:ring-2 focus:ring-blue-500"
     />
-    <!-- Search Button -->
     <button
       (click)="onSearch()"
       class="ml-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
@@ -19,38 +18,25 @@
     </button>
   </div>
 
-  <!-- Loading Spinner -->
-  <div *ngIf="loading" class="loading-container text-gray-300">
-    <p>Loading escalated incidents...</p>
-    <p-progressSpinner strokeWidth="5"></p-progressSpinner>
-  </div>
-
-  <!-- Escalated Incidents Table -->
-  <p-table *ngIf="!loading && paginatedEscalatedIncidents.length > 0" 
-           [value]="paginatedEscalatedIncidents" 
-           responsiveLayout="scroll" 
-           class="bg-gray-800 text-gray-300 p-table">
+  <!-- Knowledge Base Articles Table -->
+  <p-table *ngIf="articles.length > 0" [value]="paginatedArticles" responsiveLayout="scroll" class="bg-gray-800 text-gray-300 p-table">
     <ng-template pTemplate="header">
       <tr>
-        <th class="bg-gray-900 text-gray-200 p-2">ID</th>
         <th class="bg-gray-900 text-gray-200 p-2">Title</th>
-        <th class="bg-gray-900 text-gray-200 p-2">Status</th>
-        <th class="bg-gray-900 text-gray-200 p-2">Severity</th>
-        <th class="bg-gray-900 text-gray-200 p-2">Escalated To</th>
+        <th class="bg-gray-900 text-gray-200 p-2">Category</th>
+        <th class="bg-gray-900 text-gray-200 p-2">Tag</th>
         <th class="bg-gray-900 text-gray-200 p-2">Actions</th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-incident>
-      <tr class="hover:bg-gray-700">
-        <td class="p-2">{{ incident.id }}</td>
-        <td class="p-2">{{ incident.title }}</td>
-        <td class="p-2">{{ incident.status }}</td>
-        <td class="p-2">{{ incident.severity }}</td>
-        <td class="p-2">{{ incident.escalatedTo }}</td>
+    <ng-template pTemplate="body" let-article>
+      <tr class="hover:bg-gray-700 border-b border-gray-600">
+        <td class="p-2">{{ article.title }}</td>
+        <td class="p-2">{{ article.category }}</td>
+        <td class="p-2">{{ article.tags }}</td>
         <td class="p-2">
           <button
             class="px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-md hover:bg-blue-600 transition duration-200"
-            (click)="viewIncident(incident.id)"
+            (click)="viewArticle(article.id)"
           >
             View Details
           </button>
@@ -59,9 +45,9 @@
     </ng-template>
   </p-table>
 
-  <!-- No Escalated Incidents Message -->
-  <div *ngIf="!loading && escalatedIncidents.length === 0" class="text-gray-300">
-    <p>No escalated incidents found for the logged-in user.</p>
+  <!-- No Articles Found Message -->
+  <div *ngIf="articles.length === 0" class="text-gray-300">
+    <p>No articles found.</p>
   </div>
 
   <!-- Tailwind-based Pagination -->

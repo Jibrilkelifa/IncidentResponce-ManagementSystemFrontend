@@ -1,0 +1,56 @@
+/* Table header styling */
+.p-table th {
+  background-color: #1f2937; /* bg-gray-900 */
+  color: #e5e7eb; /* text-gray-200 */
+  padding: 0.5rem;
+  text-align: left;
+}
+
+/* Table row styling */
+.p-table td {
+  background-color: #374151; /* bg-gray-800 */
+  color: #d1d5db; /* text-gray-300 */
+  padding: 0.5rem;
+}
+
+/* Button adjustments */
+.p-button-secondary {
+  background-color: #6b7280; /* lighter gray for secondary action */
+  color: #f9fafb; /* white text */
+}
+
+.p-button-success {
+  background-color: #10b981; /* green for success */
+  color: #f9fafb;
+}
+
+.p-button-success:hover {
+  background-color: #059669; /* darker green on hover */
+}
+
+/* Hover effect for table rows */
+.p-table tr:hover {
+  background-color: #4b5563; /* bg-gray-700 */
+}
+
+/* Badge styling */
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  border-radius: 0.25rem;
+}
+/* Custom styles for paginator */
+.p-paginator {
+  background-color: #1f2937; /* Matches bg-gray-900 */
+  color: #d1d5db; /* Matches text-gray-300 */
+}
+
+.p-paginator .p-paginator-button {
+  background-color: transparent; /* Make buttons transparent */
+  color: #4b5563; /* Ensure text is visible */
+}
+
+.p-paginator .p-paginator-button:hover {
+  background-color: #4b5563; /* Matches hover color */
+}

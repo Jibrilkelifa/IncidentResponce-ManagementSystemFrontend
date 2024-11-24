@@ -33,9 +33,11 @@ export class CreateIncidentComponent implements OnInit {
 
   loading: boolean = false; // Declare the loading property
   severityOptions = [
+    { label: 'Critical', value: 'Critical' },
     { label: 'High', value: 'High' },
     { label: 'Medium', value: 'Medium' },
     { label: 'Low', value: 'Low' }
+    
   ];
 
   constructor(private messageService: MessageService, private incidentService: IncidentService, private authService:AuthService) {}

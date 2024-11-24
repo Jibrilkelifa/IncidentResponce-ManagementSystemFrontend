@@ -11,6 +11,9 @@ import { User } from '../models/user';
 })
 export class IncidentService {
 
+  // private apiUrl = 'http://10.12.51.70:8091/api/incidents';
+  // private apiUrl2 = 'http://10.12.51.70:8091/api/soc';
+
   private apiUrl = 'http://localhost:8091/api/incidents';
   private apiUrl2 = 'http://localhost:8091/api/soc';
 
@@ -30,6 +33,10 @@ export class IncidentService {
   getIncidents(): Observable<Incident[]> {
     return this.http.get<Incident[]>(`${this.apiUrl}/list/all`);
   }
+  searchIncidents(searchTerm: string): Observable<Incident[]> {
+    return this.http.get<Incident[]>(`${this.apiUrl}/search`, { params: { searchTerm } });
+}
+
   escalateIncident(incidentId: number, escalationData: { escalatedTo: string; escalatedToEmail: string; escalatedBy: string }): Observable<any> {
     return this.http.put(`${this.apiUrl}/${incidentId}/escalate`, escalationData);
   }

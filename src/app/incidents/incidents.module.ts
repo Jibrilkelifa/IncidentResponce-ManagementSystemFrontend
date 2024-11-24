@@ -30,6 +30,9 @@ import { EscalationListComponent } from './escalation-list/escalation-list.compo
 import { ChartModule } from 'primeng/chart';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { KnowledgeBaseCreateComponent } from './knowledgeBase-create/knowledge-base-create.component';
+import { KnowledgeBaseListComponent } from './knowledgeBase-list/knowledge-base-list.component';
+import { KnowledgeBaseDetailComponent } from './knowledgeBase-detail/knowledge-base-detail.component';
 
 
 @NgModule({
@@ -45,7 +48,10 @@ import { ResetPasswordComponent } from './auth/reset-password/reset-password.com
     SOCReportComponent,
     DownloadComponent,
     EscalationFormComponent,
-    EscalationListComponent
+    EscalationListComponent,
+    KnowledgeBaseCreateComponent,
+    KnowledgeBaseListComponent,
+    KnowledgeBaseDetailComponent
     
 
     // HeaderComponent,

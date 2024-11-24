@@ -9,7 +9,10 @@ import { User } from '../models/user';
   providedIn: 'root'
 })
 export class AuthService {
+  // private apiUrl = 'http://10.12.51.70:8091/api/auth';
+
   private apiUrl = 'http://localhost:8091/api/auth';
+
   
   // Initializes auth status based on token presence
   private authStatus = new BehaviorSubject<boolean>(!!localStorage.getItem('token'));

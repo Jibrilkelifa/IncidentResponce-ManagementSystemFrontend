@@ -1,145 +1,108 @@
 <form #incidentForm="ngForm" (ngSubmit)="onSubmit(incidentForm)" class="bg-gray-800 p-6 rounded-lg shadow-md">
-  <div class="flex flex-wrap gap-3 mb-2 text-gray-200">
-    <!-- Title -->
-    <div class="flex-auto">
-      <label for="title" class="block mb-2 font-semibold">Title:</label>
-      <input
-        type="text"
-        id="title"
-        name="title"
-        [(ngModel)]="incident.title"
-        required
-        pInputText
-        class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500"
-      />
+  <div class="flex flex-wrap gap-4 mb-4 text-gray-200">
+
+    <!-- Title and Description (Row 1) -->
+    <div class="flex w-full gap-4">
+      <div class="w-1/2">
+        <label for="title" class="block mb-2 font-semibold">Title:</label>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          [(ngModel)]="incident.title"
+          required
+          pInputText
+          class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <div class="w-1/2">
+        <label for="description" class="block mb-2 font-semibold">Description:</label>
+        <textarea
+          id="description"
+          name="description"
+          [(ngModel)]="incident.description"
+          required
+          rows="4" 
+          pInputTextarea
+          class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500 resize-vertical"
+        ></textarea>
+      </div>
     </div>
 
-    <!-- Description -->
-    <div class="flex-auto">
-      <label for="description" class="block mb-2 font-semibold">Description:</label>
-      <input
-        type="text"
-        id="description"
-        name="description"
-        [(ngModel)]="incident.description"
-        required
-        pInputText
-        class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500"
-      />
-    </div>
-
-    <!-- Status -->
-    <div class="flex-auto">
-      <p>Status: <strong class="text-green-400">{{ incident.status }}</strong></p>
-    </div>
-
-    <!-- Severity -->
-    <div class="flex-auto">
-      <label for="severity" class="block mb-2 font-semibold">Severity:</label>
-      <p-dropdown
-      [options]="severityOptions"
-      name="severity"
-      ngModel
-      [(ngModel)]="incident.severity"
-      optionLabel="label"
-      optionValue="value"
-      [showClear]="true"
-      placeholder="Select Severity"
-      class="w-full"
-      styleClass="dark-dropdown p-password"
-      [style]="{ width: '30vw', height: '45px' }"
-      [required]="true"
-    >
-      <ng-template pTemplate="selectedItem">
-        <div class="flex align-items-center gap-2" *ngIf="incident.severity">
-          <div>{{ incident.severity }}</div>
-        </div>
-      </ng-template>
-      <ng-template let-severity pTemplate="item">
-        <div class="flex align-items-center gap-2">
-          <div>{{ severity.label }}</div>
-        </div>
-      </ng-template>
-    </p-dropdown>
+    <!-- Status and Severity (Row 2) -->
+    <div class="flex w-full gap-4">
+      <div class="w-1/2">
+        <label for="location" class="block mb-2 font-semibold">Location:</label>
+        <input
+          type="text"
+          id="location"
+          name="location"
+          [(ngModel)]="incident.location"
+          required
+          pInputText
+          class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
     
-    
-    
-    
+
+      <div class="w-1/2">
+        <label for="severity" class="block mb-2 font-semibold">Severity:</label>
+        <select
+          id="severity"
+          name="severity"
+          [(ngModel)]="incident.severity"
+          required
+          class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="" disabled>Select Severity</option>
+          <option *ngFor="let severity of severityOptions" [value]="severity.value">
+            {{ severity.label }}
+          </option>
+        </select>
+      </div>
+      
     </div>
 
-    <!-- Assignee -->
-    <div class="flex-auto">
-      <label for="assignee" class="block mb-2 font-semibold">Assigned To:</label>
-      <input
-        type="text"
-        id="assignee"
-        name="assignee"
-        [(ngModel)]="incident.assignee"
-        required
-        pInputText
-        class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500"
-        readonly 
-      />
+    <!-- Assignee and Affected System (Row 3) -->
+    <div class="flex w-full gap-4">
+      <div class="w-1/2">
+        <label for="assignee" class="block mb-2 font-semibold">Assigned To:</label>
+        <input
+          type="text"
+          id="assignee"
+          name="assignee"
+          [(ngModel)]="incident.assignee"
+          required
+          pInputText
+          class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+          readonly 
+        />
+      </div>
+
+      <div class="w-1/2">
+        <label for="affectedSystem" class="block mb-2 font-semibold">Affected System:</label>
+        <input
+          type="text"
+          id="affectedSystem"
+          name="affectedSystem"
+          [(ngModel)]="incident.affectedSystem"
+          required
+          pInputText
+          class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
     </div>
 
-    <!-- Affected System -->
-    <div class="flex-auto">
-      <label for="affectedSystem" class="block mb-2 font-semibold">Affected System:</label>
-      <input
-        type="text"
-        id="affectedSystem"
-        name="affectedSystem"
-        [(ngModel)]="incident.affectedSystem"
-        required
-        pInputText
-        class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500"
-      />
-    </div>
+    <!-- Location and Created At (Row 4) -->
 
-    <!-- Location -->
-    <div class="flex-auto">
-      <label for="location" class="block mb-2 font-semibold">Location:</label>
-      <input
-        type="text"
-        id="location"
-        name="location"
-        [(ngModel)]="incident.location"
-        required
-        pInputText
-        class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500"
-      />
-    </div>
 
-    <!-- Created At -->
-    <div class="flex-auto">
-      <label for="createdAt" class="block mb-2 font-semibold">Created At:</label>
-      <p-calendar
-        id="createdAt"
-        name="createdAt"
-        [(ngModel)]="incident.createdAt"
-        class="dark-input w-full bg-gray-700 text-gray-300 border border-gray-600 p-2 rounded-md focus:ring-2 focus:ring-blue-500"
-        [showIcon]="true"
-        [dateFormat]="'yy-mm-dd'"
-        [showTime]="false"
-        [selectionMode]="'single'"
-        [required]="true"
-      ></p-calendar>
-    </div>
-
-    <!-- Last Updated At -->
-    <div class="flex-auto">
-      <label for="updatedAt" class="block mb-2 font-semibold">Last Updated At:</label>
-      <p-calendar
-        id="updatedAt"
-        name="updatedAt"
-        [(ngModel)]="incident.updatedAt"
-        class="dark-input w-full bg-gray-700 text-gray-300 border border-gray-600 p-2 rounded-md focus:ring-2 focus:ring-blue-500"
-        [showIcon]="true"
-        [dateFormat]="'yy-mm-dd'"
-        [showTime]="false"
-        [selectionMode]="'single'"
-        [required]="true"
-      ></p-calendar>
+    <!-- Last Updated At (Row 5) -->
+    <div class="flex w-full gap-4">
+      <div class="w-1/2">
+        <p>Status: <strong class="text-green-400">{{ incident.status }}</strong></p>
+      </div>
+ 
     </div>
   </div>
 

@@ -9,39 +9,81 @@ import { Router } from '@angular/router';
   styleUrls: ['./incident-list.component.css']
 })
 export class IncidentListComponent implements OnInit {
-  incidents: Incident[] = [];          // Full list of incidents
-  paginatedIncidents: Incident[] = [];  // Display data for current page
-  totalRecords: number = 0;            // Total number of records for pagination
-  first: number = 0;                   // Starting index for pagination
-  rows: number = 10;                   // Rows per page
+  incidents: Incident[] = [];          // All incidents
+  paginatedIncidents: Incident[] = [];  // Incidents for the current page
+  totalRecords = 0;                    // Total records
+  rows = 10;                           // Rows per page
+  currentPage = 0;                     // Current page index
+  totalPages: number[] = [];           // Total pages
+  searchTerm: string = '';             // Search term
 
-  constructor(private incidentService: IncidentService, private router: Router) { }
+  constructor(private incidentService: IncidentService, private router: Router) {}
 
   ngOnInit(): void {
-    this.getIncidents();
+    this.getIncidents();  // Load incidents on page load
   }
 
   getIncidents(): void {
     this.incidentService.getIncidents().subscribe((data: Incident[]) => {
       this.incidents = data;
-      this.totalRecords = this.incidents.length;  // Total records for pagination
-      this.paginate();  // Paginate data after fetching it
+      this.totalRecords = this.incidents.length;
+      this.calculateTotalPages();
+      this.loadPage();  // Load the first page
     });
   }
 
-  paginate(): void {
-    // Slice data based on 'first' and 'rows' to paginate the incidents array
-    this.paginatedIncidents = this.incidents.slice(this.first, this.first + this.rows);
+  // Calculate total pages based on the total records and rows per page
+  calculateTotalPages(): void {
+    const totalPages = Math.ceil(this.totalRecords / this.rows);
+    this.totalPages = Array(totalPages).fill(0).map((_, i) => i);
   }
 
-  onPageChange(event: any): void {
-    // Update the 'first' index and 'rows' as user changes pages
-    this.first = event.first;
-    this.rows = event.rows;
-    this.paginate();  // Re-paginate based on the new page and rows
+  // Load incidents for the current page
+  loadPage(): void {
+    const start = this.currentPage * this.rows;
+    const end = start + this.rows;
+    this.paginatedIncidents = this.incidents.slice(start, end);
   }
 
+  // Handle the search logic
+  onSearch(): void {
+    if (this.searchTerm.trim()) {
+        this.incidentService.searchIncidents(this.searchTerm).subscribe((data: Incident[]) => {
+            this.incidents = data;
+            this.totalRecords = this.incidents.length;
+            this.calculateTotalPages();
+            this.loadPage();
+        });
+    } else {
+        this.getIncidents(); // Fetch all incidents if the search term is empty
+    }
+}
+
+
+  // Pagination - go to the previous page
+  prevPage(): void {
+    if (this.currentPage > 0) {
+      this.currentPage--;
+      this.loadPage();
+    }
+  }
+
+  // Pagination - go to the next page
+  nextPage(): void {
+    if (this.currentPage < this.totalPages.length - 1) {
+      this.currentPage++;
+      this.loadPage();
+    }
+  }
+
+  // Pagination - go to a specific page
+  goToPage(index: number): void {
+    this.currentPage = index;
+    this.loadPage();
+  }
+
+  // View incident details by navigating to the incident detail page
   viewIncident(id: number): void {
-    this.router.navigate(['incident', id]); // Navigate to the detail route with the ID
+    this.router.navigate(['incident', id]); // Navigate to the incident details page
   }
 }

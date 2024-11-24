@@ -1,0 +1,76 @@
+<div class="bg-gray-800 p-6 rounded-lg shadow-md max-w-4xl mx-auto">
+  <h2 class="text-2xl text-gray-200 font-semibold mb-6">Create Knowledge Base Article</h2>
+
+  <form (ngSubmit)="onSubmit()">
+    <div class="flex flex-wrap gap-4 mb-4 text-gray-200">
+      <!-- Title -->
+      <div class="w-full">
+        <label for="title" class="block mb-2 font-semibold">Title:</label>
+        <input
+          type="text"
+          id="title"
+          [(ngModel)]="article.title"
+          name="title"
+          required
+          class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+          placeholder="Enter article title"
+        />
+      </div>
+
+      <!-- Category -->
+      <div class="w-full">
+        <label for="category" class="block mb-2 font-semibold">Category:</label>
+        <select
+          id="category"
+          [(ngModel)]="article.category"
+          name="category"
+          required
+          class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="" disabled>Select Category</option>
+          <option *ngFor="let category of categoryOptions" [value]="category.value">
+            {{ category.label }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Content -->
+      <div class="w-full">
+        <label for="content" class="block mb-2 font-semibold">Content:</label>
+        <textarea
+          id="content"
+          [(ngModel)]="article.content"
+          name="content"
+          required
+          rows="6"
+          class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500 resize-vertical"
+          placeholder="Write article content here"
+        ></textarea>
+      </div>
+
+      <!-- Tags -->
+      <div class="w-full">
+        <label for="tags" class="block mb-2 font-semibold">Tags:</label>
+        <input
+          type="text"
+          id="tags"
+          [(ngModel)]="article.tags"
+          name="tags"
+          required
+          class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+          placeholder="Comma separated tags"
+        />
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="flex justify-end">
+      <button
+        type="submit"
+        class="p-3 bg-green-500 text-gray-200 text-sm font-medium rounded-md hover:bg-green-600 transition duration-200"
+      >
+        Save Article
+      </button>
+    </div>
+  </form>
+</div>

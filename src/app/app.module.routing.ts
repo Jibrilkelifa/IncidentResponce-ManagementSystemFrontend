@@ -13,6 +13,9 @@ import { EscalationListComponent } from './incidents/escalation-list/escalation-
 import { AuthGuard } from './services/AuthGuard';
 import { ForgotPasswordComponent } from './incidents/auth/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './incidents/auth/reset-password/reset-password.component';
+import { KnowledgeBaseListComponent } from './incidents/knowledgeBase-list/knowledge-base-list.component';
+import { KnowledgeBaseDetailComponent } from './incidents/knowledgeBase-detail/knowledge-base-detail.component';
+import { KnowledgeBaseCreateComponent } from './incidents/knowledgeBase-create/knowledge-base-create.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/signin', pathMatch: 'full' }, // Redirect to Signin
@@ -28,6 +31,9 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent,canActivate: [AuthGuard] },
   { path: 'forgot-password', component: ForgotPasswordComponent,canActivate: [AuthGuard] },
   { path: 'reset-password', component: ResetPasswordComponent ,canActivate: [AuthGuard]},
+  { path: 'knowledge-base', component: KnowledgeBaseListComponent,canActivate: [AuthGuard] },
+  { path: 'knowledge-base/create', component: KnowledgeBaseCreateComponent,canActivate: [AuthGuard] },
+  { path: 'knowledge-base/:id', component: KnowledgeBaseDetailComponent,canActivate: [AuthGuard] },
 
 ];
 

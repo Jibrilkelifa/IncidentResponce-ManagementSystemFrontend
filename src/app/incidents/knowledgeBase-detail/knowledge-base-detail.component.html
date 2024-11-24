@@ -1,0 +1,13 @@
+<div class="p-6 bg-gray-900 rounded-lg shadow-lg max-w-4xl mx-auto">
+  <h2 class="text-3xl text-gray-200 font-semibold mb-4">{{ article?.title }}</h2>
+  
+  <div class="mb-6">
+    <p><strong class="text-gray-400">Category:</strong> <span class="text-gray-200">{{ article?.category }}</span></p>
+    <p><strong class="text-gray-400">Tags:</strong> <span class="text-gray-200">{{ article?.tags }}</span></p>
+  </div>
+
+  <div class="card bg-gray-800 p-4 rounded-md">
+    <h3 class="text-xl text-gray-200 font-semibold mb-3">Content</h3>
+    <p class="text-gray-300">{{ article?.content }}</p>
+  </div>
+</div>

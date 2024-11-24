@@ -26,10 +26,13 @@ export class IncidentDetailComponent implements OnInit {
     description: '',
     updates: []
   };
+
   statusOptions = [
     { label: 'Open', value: 'Open' },
-    { label: 'Resolved', value: 'Resolved' }
+    { label: 'Resolved', value: 'Resolved' },
+    { label: 'Closed', value: 'Closed' }
   ];
+
   newUpdate: Update = { message: '', newStatus: '' };
   incidentId!: number;
 
@@ -66,7 +69,26 @@ export class IncidentDetailComponent implements OnInit {
     }
   }
 
+  // Validate the status transition before allowing the user to submit
+  isValidStatusTransition(newStatus: string): boolean {
+    const currentStatus = this.incident.status;
+    if (newStatus === 'Resolved' && currentStatus !== 'Open') {
+      alert("Incident must be 'Open' to be marked as 'Resolved'.");
+      return false;
+    }
+    if (newStatus === 'Closed' && currentStatus !== 'Resolved') {
+      alert("Incident must be 'Resolved' to be marked as 'Closed'.");
+      return false;
+    }
+    return true;
+  }
+
   onSubmit(): void {
+    // Check if the status transition is valid
+    if (this.newUpdate.newStatus && !this.isValidStatusTransition(this.newUpdate.newStatus)) {
+      return; // Exit if the transition is invalid
+    }
+
     const incidentId = this.incident.id; // Get the incident ID
     this.incidentService.addUpdate(incidentId, this.newUpdate).subscribe(
       (update: Update) => {
@@ -91,5 +113,4 @@ export class IncidentDetailComponent implements OnInit {
       }
     );
   }
-  
 }
