@@ -1,7 +1,6 @@
 <form #incidentForm="ngForm" (ngSubmit)="onSubmit(incidentForm)" class="bg-gray-800 p-6 rounded-lg shadow-md">
   <div class="flex flex-wrap gap-4 mb-4 text-gray-200">
-
-    <!-- Title and Description (Row 1) -->
+    <!-- Title and Assigned To (Row 1) -->
     <div class="flex w-full gap-4">
       <div class="w-1/2">
         <label for="title" class="block mb-2 font-semibold">Title:</label>
@@ -15,37 +14,98 @@
           class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500"
         />
       </div>
-
       <div class="w-1/2">
-        <label for="description" class="block mb-2 font-semibold">Description:</label>
-        <textarea
-          id="description"
-          name="description"
-          [(ngModel)]="incident.description"
-          required
-          rows="4" 
-          pInputTextarea
-          class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500 resize-vertical"
-        ></textarea>
-      </div>
-    </div>
-
-    <!-- Status and Severity (Row 2) -->
-    <div class="flex w-full gap-4">
-      <div class="w-1/2">
-        <label for="location" class="block mb-2 font-semibold">Location:</label>
+        <label for="assignee" class="block mb-2 font-semibold">Assigned To:</label>
         <input
           type="text"
-          id="location"
-          name="location"
-          [(ngModel)]="incident.location"
+          id="assignee"
+          name="assignee"
+          [(ngModel)]="incident.assignee"
           required
+          readonly
           pInputText
           class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500"
         />
       </div>
-    
+    </div>
 
+    <!-- Sources and Affected Assets (Row 2) -->
+    <div class="flex w-full gap-4">
+      <!-- Sources -->
+      <div class="w-1/2">
+        <label for="sources" class="block mb-2 font-semibold">Sources:</label>
+        <div class="flex items-center gap-4">
+          <input
+            type="text"
+            id="sources"
+            [(ngModel)]="newSource"
+            name="newSource"
+            placeholder="Add a source IP"
+            class="dark-input p-2 rounded-md bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500 w-full"
+          />
+          <button
+            type="button"
+            (click)="addSource()"
+            class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:ring-2 focus:ring-blue-500"
+          >
+            Add Source
+          </button>
+        </div>
+        <div class="mt-2">
+          <ul class="list-disc pl-6 text-gray-300">
+            <li *ngFor="let source of incident.sources; let i = index" class="flex items-center gap-2">
+              <span>{{ source }}</span>
+              <button
+                type="button"
+                (click)="removeSource(i)"
+                class="text-red-500 hover:underline"
+              >
+                Remove
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Affected Assets -->
+      <div class="w-1/2">
+        <label for="affectedAssets" class="block mb-2 font-semibold">Affected Assets:</label>
+        <div class="flex items-center gap-4">
+          <input
+            type="text"
+            id="affectedAssets"
+            [(ngModel)]="newAsset"
+            name="newAsset"
+            placeholder="Add an affected asset"
+            class="dark-input p-2 rounded-md bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500 w-full"
+          />
+          <button
+            type="button"
+            (click)="addAsset()"
+            class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:ring-2 focus:ring-blue-500"
+          >
+            Add Asset
+          </button>
+        </div>
+        <div class="mt-2">
+          <ul class="list-disc pl-6 text-gray-300">
+            <li *ngFor="let asset of incident.affectedSystems; let i = index" class="flex items-center gap-2">
+              <span>{{ asset }}</span>
+              <button
+                type="button"
+                (click)="removeAsset(i)"
+                class="text-red-500 hover:underline"
+              >
+                Remove
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Severity and Description (Row 3) -->
+    <div class="flex w-full gap-4">
       <div class="w-1/2">
         <label for="severity" class="block mb-2 font-semibold">Severity:</label>
         <select
@@ -61,66 +121,42 @@
           </option>
         </select>
       </div>
-      
-    </div>
-
-    <!-- Assignee and Affected System (Row 3) -->
-    <div class="flex w-full gap-4">
-      <div class="w-1/2">
-        <label for="assignee" class="block mb-2 font-semibold">Assigned To:</label>
-        <input
-          type="text"
-          id="assignee"
-          name="assignee"
-          [(ngModel)]="incident.assignee"
-          required
-          pInputText
-          class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500"
-          readonly 
-        />
-      </div>
 
       <div class="w-1/2">
-        <label for="affectedSystem" class="block mb-2 font-semibold">Affected System:</label>
-        <input
-          type="text"
-          id="affectedSystem"
-          name="affectedSystem"
-          [(ngModel)]="incident.affectedSystem"
+        <label for="description" class="block mb-2 font-semibold">Description:</label>
+        <textarea
+          id="description"
+          name="description"
+          [(ngModel)]="incident.description"
           required
-          pInputText
-          class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500"
-        />
+          rows="4"
+          pInputTextarea
+          class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500 resize-vertical"
+        ></textarea>
       </div>
     </div>
-
-    <!-- Location and Created At (Row 4) -->
-
-
-    <!-- Last Updated At (Row 5) -->
-    <div class="flex w-full gap-4">
-      <div class="w-1/2">
-        <p>Status: <strong class="text-green-400">{{ incident.status }}</strong></p>
-      </div>
- 
+    <div class="w-1/2">
+      <label for="recommendedAction" class="block mb-2 font-semibold">Recommended Action:</label>
+      <textarea
+        id="recommendedAction"
+        name="recommendedAction"
+        [(ngModel)]="incident.recommendedAction"
+        required
+        rows="4"
+        pInputTextarea
+        class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500 resize-vertical"
+      ></textarea>
     </div>
   </div>
 
-  <!-- Loading indicator -->
-  <div *ngIf="loading" class="loading-container text-gray-300">
-    <p>Generating Incident...</p>
-    <p-progressSpinner strokeWidth="5" styleClass="custom-spinner"></p-progressSpinner>
-  </div>
-
-  <!-- Toast notification -->
-  <p-toast></p-toast>
-
-  <div class="flex flex-wrap gap-3 mt-4 mb-5">
-    <p-button
-      label="Create Incident"
+  <!-- Submit Button -->
+  <div class="flex justify-end mt-4">
+    <button
       type="submit"
       [disabled]="incidentForm.invalid || loading"
-      class="p-button-success createButton"
-    ></p-button>
+      class="px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:ring-2 focus:ring-green-500 disabled:opacity-50"
+    >
+      Create Incident
+    </button>
   </div>
 </form>

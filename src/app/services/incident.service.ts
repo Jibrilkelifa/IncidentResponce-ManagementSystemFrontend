@@ -5,17 +5,18 @@ import { Incident } from '../models/incident-model';
 import { Update } from '../models/update';
 import { SOCReport } from '../models/soc-report.model';
 import { User } from '../models/user';
+import { Group } from '../models/group';
 
 @Injectable({
   providedIn: 'root'
 })
 export class IncidentService {
 
-  // private apiUrl = 'http://10.12.51.70:8091/api/incidents';
-  // private apiUrl2 = 'http://10.12.51.70:8091/api/soc';
+  
 
-  private apiUrl = 'http://localhost:8091/api/incidents';
-  private apiUrl2 = 'http://localhost:8091/api/soc';
+   private apiUrl = 'http://localhost:8091/api/incidents';
+
+  // private apiUrl2 = 'http://localhost:8091/api/soc';
 
   constructor(private http: HttpClient) { }
 
@@ -37,11 +38,15 @@ export class IncidentService {
     return this.http.get<Incident[]>(`${this.apiUrl}/search`, { params: { searchTerm } });
 }
 
-  escalateIncident(incidentId: number, escalationData: { escalatedTo: string; escalatedToEmail: string; escalatedBy: string }): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${incidentId}/escalate`, escalationData);
-  }
+escalateIncident(incidentId: number, escalationData: { escalatedTo: string[], escalatedToEmails: string[], escalatedToPhones: string[], escalatedBy: string }): Observable<any> {
+  return this.http.put(`${this.apiUrl}/${incidentId}/escalate`, escalationData);
+}
+
   getUsers() {
-    return this.http.get<User[]>(`${this.apiUrl}/users`); // Adjust URL as needed
+    return this.http.get<User[]>(`${this.apiUrl}/users`); 
+  }
+  getGroups() {
+    return this.http.get<Group[]>(`${this.apiUrl2}/list`); 
   }
 
   // Method to get escalated incidents for the logged-in user

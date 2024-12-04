@@ -1,5 +1,10 @@
 <div class="flex min-h-screen bg-gray-900 text-gray-300">
-  <app-sidebar></app-sidebar>
+  <!-- Sidebar -->
+  <ng-container *ngIf="showSidebar">
+    <app-sidebar></app-sidebar>
+  </ng-container>
+
+  <!-- Main Content -->
   <div class="flex-1 flex flex-col">
     <app-header></app-header>
     <main class="flex-1 p-6 bg-gray-800 text-gray-300">
@@ -7,5 +12,4 @@
     </main>
     <app-foote></app-foote>
   </div>
-  <i class="fas fa-check"></i>
 </div>

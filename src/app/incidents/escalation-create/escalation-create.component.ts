@@ -1,5 +1,3 @@
-// src/app/components/escalation-form/escalation-form.component.ts
-
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IncidentService } from '../../services/incident.service';
@@ -16,44 +14,38 @@ import { AuthService } from 'src/app/services/AuthService';
 export class EscalationFormComponent implements OnInit {
   incidentId!: number;
   users: User[] = [];
-  selectedUser!: User;
+  selectedUsers: User[] = []; // Multi-select users
 
-  // Only fields required for escalation
   escalationData = {
-    escalatedTo: '',
-    escalatedToEmail: '',
-    escalatedToPhoneNumber: '',
+    escalatedTo: [] as string[], // Names of selected users
+    escalatedToEmails: [] as string[], // Emails of selected users
+    escalatedToPhones: [] as string[], // Phone numbers of selected users
     escalatedBy: ''
   };
 
   loading: boolean = false;
+  isDropdownOpen: boolean = false; // To toggle dropdown visibility
 
   constructor(
     private route: ActivatedRoute,
     private incidentService: IncidentService,
     private messageService: MessageService,
-    private authService:AuthService
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
-    // Get incidentId from route parameters
     this.incidentId = +this.route.snapshot.paramMap.get('id')!;
     this.loadUsers();
     this.populateLoggedInUser();
   }
-  loadUsers() {
-    this.incidentService.getUsers().subscribe(
-      (data) => {
-        this.users = data;
-      },
-      (error) => {
-        console.error('Error fetching users:', error);
-      }
-    );
+
+  loadUsers(): void {
+    this.incidentService.getUsers().subscribe((data: User[]) => {
+      this.users = data;
+    });
   }
 
-
-  populateLoggedInUser() {
+  populateLoggedInUser(): void {
     this.authService.getCurrentUser().subscribe(
       (user) => {
         this.escalationData.escalatedBy = user.fullName;
@@ -63,30 +55,62 @@ export class EscalationFormComponent implements OnInit {
       }
     );
   }
-  
-  onUserSelect(event: any) {
-    const userId = +event.target.value; // Convert selected value to number
-    const user = this.users.find(u => u.id === userId);
-    if (user) {
-      this.escalationData.escalatedTo = user.fullName;
-      this.escalationData.escalatedToEmail = user.username; // Assuming username represents email
-      this.escalationData.escalatedToPhoneNumber = user.phoneNumber;
-    }
-  }
-  
 
-  escalateIncident() {
+  toggleDropdown(): void {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  toggleUserSelection(user: User): void {
+    const index = this.selectedUsers.indexOf(user);
+    if (index > -1) {
+      // User is already selected, remove them
+      this.selectedUsers.splice(index, 1);
+    } else {
+      // User is not selected, add them
+      this.selectedUsers.push(user);
+    }
+
+    this.updateEscalationData();
+  }
+
+  isSelected(user: User): boolean {
+    return this.selectedUsers.includes(user);
+  }
+
+  updateEscalationData(): void {
+    // Clear previous selections
+    this.escalationData.escalatedTo = [];
+    this.escalationData.escalatedToEmails = [];
+    this.escalationData.escalatedToPhones = [];
+
+    // Populate escalation details for each selected user
+    this.selectedUsers.forEach((user) => {
+      this.escalationData.escalatedTo.push(user.fullName);
+      this.escalationData.escalatedToEmails.push(user.username);
+      this.escalationData.escalatedToPhones.push(user.phoneNumber);
+    });
+  }
+
+  getSelectedUserNames(): string {
+    if (this.selectedUsers.length === 0) {
+      return 'Select Users';
+    }
+    return this.selectedUsers.map((user) => user.fullName).join(', ');
+  }
+
+  escalateIncident(): void {
     this.loading = true;
-    this.incidentService.escalateIncident(this.incidentId, this.escalationData).subscribe(
-      () => {
-        this.loading = false;
-        this.messageService.add({ severity: 'success', summary: 'Escalated', detail: 'Incident escalated successfully!' });
+    this.incidentService.escalateIncident(this.incidentId, this.escalationData).subscribe({
+      next: () => {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Incident escalated successfully!' });
       },
-      (error) => {
+      error: (err) => {
+        console.error('Error escalating incident:', err);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to escalate incident.' });
+      },
+      complete: () => {
         this.loading = false;
-        console.error('Error escalating incident:', error);
-        this.messageService.add({ severity: 'error', summary: 'Escalation Failed', detail: 'Failed to escalate incident.' });
       }
-    );
+    });
   }
 }

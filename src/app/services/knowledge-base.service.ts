@@ -8,7 +8,8 @@ import { KnowledgeBaseArticle } from '../models/KnowledgeBaseArticle';
   providedIn: 'root',
 })
 export class KnowledgeBaseService {
-  private apiUrl = `http://localhost:8091/api/knowledge-base`;
+   private apiUrl = `http://localhost:8091/api/knowledge-base`;
+
 
   constructor(private http: HttpClient) {}
 
@@ -28,6 +29,9 @@ export class KnowledgeBaseService {
   // Get article by ID
   getArticleById(id: number): Observable<KnowledgeBaseArticle> {
     return this.http.get<KnowledgeBaseArticle>(`${this.apiUrl}/${id}`);
+  }
+  refreshResolvedIncidentsWithArticles(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/resolved-incidents-with-articles`);
   }
 
   // Delete article by ID

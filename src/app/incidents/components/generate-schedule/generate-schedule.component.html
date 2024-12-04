@@ -1,0 +1,81 @@
+<form #form="ngForm" (ngSubmit)="onSubmit(form)" class="bg-gray-800 p-6 rounded-lg shadow-md">
+  <!-- Form Fields -->
+  <div class="flex flex-wrap gap-4 mb-4 text-gray-200">
+    <!-- Start Date -->
+    <div class="w-1/3">
+      <label for="startDate" class="block mb-2 font-semibold">Start Date:</label>
+      <input
+        type="date"
+        id="startDate"
+        name="startDate"
+        [(ngModel)]="startDate"
+        required
+        class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+
+    <!-- Days -->
+    <div class="w-1/3">
+      <label for="days" class="block mb-2 font-semibold">Days:</label>
+      <input
+        type="number"
+        id="days"
+        name="days"
+        [(ngModel)]="days"
+        required
+        class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+
+    <!-- Shift Type -->
+    <div class="w-1/3">
+      <label for="shiftType" class="block mb-2 font-semibold">Shift Type:</label>
+      <select
+      id="shiftType"
+      name="shiftType"
+      [(ngModel)]="shiftType"
+      required
+      class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+    >
+      <option value="" disabled>Select Shift Type</option>
+      <option *ngFor="let shift of shiftTypes" [ngValue]="shift">
+        {{ shift.label }}
+      </option>
+    </select>
+    
+    </div>
+  </div>
+
+  <!-- Loading Indicator -->
+  <div *ngIf="loading" class="flex items-center justify-center my-4">
+    <p class="text-gray-300 mr-4">Generating Schedule...</p>
+    <div class="animate-spin rounded-full h-8 w-8 border-t-4 border-blue-500"></div>
+  </div>
+
+<!-- Toast Messages -->
+<div *ngIf="msgs.length > 0" class="text-center my-4">
+  <div
+    *ngFor="let msg of msgs"
+    [ngClass]="{
+      'text-green-500': msg.severity === 'success',
+      'text-red-500': msg.severity === 'error',
+      'text-yellow-500': msg.severity === 'warn'
+    }"
+    class="font-semibold"
+  >
+    {{ msg.detail }}
+  </div>
+</div>
+
+
+  <!-- Submit Button -->
+  <div class="flex justify-end mt-4">
+    <button
+      type="submit"
+      [disabled]="form.invalid || loading"
+      class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+    >
+      Generate Schedule
+    </button>
+  </div>
+</form>

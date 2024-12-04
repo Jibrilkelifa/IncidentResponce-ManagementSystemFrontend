@@ -33,6 +33,10 @@ import { ResetPasswordComponent } from './auth/reset-password/reset-password.com
 import { KnowledgeBaseCreateComponent } from './knowledgeBase-create/knowledge-base-create.component';
 import { KnowledgeBaseListComponent } from './knowledgeBase-list/knowledge-base-list.component';
 import { KnowledgeBaseDetailComponent } from './knowledgeBase-detail/knowledge-base-detail.component';
+import { ScheduleViewComponent } from './components/schedule-view/schedule-view.component';
+import { AnalystViewComponent } from './components/analyst-view/analyst-view.component';
+import { GenerateScheduleComponent } from './components/generate-schedule/generate-schedule.component';
+import { CreateAnalystComponent } from './components/create-analyst/create-analyst.component';
 
 
 @NgModule({
@@ -51,7 +55,11 @@ import { KnowledgeBaseDetailComponent } from './knowledgeBase-detail/knowledge-b
     EscalationListComponent,
     KnowledgeBaseCreateComponent,
     KnowledgeBaseListComponent,
-    KnowledgeBaseDetailComponent
+    KnowledgeBaseDetailComponent,
+    ScheduleViewComponent,
+    AnalystViewComponent,
+    GenerateScheduleComponent,
+    CreateAnalystComponent
     
 
     // HeaderComponent,

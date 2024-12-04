@@ -1,0 +1,50 @@
+:host ::ng-deep .accordion-custom {
+  .accordion-button {
+    background-color: var(--cui-dark);
+    color: var(--cui-white);
+  }
+}
+
+::ng-deep .p-dialog .p-dialog-header {
+  background: #3b82f6;
+  color: white;
+  font-size: 24px;
+}
+
+::ng-deep .p-dialog {
+  border: 1px solid #3b82f6;
+  animation: fadeIn 0.5s, fadeOut 0.5s;
+}
+.truncat {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 50px; 
+}
+
+
+::ng-deep .p-dialog .p-dialog-header .p-dialog-header-icon {
+  color: white;
+}
+
+th input {
+  padding: 0.5em;
+}
+
+p-button {
+  padding: 0.5em;
+}
+
+.card {
+  margin-top: 10px;
+}
+
+
+
+.table-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin: 15px;
+}
+

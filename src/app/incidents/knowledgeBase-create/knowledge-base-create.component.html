@@ -1,7 +1,7 @@
 <div class="bg-gray-800 p-6 rounded-lg shadow-md max-w-4xl mx-auto">
   <h2 class="text-2xl text-gray-200 font-semibold mb-6">Create Knowledge Base Article</h2>
 
-  <form (ngSubmit)="onSubmit()">
+  <form #articleForm="ngForm" (ngSubmit)="onSubmit()">
     <div class="flex flex-wrap gap-4 mb-4 text-gray-200">
       <!-- Title -->
       <div class="w-full">
@@ -15,6 +15,9 @@
           class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500"
           placeholder="Enter article title"
         />
+        <div *ngIf="articleForm.controls['title']?.invalid && articleForm.controls['title']?.touched" class="text-red-500 text-sm">
+          Title is required.
+        </div>
       </div>
 
       <!-- Category -->
@@ -32,6 +35,9 @@
             {{ category.label }}
           </option>
         </select>
+        <div *ngIf="articleForm.controls['category']?.invalid && articleForm.controls['category']?.touched" class="text-red-500 text-sm">
+          Category is required.
+        </div>
       </div>
 
       <!-- Content -->
@@ -46,6 +52,9 @@
           class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500 resize-vertical"
           placeholder="Write article content here"
         ></textarea>
+        <div *ngIf="articleForm.controls['content']?.invalid && articleForm.controls['content']?.touched" class="text-red-500 text-sm">
+          Content is required.
+        </div>
       </div>
 
       <!-- Tags -->
@@ -58,8 +67,11 @@
           name="tags"
           required
           class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500"
-          placeholder="Comma separated tags"
+          placeholder="Comma-separated tags"
         />
+        <div *ngIf="articleForm.controls['tags']?.invalid && articleForm.controls['tags']?.touched" class="text-red-500 text-sm">
+          Tags are required.
+        </div>
       </div>
     </div>
 
@@ -67,7 +79,8 @@
     <div class="flex justify-end">
       <button
         type="submit"
-        class="p-3 bg-green-500 text-gray-200 text-sm font-medium rounded-md hover:bg-green-600 transition duration-200"
+        [disabled]="articleForm.invalid"
+        class="p-3 bg-green-500 text-gray-200 text-sm font-medium rounded-md hover:bg-green-600 transition duration-200 disabled:bg-gray-500 disabled:cursor-not-allowed"
       >
         Save Article
       </button>

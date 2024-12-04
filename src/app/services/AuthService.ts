@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { User } from '../models/user';
 
@@ -9,9 +9,9 @@ import { User } from '../models/user';
   providedIn: 'root'
 })
 export class AuthService {
-  // private apiUrl = 'http://10.12.51.70:8091/api/auth';
 
   private apiUrl = 'http://localhost:8091/api/auth';
+
 
   
   // Initializes auth status based on token presence
@@ -32,8 +32,8 @@ export class AuthService {
       }));
   }
 
-  signup(username: string, password: string, confirmPassword: string, fullName: string, jobTitle: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/signup`, { username, password, confirmPassword, fullName, jobTitle });
+  signup(phoneNumber:string, username: string, password: string, confirmPassword: string, fullName: string, jobTitle: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/signup`, { phoneNumber,username, password, confirmPassword, fullName, jobTitle });
   }
 
   requestPasswordReset(email: string): Observable<any> {
@@ -59,11 +59,20 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('token');
-    this.authStatus.next(false);  // Notify that user is now logged out
+    this.authStatus.next(false); 
+    localStorage.removeItem('user'); // Notify that user is now logged out
     this.router.navigate(['/signin']);
   }
 
   isAuthenticated(): boolean {
-    return !!this.getToken();
+    return !!this.getToken();   
   }
+  validateToken(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/validate-token`, {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${this.getToken()}`
+      })
+    });
+  }
+  
 }

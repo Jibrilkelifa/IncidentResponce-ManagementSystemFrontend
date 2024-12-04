@@ -12,6 +12,7 @@ export class SignupComponent {
   fullName: string = '';         
   jobTitle: string = '';         
   password: string = '';
+  phoneNumber: string = '';  
   confirmPassword: string = '';  
   errorMessage: string = '';
 
@@ -23,7 +24,7 @@ export class SignupComponent {
       return;
     }
   
-    this.authService.signup(this.username, this.password, this.confirmPassword, this.fullName, this.jobTitle).subscribe(
+    this.authService.signup(this.phoneNumber,this.username, this.password, this.confirmPassword, this.fullName, this.jobTitle).subscribe(
       response => {
         this.router.navigate(['/signin']);
       },

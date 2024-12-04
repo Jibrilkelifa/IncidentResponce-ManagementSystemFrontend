@@ -4,47 +4,50 @@ import { MessageService } from 'primeng/api';
 import { IncidentService } from '../../services/incident.service';
 import { Incident } from '../../models/incident-model';
 import { AuthService } from 'src/app/services/AuthService';
-import { User } from 'src/app/models/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-incident',
-  templateUrl: 'incident-create.component.html',
-  styleUrls: ['incident-create.component.scss'],
+  templateUrl: './incident-create.component.html',
+  styleUrls: ['./incident-create.component.scss'],
 })
 export class CreateIncidentComponent implements OnInit {
-  users: User[] = [];
   incident: Incident = {
-    id: 0, // Add a default value; it can be updated later if necessary
-    title: '', // Initialize title property
+    id: 0,
+    title: '',
     description: '',
-    status: 'Open', // Default status initialized to 'Open'
-    severity: '', // Initialize severity property
-    assignee: '', // Initialize assignee property
-    affectedSystem: '', // Initialize affectedSystem property
-    location: '', // Initialize location property
+    recommendedAction: '',
+    status: 'Open',
+    severity: '',
+    assignee: '',
     createdAt: new Date(),
     updatedAt: new Date(),
     updates: [],
-    escalatedTo:'',
-    escalatedBy:'',
-    escalatedToEmail: '',
-    escalated: false // Initialize updates as an empty array
+    escalatedTo: [],
+    escalatedBy: '',
+    escalatedToEmails: [],
+    escalatedToPhones: [],
+    escalated: false,
+    sources: [],
+    affectedSystems: [] // New field for affected assets
   };
 
-  loading: boolean = false; // Declare the loading property
+  newSource: string = ''; // For temporarily holding the entered source
+  newAsset: string = ''; // For temporarily holding the entered affected asset
+  loading: boolean = false;
   severityOptions = [
     { label: 'Critical', value: 'Critical' },
     { label: 'High', value: 'High' },
     { label: 'Medium', value: 'Medium' },
     { label: 'Low', value: 'Low' }
-    
   ];
 
-  constructor(private messageService: MessageService, private incidentService: IncidentService, private authService:AuthService) {}
+  constructor(private messageService: MessageService,private router:Router ,private incidentService: IncidentService, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.populateLoggedInUser();
   }
+
   populateLoggedInUser() {
     this.authService.getCurrentUser().subscribe(
       (user) => {
@@ -56,21 +59,48 @@ export class CreateIncidentComponent implements OnInit {
     );
   }
 
+  addSource(): void {
+    if (this.newSource.trim()) {
+      this.incident.sources.push(this.newSource.trim());
+      this.newSource = '';
+    }
+  }
+
+  removeSource(index: number): void {
+    this.incident.sources.splice(index, 1);
+  }
+
+  addAsset(): void {
+    if (this.newAsset.trim()) {
+      this.incident.affectedSystems.push(this.newAsset.trim());
+      this.newAsset = '';
+    }
+  }
+
+  removeAsset(index: number): void {
+    this.incident.affectedSystems.splice(index, 1);
+  }
+
   onSubmit(form: NgForm) {
     if (form.valid) {
-      this.loading = true; // Set loading to true when submitting
+      this.loading = true;
       this.incidentService.createIncident(this.incident).subscribe({
         next: (response) => {
-          console.log('Incident submitted:', response);
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Incident created successfully!' });
-          form.reset(); // Reset the form if needed
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Incident created successfully!',
+            life: 3000, // Message stays visible for 3 seconds
+          });          form.reset();
+          this.incident.sources = [];
+          this.incident.affectedSystems = [];
         },
         error: (err) => {
           console.error('Error creating incident:', err);
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to create incident.' });
         },
         complete: () => {
-          this.loading = false; // Set loading to false after submission
+          this.loading = false;
         },
       });
     } else {

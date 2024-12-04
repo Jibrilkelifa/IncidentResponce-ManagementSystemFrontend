@@ -1,0 +1,44 @@
+<!-- analyst-view.component.html -->
+<div class="card">
+  <p-table [value]="users" [rows]="10" [paginator]="true" [tableStyle]="{'min-width': '60rem'}">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Gender</th>
+        <th>Address</th>
+        <th>Phone Number</th>
+        <th>Available</th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-user>
+      <tr>
+        <td>{{ user.id }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.gender }}</td>
+        <td>{{ user.location }}</td>
+        <td>{{ user.phoneNumber }}</td>
+        <td>{{'Yes'  }}</td>
+        <td>
+          <div class="flex">
+            <button class="p-button-sm mb-1 mr-5">
+              <i class="pi pi-pencil text-blue-500"></i>
+            </button>
+            <button  class="p-button-sm">
+              <i class="pi pi-trash text-red-500"></i>
+            </button>
+          </div>
+        </td>
+        <!-- <td>{{ user.isAvailable ? 'Yes' : 'No' }}</td> -->
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="5">No Data found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

@@ -1,0 +1,93 @@
+<div class="relative">
+  <!-- Loading Overlay -->
+  <div *ngIf="loading" class="absolute top-0 right-0 z-50 flex items-center justify-center w-full h-full bg-gray-800 bg-opacity-75">
+    <div class="flex items-center gap-4 text-white">
+      <span class="spinner-border text-blue-500 w-6 h-6 animate-spin"></span>
+      <span>Creating Analyst...</span>
+    </div>
+  </div>
+</div>
+
+<div class="bg-gray-800 p-6 rounded-lg shadow-md">
+  <h2 class="text-xl font-semibold text-gray-200 mb-6">Create SOC Analyst</h2>
+
+  <form #form="ngForm" (ngSubmit)="onSubmit(form)" class="space-y-4">
+    <div class="flex flex-wrap gap-4">
+      <!-- Name -->
+      <div class="flex-auto">
+        <label for="name" class="block mb-2 font-semibold text-gray-200">Name:</label>
+        <input
+          pInputText
+          id="name"
+          type="text"
+          name="name"
+          [(ngModel)]="user.name"
+          required
+          class="w-full p-2 bg-gray-700 text-gray-300 border border-gray-600 rounded focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <!-- Gender -->
+      <div class="flex-auto">
+        <label for="gender" class="block mb-2 font-semibold text-gray-200">Gender:</label>
+        <input
+          pInputText
+          id="gender"
+          type="text"
+          name="gender"
+          [(ngModel)]="user.gender"
+          required
+          class="w-full p-2 bg-gray-700 text-gray-300 border border-gray-600 rounded focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <!-- Location -->
+      <div class="flex-auto">
+        <label for="location" class="block mb-2 font-semibold text-gray-200">Location:</label>
+        <input
+          pInputText
+          id="location"
+          type="text"
+          name="location"
+          [(ngModel)]="user.location"
+          required
+          class="w-full p-2 bg-gray-700 text-gray-300 border border-gray-600 rounded focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+<!-- 
+      <div class="flex-auto">
+        <label for="phoneNumber" class="block mb-2 font-semibold text-gray-200">Phone Number:</label>
+        <input
+          pInputText
+          id="phoneNumber"
+          type="text"
+          name="phoneNumber"
+          [(ngModel)]="user.location" 
+          required
+          class="w-full p-2 bg-gray-700 text-gray-300 border border-gray-600 rounded focus:ring-2 focus:ring-blue-500"
+        />
+      </div> -->
+    </div>
+
+    <!-- Availability and Submit -->
+    <div class="flex items-center justify-between mt-6">
+      <div>
+        <label for="isAvailable" class="block mb-2 font-semibold text-gray-200">Available:</label>
+        <input
+          type="checkbox"
+          id="isAvailable"
+          name="isAvailable"
+          [(ngModel)]="user.isAvailabel"
+          class="w-5 h-5 rounded border-gray-600 text-blue-500 focus:ring-blue-500"
+        />
+      </div>
+
+      <p-button
+        label="Create Analyst"
+        type="submit"
+        [disabled]="form.invalid"
+        class="px-6 py-2 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600 focus:ring-2 focus:ring-green-500 disabled:opacity-50"
+      ></p-button>
+    </div>
+  </form>
+</div>

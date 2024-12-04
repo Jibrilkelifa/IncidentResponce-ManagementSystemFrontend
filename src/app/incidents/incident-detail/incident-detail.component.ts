@@ -13,14 +13,15 @@ export class IncidentDetailComponent implements OnInit {
   incident: Incident = {
     id: 0,
     status: '',
-    escalatedTo: '',
+    escalatedTo: [],
     escalatedBy: '',
     escalated: false,
     severity: '',
     title: '',
     assignee: '',
-    affectedSystem: '',
-    location: '',
+    affectedSystems: [],
+    recommendedAction: '',
+    sources: [],
     createdAt: new Date(),
     updatedAt: new Date(),
     description: '',
@@ -28,9 +29,7 @@ export class IncidentDetailComponent implements OnInit {
   };
 
   statusOptions = [
-    { label: 'Open', value: 'Open' },
-    { label: 'Resolved', value: 'Resolved' },
-    { label: 'Closed', value: 'Closed' }
+    { label: 'Resolved', value: 'Resolved' }
   ];
 
   newUpdate: Update = { message: '', newStatus: '' };
@@ -84,11 +83,7 @@ export class IncidentDetailComponent implements OnInit {
   }
 
   onSubmit(): void {
-    // Check if the status transition is valid
-    if (this.newUpdate.newStatus && !this.isValidStatusTransition(this.newUpdate.newStatus)) {
-      return; // Exit if the transition is invalid
-    }
-
+    
     const incidentId = this.incident.id; // Get the incident ID
     this.incidentService.addUpdate(incidentId, this.newUpdate).subscribe(
       (update: Update) => {

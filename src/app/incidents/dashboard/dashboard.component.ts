@@ -12,6 +12,7 @@ export class DashboardComponent implements OnInit {
   totalIncidents: number = 0;
   openIncidents: number = 0;
   closedIncidents: number = 0;
+  escalateddIncidents: number = 0;
   affectedSystemCounts: { system: string, count: number }[] = [];
   sourceCorrelations: { source: string, incidents: Incident[] }[] = [];
   escalatedIncidents: { escalatedTo: string, count: number, incidents: Incident[] }[] = [];
@@ -33,7 +34,9 @@ export class DashboardComponent implements OnInit {
     this.incidentService.getIncidents().subscribe((incidents) => {
       this.totalIncidents = incidents.length;
       this.openIncidents = incidents.filter(incident => incident.status === 'Open').length;
-      this.closedIncidents = incidents.filter(incident => incident.status === 'Closed').length;
+      this.closedIncidents = incidents.filter(incident => incident.status === 'Resolved').length;
+      this.escalateddIncidents = incidents.filter(incident => incident.status === 'Escalated').length;
+
     });
   }
 

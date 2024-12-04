@@ -1,14 +1,14 @@
 <main class="content p-6">
   <div *ngIf="incident" class="incident-container bg-gray-800 rounded-lg shadow-md p-4">
-    <h2 class="text-gray-200 text-2xl font-semibold mb-4">Incident #{{ incident?.id }}</h2>
+    <h2 class="text-gray-200 text-2xl font-semibold mb-4">Incident #{{ incident?.title }}</h2>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
       <div>
         <p><strong>Status:</strong> <span class="badge badge-info">{{ incident?.status }}</span></p>
         <p><strong>Severity:</strong> <span class="badge badge-danger">{{ incident?.severity }}</span></p>
         <p><strong>Assigned To:</strong> <span>{{ incident?.assignee }}</span></p>
-        <p><strong>Affected System:</strong> <span>{{ incident?.affectedSystem }}</span></p>
-        <p><strong>Location:</strong> <span>{{ incident?.location }}</span></p>
+        <p><strong>Affected System:</strong> <span>{{ incident?.affectedSystems }}</span></p>
+        <p><strong>Sources:</strong> <span>{{ incident?.sources }}</span></p>
         <p><strong>Created At:</strong> {{ incident?.createdAt | date: 'short' }}</p>
       </div>
     </div>

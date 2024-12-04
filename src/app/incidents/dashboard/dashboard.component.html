@@ -7,12 +7,16 @@
       <h3 class="text-xl font-medium text-gray-300">Total Incidents</h3>
       <p class="incident-count text-4xl font-bold text-blue-500">{{ totalIncidents }}</p>
     </div>
-    <div class="card bg-gray-800 rounded-lg p-4 shadow-lg transition-transform duration-300 hover:scale-105">
+    <!-- <div class="card bg-gray-800 rounded-lg p-4 shadow-lg transition-transform duration-300 hover:scale-105">
       <h3 class="text-xl font-medium text-gray-300">Open Incidents</h3>
       <p class="incident-count text-4xl font-bold text-yellow-500">{{ openIncidents }}</p>
+    </div> -->
+    <div class="card bg-gray-800 rounded-lg p-4 shadow-lg transition-transform duration-300 hover:scale-105">
+      <h3 class="text-xl font-medium text-gray-300">Escalated Incidents</h3>
+      <p class="incident-count text-4xl font-bold text-green-500">{{ escalateddIncidents }}</p>
     </div>
     <div class="card bg-gray-800 rounded-lg p-4 shadow-lg transition-transform duration-300 hover:scale-105">
-      <h3 class="text-xl font-medium text-gray-300">Closed Incidents</h3>
+      <h3 class="text-xl font-medium text-gray-300">Resolved Incidents</h3>
       <p class="incident-count text-4xl font-bold text-green-500">{{ closedIncidents }}</p>
     </div>
   </div>

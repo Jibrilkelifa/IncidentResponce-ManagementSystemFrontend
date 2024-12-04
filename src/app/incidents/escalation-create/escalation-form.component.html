@@ -2,62 +2,90 @@
   <h2 class="text-gray-200 text-xl font-semibold mb-4">Escalate Incident #{{ incidentId }}</h2>
 
   <form (ngSubmit)="escalateIncident()">
-    <!-- Escalated To (Dropdown) -->
-    <div class="mb-3">
-      <label for="escalatedTo" class="block font-semibold mb-1 text-gray-200">Escalated To:</label>
-      <select
-        id="escalatedTo"
-        [(ngModel)]="selectedUser"
-        name="escalatedTo"
-        (change)="onUserSelect($event)"
-        required
-        class="dark-input"
-      >
-        <option *ngFor="let user of users" [value]="user.id">{{ user.fullName }}</option>
-      </select>
+    <!-- Escalated To (Checkbox-Based Dropdown) -->
+    <div class="mb-4">
+      <label for="escalatedTo" class="block font-semibold mb-2 text-gray-200">Escalated To:</label>
+      <div class="relative">
+        <!-- Dropdown toggle button -->
+        <button
+          type="button"
+          (click)="toggleDropdown()"
+          class="w-full p-2 rounded-md bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500 text-left"
+        >
+          {{ getSelectedUserNames() }}
+          <span class="float-right">&#x25BC;</span>
+        </button>
+
+        <!-- Dropdown menu -->
+        <div
+          *ngIf="isDropdownOpen"
+          class="absolute z-10 mt-2 w-full bg-gray-700 border border-gray-600 rounded-md shadow-lg"
+        >
+          <ul class="max-h-40 overflow-y-auto">
+            <li
+              *ngFor="let user of users"
+              class="flex items-center px-4 py-2 hover:bg-gray-600"
+            >
+              <input
+                type="checkbox"
+                [checked]="isSelected(user)"
+                (change)="toggleUserSelection(user)"
+                class="mr-2"
+              />
+              <span class="text-gray-300">{{ user.fullName }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
 
-    <!-- Escalated To Email (autofilled) -->
-    <div class="mb-3">
-      <label for="escalatedToEmail" class="block font-semibold mb-1 text-gray-200">Escalated To Email:</label>
-      <input
-        type="email"
+    <!-- Escalated To Emails (autofilled) -->
+    <div class="mb-4">
+      <label for="escalatedToEmail" class="block font-semibold mb-2 text-gray-200">Escalated To Emails:</label>
+      <textarea
         id="escalatedToEmail"
-        [(ngModel)]="escalationData.escalatedToEmail"
+        [(ngModel)]="escalationData.escalatedToEmails"
         name="escalatedToEmail"
         readonly
-        class="dark-input"
-      />
+        class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+      ></textarea>
     </div>
 
-    <!-- Escalated To Phone Number (autofilled) -->
-    <div class="mb-3">
-      <label for="escalatedToPhoneNumber" class="block font-semibold mb-1 text-gray-200">Escalated To Phone Number:</label>
-      <input
-        type="text"
+    <!-- Escalated To Phone Numbers (autofilled) -->
+    <div class="mb-4">
+      <label for="escalatedToPhoneNumber" class="block font-semibold mb-2 text-gray-200">Escalated To Phone Numbers:</label>
+      <textarea
         id="escalatedToPhoneNumber"
-        [(ngModel)]="escalationData.escalatedToPhoneNumber"
+        [(ngModel)]="escalationData.escalatedToPhones"
         name="escalatedToPhoneNumber"
         readonly
-        class="dark-input"
-      />
+        class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+      ></textarea>
     </div>
 
     <!-- Escalated By (autofilled with logged-in user) -->
-    <div class="mb-3">
-      <label for="escalatedBy" class="block font-semibold mb-1 text-gray-200">Escalated By:</label>
+    <div class="mb-4">
+      <label for="escalatedBy" class="block font-semibold mb-2 text-gray-200">Escalated By:</label>
       <input
         type="text"
         id="escalatedBy"
         [(ngModel)]="escalationData.escalatedBy"
         name="escalatedBy"
         readonly
-        class="dark-input"
+        class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500"
       />
     </div>
 
     <!-- Submit Button -->
-    <p-button label="Escalate Incident" icon="pi pi-exclamation-triangle" type="submit" class="p-button-danger mt-3" [disabled]="loading"></p-button>
+    <div class="mt-4">
+      <button
+        type="submit"
+        [disabled]="loading"
+        class="px-6 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+      >
+        Escalate Incident
+      </button>
+    </div>
   </form>
 </div>
 
