@@ -2,24 +2,40 @@
   <div *ngIf="incident" class="incident-container bg-gray-800 rounded-lg shadow-md p-4">
     <h2 class="text-gray-200 text-2xl font-semibold mb-4">Incident #{{ incident?.title }}</h2>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-      <div>
-        <p><strong>Status:</strong> <span class="badge badge-info">{{ incident?.status }}</span></p>
-        <p><strong>Severity:</strong> <span class="badge badge-danger">{{ incident?.severity }}</span></p>
-        <p><strong>Assigned To:</strong> <span>{{ incident?.assignee }}</span></p>
-        <p><strong>Affected System:</strong> <span>{{ incident?.affectedSystems }}</span></p>
-        <p><strong>Sources:</strong> <span>{{ incident?.sources }}</span></p>
-        <p><strong>Created At:</strong> {{ incident?.createdAt | date: 'short' }}</p>
-      </div>
+    <!-- Horizontal Layout for Incident Fields -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 text-gray-200">
+      <p><strong>Status:</strong> <span class="badge badge-info">{{ incident?.status }}</span></p>
+      <p><strong>Severity:</strong> <span class="badge badge-danger">{{ incident?.severity }}</span></p>
+      <p><strong>Assigned To:</strong> <span>{{ incident?.assignee }}</span></p>
+      <p><strong>Affected Assets:</strong> <span>{{ incident?.affectedSystems }}</span></p>
+      <p><strong>Created At:</strong> {{ incident?.createdAt | date: 'short' }}</p>
+      <p><strong>Escalated To:</strong> <span>{{ incident?.escalatedTo }}</span></p>
+      <p><strong>Escalation Message:</strong> <span>{{ incident?.escalationMessage }}</span></p>
+    </div>
+    <div class="mt-6">
+      <p class="text-gray-200 break-words">
+        <strong>Sources:</strong> <span>{{ incident?.sources }}</span>
+      </p>
     </div>
 
-    <!-- Escalate Button -->
-    <div class="mb-3">
+    <!-- Escalate and Update Buttons -->
+    <div class="mb-3 flex gap-4">
+      <!-- Escalate Button -->
       <button
+        *ngIf="canEditIncident"
         (click)="escalateIncident()"
         class="px-4 py-2 bg-yellow-500 text-white text-sm font-medium rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 transition duration-200"
       >
         Escalate
+      </button>
+
+      <!-- Update Button -->
+      <button
+        *ngIf="canEditIncident"
+        (click)="updateIncident()"
+        class="px-4 py-2 bg-cyan-500 text-white text-sm font-medium rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+      >
+        Update
       </button>
     </div>
 
@@ -34,7 +50,7 @@
     </div>
 
     <!-- Update Form -->
-    <div class="card mb-3 bg-gray-700">
+    <div class="card mb-3 bg-gray-800">
       <div class="card-header">
         <h3 class="mb-0 text-gray-200">Add Update</h3>
       </div>
@@ -54,7 +70,7 @@
               ></textarea>
             </div>
 
-            <!-- Status Dropdown and Submit Button Container (Same Row) -->
+            <!-- Status Dropdown and Submit Button Container -->
             <div class="field col-12 md:col-6 flex justify-between items-center gap-3">
               <!-- Status Dropdown -->
               <div class="w-full md:w-1/3">
@@ -71,13 +87,14 @@
                 </select>
               </div>
 
-              <!-- Submit Button (Aligned Left) -->
               <button
-                type="submit"
-                class="px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
-              >
-                Submit Update
-              </button>
+              type="submit"
+              [disabled]="newUpdate.message.trim().length === 0"
+              class="px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Submit Update
+            </button>
+            
             </div>
           </div>
         </form>
@@ -85,7 +102,7 @@
     </div>
 
     <!-- Recent Updates Section -->
-    <div class="card mb-3 bg-gray-700">
+    <div class="card mb-3 bg-gray-800">
       <div class="card-header">
         <h3 class="mb-0 text-gray-200">Recent Updates</h3>
       </div>

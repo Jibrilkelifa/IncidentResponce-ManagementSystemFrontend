@@ -6,7 +6,6 @@
     <div class="mb-4">
       <label for="escalatedTo" class="block font-semibold mb-2 text-gray-200">Escalated To:</label>
       <div class="relative">
-        <!-- Dropdown toggle button -->
         <button
           type="button"
           (click)="toggleDropdown()"
@@ -16,16 +15,9 @@
           <span class="float-right">&#x25BC;</span>
         </button>
 
-        <!-- Dropdown menu -->
-        <div
-          *ngIf="isDropdownOpen"
-          class="absolute z-10 mt-2 w-full bg-gray-700 border border-gray-600 rounded-md shadow-lg"
-        >
+        <div *ngIf="isDropdownOpen" class="absolute z-10 mt-2 w-full bg-gray-700 border border-gray-600 rounded-md shadow-lg">
           <ul class="max-h-40 overflow-y-auto">
-            <li
-              *ngFor="let user of users"
-              class="flex items-center px-4 py-2 hover:bg-gray-600"
-            >
+            <li *ngFor="let user of users" class="flex items-center px-4 py-2 hover:bg-gray-600">
               <input
                 type="checkbox"
                 [checked]="isSelected(user)"
@@ -76,11 +68,25 @@
       />
     </div>
 
+    <!-- Escalation Message (New Field) -->
+    <div class="mb-4">
+      <label for="escalationMessage" class="block font-semibold mb-2 text-gray-200">Escalation Message:</label>
+      <textarea
+        id="escalationMessage"
+        [(ngModel)]="escalationData.escalationMessage"
+        name="escalationMessage"
+        required
+        rows="4"
+        class="dark-input p-2 rounded-md w-full bg-gray-700 text-gray-300 border border-gray-600 focus:ring-2 focus:ring-blue-500 resize-vertical"
+        placeholder="Enter escalation message"
+      ></textarea>
+    </div>
+
     <!-- Submit Button -->
     <div class="mt-4">
       <button
         type="submit"
-        [disabled]="loading"
+        [disabled]="!isFormValid() || loading"
         class="px-6 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
       >
         Escalate Incident

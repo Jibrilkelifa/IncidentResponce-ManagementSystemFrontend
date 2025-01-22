@@ -1,62 +1,69 @@
 <div class="dashboard-container max-w-4xl mx-auto bg-gray-900 rounded-lg p-6 shadow-lg">
-  <h2 class="dashboard-title text-3xl font-semibold text-gray-200 mb-6 text-center">Incident Management Dashboard</h2>
+  <h2 class="dashboard-title text-3xl font-semibold text-gray-200 mb-6 text-center">
+    Incident Management Dashboard
+  </h2>
 
+  <!-- Summary Cards -->
   <div class="dashboard-summary grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-    <!-- Existing Cards -->
-    <div class="card bg-gray-800 rounded-lg p-4 shadow-lg transition-transform duration-300 hover:scale-105">
+    <!-- Total Incidents -->
+    <div
+      class="card bg-gray-800 rounded-lg p-4 shadow-lg transition-transform duration-300 hover:scale-105 cursor-pointer"
+      (click)="redirectToIncidentList()"
+    >
       <h3 class="text-xl font-medium text-gray-300">Total Incidents</h3>
       <p class="incident-count text-4xl font-bold text-blue-500">{{ totalIncidents }}</p>
     </div>
-    <!-- <div class="card bg-gray-800 rounded-lg p-4 shadow-lg transition-transform duration-300 hover:scale-105">
-      <h3 class="text-xl font-medium text-gray-300">Open Incidents</h3>
-      <p class="incident-count text-4xl font-bold text-yellow-500">{{ openIncidents }}</p>
-    </div> -->
-    <div class="card bg-gray-800 rounded-lg p-4 shadow-lg transition-transform duration-300 hover:scale-105">
-      <h3 class="text-xl font-medium text-gray-300">Escalated Incidents</h3>
-      <p class="incident-count text-4xl font-bold text-green-500">{{ escalateddIncidents }}</p>
-    </div>
-    <div class="card bg-gray-800 rounded-lg p-4 shadow-lg transition-transform duration-300 hover:scale-105">
+
+    <!-- Resolved Incidents -->
+    <div
+      class="card bg-gray-800 rounded-lg p-4 shadow-lg transition-transform duration-300 hover:scale-105 cursor-pointer"
+      (click)="redirectToIncidentList('Resolved')"
+    >
       <h3 class="text-xl font-medium text-gray-300">Resolved Incidents</h3>
       <p class="incident-count text-4xl font-bold text-green-500">{{ closedIncidents }}</p>
     </div>
-  </div>
 
-  <!-- Row for Escalated Incidents Doughnut and Affected Systems Pie Charts -->
-  <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
-    <!-- Left: Escalated Incidents Chart -->
-    <div class="flex justify-start">
-      <h3 class="text-2xl font-medium text-gray-300 mb-4">Escalated Incidents</h3>
-      <div class="w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto">
-        <p-chart 
-          type="doughnut" 
-          [data]="escalatedIncidentsChartData" 
-          [options]="chartOptions" 
-          style="height: 250px; width: 100%;"></p-chart>
-      </div>
+    <!-- Open Incidents -->
+    <div
+      class="card bg-gray-800 rounded-lg p-4 shadow-lg transition-transform duration-300 hover:scale-105 cursor-pointer"
+      (click)="redirectToIncidentList('Open')"
+    >
+      <h3 class="text-xl font-medium text-gray-300">Open Incidents</h3>
+      <p class="incident-count text-4xl font-bold text-yellow-500">{{ openIncidents }}</p>
     </div>
 
-    <!-- Right: Affected Systems Pie Chart -->
-    <div class="flex justify-end">
-      <h3 class="text-2xl font-medium text-gray-300 mb-4">Affected Systems</h3>
-      <div class="w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto">
-        <p-chart 
-          type="pie" 
-          [data]="affectedSystemsChartData" 
-          [options]="chartOptions" 
-          style="height: 250px; width: 100%;"></p-chart>
-      </div>
+    <!-- Critical & High Incidents -->
+    <div
+      class="card bg-gray-800 rounded-lg p-4 shadow-lg transition-transform duration-300 hover:scale-105 cursor-pointer"
+      (click)="redirectToIncidentList('CriticalHigh')"
+    >
+      <h3 class="text-xl font-medium text-gray-300">Critical & High Incidents</h3>
+      <p class="incident-count text-4xl font-bold text-yellow-500">{{ criticalIncident }}</p>
+    </div>
+  
+
+    <!-- Current and Next Shift Cards -->
+    <div class="card bg-gray-800 rounded-lg p-4 shadow-lg transition-transform duration-300 hover:scale-105">
+      <h3 class="text-xl font-medium text-gray-300">Current Shift</h3>
+      <p class="incident-count text-2xl font-bold text-blue-500">{{ currentShiftUser }}</p>
+    </div>
+
+    <div class="card bg-gray-800 rounded-lg p-4 shadow-lg transition-transform duration-300 hover:scale-105">
+      <h3 class="text-xl font-medium text-gray-300">Next Shift</h3>
+      <p class="incident-count text-2xl font-bold text-green-500">{{ nextShiftUser }}</p>
     </div>
   </div>
 
-  <!-- Source Correlations Bar Chart Below -->
-  <div class="mt-8">
-    <h3 class="text-2xl font-medium text-gray-300 mb-4">Source Correlations</h3>
-    <div class="w-full mx-auto" style="height: auto; min-height: 400px;">
+  <!-- Incident Trends -->
+  <div class="dashboard-container max-w-4xl mx-auto bg-gray-900 rounded-lg p-6 shadow-lg">
+    <h2 class="text-3xl font-semibold text-gray-200 mb-6 text-center">Incident Trend</h2>
+    <!-- Line Chart for Incident Trend -->
+    <div class="mt-8">
       <p-chart 
-        type="bar" 
-        [data]="sourceChartData" 
-        [options]="chartOptions" 
-        style="height: 100%; width: 100%;"></p-chart>
+        type="line"
+        [data]="incidentTrendData"
+        [options]="chartOptions"
+        style="height: 350px; width: 100%;"></p-chart>
     </div>
   </div>
 </div>

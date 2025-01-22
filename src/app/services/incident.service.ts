@@ -11,62 +11,83 @@ import { Group } from '../models/group';
   providedIn: 'root'
 })
 export class IncidentService {
+  private apiUrl = 'http://localhost:8091/api/incidents';
+  private apiUrl2 = 'http://localhost:8091/api/groups';
 
-  
-
-   private apiUrl = 'http://localhost:8091/api/incidents';
-
-  // private apiUrl2 = 'http://localhost:8091/api/soc';
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getIncidentById(id: number): Observable<Incident> {
     return this.http.get<Incident>(`${this.apiUrl}/find/${id}`);
   }
+
   createIncident(incident: Incident): Observable<Incident> {
     return this.http.post<Incident>(`${this.apiUrl}/create`, incident);
   }
+  getTodaysIncidents(): Observable<Incident[]> {
+    return this.http.get<Incident[]>(`${this.apiUrl}/today`);
+  }
+
+  // Fetch incidents for this week
+  getThisWeeksIncidents(): Observable<Incident[]> {
+    return this.http.get<Incident[]>(`${this.apiUrl}/week`);
+  }
+  updateIncident(id: number, updatedFields: Partial<Incident>): Observable<Incident> {
+    return this.http.put<Incident>(`${this.apiUrl}/update/${id}`, updatedFields);
+  }
+  
+
+  // Fetch incidents for this month
+  getThisMonthsIncidents(): Observable<Incident[]> {
+    return this.http.get<Incident[]>(`${this.apiUrl}/month`);
+  }
+
   sendSOCReportEmail(reportId: number): Observable<any> {
     return this.http.post(`${this.apiUrl2}/sendReport/${reportId}`, {});
   }
 
-  // Method to get all incidents
   getIncidents(): Observable<Incident[]> {
     return this.http.get<Incident[]>(`${this.apiUrl}/list/all`);
   }
+
   searchIncidents(searchTerm: string): Observable<Incident[]> {
     return this.http.get<Incident[]>(`${this.apiUrl}/search`, { params: { searchTerm } });
-}
-
-escalateIncident(incidentId: number, escalationData: { escalatedTo: string[], escalatedToEmails: string[], escalatedToPhones: string[], escalatedBy: string }): Observable<any> {
-  return this.http.put(`${this.apiUrl}/${incidentId}/escalate`, escalationData);
-}
-
-  getUsers() {
-    return this.http.get<User[]>(`${this.apiUrl}/users`); 
-  }
-  getGroups() {
-    return this.http.get<Group[]>(`${this.apiUrl2}/list`); 
   }
 
-  // Method to get escalated incidents for the logged-in user
+  escalateIncident(
+    incidentId: number,
+    escalationData: { escalatedTo: string[]; escalatedToEmails: string[]; escalatedToPhones: string[]; escalatedBy: string }
+  ): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${incidentId}/escalate`, escalationData);
+  }
+
+  getUsers(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apiUrl}/users`);
+  }
+
+  getGroups(): Observable<Group[]> {
+    return this.http.get<Group[]>(`${this.apiUrl2}/list`);
+  }
+
   getEscalatedIncidents(): Observable<Incident[]> {
     return this.http.get<Incident[]>(`${this.apiUrl}/escalations`);
   }
+
   addUpdate(incidentId: number, update: Update): Observable<Update> {
     return this.http.post<Update>(`${this.apiUrl}/${incidentId}/updates`, update);
   }
+
   createSOCReport(report: SOCReport): Observable<SOCReport> {
     return this.http.post<SOCReport>(`${this.apiUrl2}/report`, report);
   }
+
   getSOCReportId(reportDate: string, shiftType: string): Observable<number> {
     const params = { reportDate, shift: shiftType };
     return this.http.get<number>(`${this.apiUrl2}/reportId`, { params });
   }
-  
-  downloadSOCReportPdf(reportId: number): Observable<Blob> { 
+
+  downloadSOCReportPdf(reportId: number): Observable<Blob> {
     return this.http.get(`${this.apiUrl2}/download/${reportId}`, {
-      responseType: 'blob' 
+      responseType: 'blob',
     });
   }
 
@@ -74,14 +95,16 @@ escalateIncident(incidentId: number, escalationData: { escalatedTo: string[], es
     return this.http.get<any>(`${this.apiUrl}/count-by-affected-system`);
   }
 
-  // Fetch escalated incidents grouped by escalatedTo
   getEscalatedIncidentsGroupedByEscalatedTo(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/escalated-grouped-by-escalated-to`);
   }
 
-  // Fetch incidents with sources that have more than one incident
   getIncidentsWithMultipleSources(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/grouped-by-source-multiple`);
+  }
+
+  getIncidentTrend(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/trends`);
   }
   
 }

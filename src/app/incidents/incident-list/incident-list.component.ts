@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IncidentService } from '../../services/incident.service';
 import { Incident } from '../../models/incident-model';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 @Component({
   selector: 'app-incident-list',
@@ -9,18 +9,29 @@ import { Router } from '@angular/router';
   styleUrls: ['./incident-list.component.css']
 })
 export class IncidentListComponent implements OnInit {
-  incidents: Incident[] = [];          // All incidents
-  paginatedIncidents: Incident[] = [];  // Incidents for the current page
-  totalRecords = 0;                    // Total records
-  rows = 10;                           // Rows per page
-  currentPage = 0;                     // Current page index
-  totalPages: number[] = [];           // Total pages
-  searchTerm: string = '';             // Search term
-
-  constructor(private incidentService: IncidentService, private router: Router) {}
+  currentPage = 0; // Current page index
+visiblePages: number[] = []; // Pages to display in the UI
+pageRange = 3
+  incidents: Incident[] = [];          
+  paginatedIncidents: Incident[] = [];  
+  totalRecords = 0;                   
+  rows = 10;                                            
+  totalPages: number[] = [];           
+  searchTerm: string = '';            
+  constructor(private incidentService: IncidentService, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
-    this.getIncidents();  // Load incidents on page load
+    this.getIncidents();
+    this.route.queryParams.subscribe((params: Params) => {
+      const status = params['status'];
+      const severity = params['severity'];
+      if (status) {
+        this.filterIncidentsByStatus(status);
+      }
+      if (severity) {
+        this.filterIncidentsByStatus(severity);
+      }
+    });
   }
 
   getIncidents(): void {
@@ -28,24 +39,27 @@ export class IncidentListComponent implements OnInit {
       this.incidents = data;
       this.totalRecords = this.incidents.length;
       this.calculateTotalPages();
-      this.loadPage();  // Load the first page
+      this.loadPage();  
     });
   }
+  
 
-  // Calculate total pages based on the total records and rows per page
+
   calculateTotalPages(): void {
     const totalPages = Math.ceil(this.totalRecords / this.rows);
     this.totalPages = Array(totalPages).fill(0).map((_, i) => i);
+    this.updateVisiblePages();
   }
 
-  // Load incidents for the current page
+
+  
   loadPage(): void {
     const start = this.currentPage * this.rows;
     const end = start + this.rows;
     this.paginatedIncidents = this.incidents.slice(start, end);
   }
 
-  // Handle the search logic
+  
   onSearch(): void {
     if (this.searchTerm.trim()) {
         this.incidentService.searchIncidents(this.searchTerm).subscribe((data: Incident[]) => {
@@ -55,12 +69,49 @@ export class IncidentListComponent implements OnInit {
             this.loadPage();
         });
     } else {
-        this.getIncidents(); // Fetch all incidents if the search term is empty
+        this.getIncidents(); 
     }
+}
+filterIncidentsByStatus(status: string | string[]): void {
+  this.incidentService.getIncidents().subscribe((data: Incident[]) => {
+    if (Array.isArray(status)) {
+      this.incidents = data.filter((incident) => status.includes(incident.severity));
+    } else {
+      this.incidents = data.filter((incident) => incident.status === status);
+    }
+    this.totalRecords = this.incidents.length;
+    this.calculateTotalPages();
+    this.loadPage();
+  });
+}
+
+getIncidentsByFilter(filter: string): void {
+  if (filter === 'today') {
+    this.incidentService.getTodaysIncidents().subscribe((data: Incident[]) => {
+      this.incidents = data;
+      this.totalRecords = this.incidents.length;
+      this.calculateTotalPages();
+      this.loadPage();
+    });
+  } else if (filter === 'week') {
+    this.incidentService.getThisWeeksIncidents().subscribe((data: Incident[]) => {
+      this.incidents = data;
+      this.totalRecords = this.incidents.length;
+      this.calculateTotalPages();
+      this.loadPage();
+    });
+  } else if (filter === 'month') {
+    this.incidentService.getThisMonthsIncidents().subscribe((data: Incident[]) => {
+      this.incidents = data;
+      this.totalRecords = this.incidents.length;
+      this.calculateTotalPages();
+      this.loadPage();
+    });
+  }
 }
 
 
-  // Pagination - go to the previous page
+  
   prevPage(): void {
     if (this.currentPage > 0) {
       this.currentPage--;
@@ -68,7 +119,7 @@ export class IncidentListComponent implements OnInit {
     }
   }
 
-  // Pagination - go to the next page
+  
   nextPage(): void {
     if (this.currentPage < this.totalPages.length - 1) {
       this.currentPage++;
@@ -76,14 +127,37 @@ export class IncidentListComponent implements OnInit {
     }
   }
 
-  // Pagination - go to a specific page
+  
+  // goToPage(index: number): void {
+  //   this.currentPage = index;
+  //   this.loadPage();
+  // }
   goToPage(index: number): void {
-    this.currentPage = index;
-    this.loadPage();
+    if (index >= 0 && index < this.totalPages.length) {
+      this.currentPage = index;
+      this.loadPage();
+      this.updateVisiblePages();
+    }
+  }
+  
+updateVisiblePages(): void {
+      const start = Math.max(0, this.currentPage - this.pageRange);
+      const end = Math.min(this.totalPages.length, this.currentPage + this.pageRange + 1);
+    
+      this.visiblePages = [];
+      if (start > 0) this.visiblePages.push(0); // Always include the first page
+      if (start > 1) this.visiblePages.push(-1); // Indicator for skipped pages
+    
+      for (let i = start; i < end; i++) {
+        this.visiblePages.push(i);
+      }
+    
+      if (end < this.totalPages.length - 1) this.visiblePages.push(-1); // Indicator for skipped pages
+      if (end < this.totalPages.length) this.visiblePages.push(this.totalPages.length - 1); // Always include the last page
   }
 
-  // View incident details by navigating to the incident detail page
+  
   viewIncident(id: number): void {
-    this.router.navigate(['incident', id]); // Navigate to the incident details page
+    this.router.navigate(['incident', id]); 
   }
 }

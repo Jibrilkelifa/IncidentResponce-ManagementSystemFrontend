@@ -8,7 +8,7 @@ import { Userr } from '../../models/userr';
 })
 export class AnalystService {
   private httpOptions: { headers: HttpHeaders };
-  private apiServiceUrl = 'http://localhost:8091/api/users'; // Update this base URL if necessary.
+  private apiServiceUrl = 'http://10.12.51.70:8091/api/users'; // Update this base URL if necessary.
 
   constructor(private http: HttpClient) {
     this.httpOptions = {

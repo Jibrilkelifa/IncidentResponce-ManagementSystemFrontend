@@ -20,7 +20,8 @@ export class EscalationFormComponent implements OnInit {
     escalatedTo: [] as string[], // Names of selected users
     escalatedToEmails: [] as string[], // Emails of selected users
     escalatedToPhones: [] as string[], // Phone numbers of selected users
-    escalatedBy: ''
+    escalatedBy: '',
+    escalationMessage:'',
   };
 
   loading: boolean = false;
@@ -97,6 +98,14 @@ export class EscalationFormComponent implements OnInit {
     }
     return this.selectedUsers.map((user) => user.fullName).join(', ');
   }
+  isFormValid(): boolean {
+    return (
+      this.selectedUsers.length > 0 && // At least one user is selected
+      this.escalationData.escalatedBy.trim() !== '' && // Escalated By is not empty
+      this.escalationData.escalationMessage.trim() !== '' // Escalation Message is not empty
+    );
+  }
+  
 
   escalateIncident(): void {
     this.loading = true;

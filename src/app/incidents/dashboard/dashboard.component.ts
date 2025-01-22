@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { IncidentService } from '../../services/incident.service';
 import { Incident } from '../../models/incident-model';
-import { TooltipItem } from 'chart.js';
+import { ScheduleService } from 'src/app/services/schedule/scheduleService';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,166 +13,101 @@ export class DashboardComponent implements OnInit {
   totalIncidents: number = 0;
   openIncidents: number = 0;
   closedIncidents: number = 0;
-  escalateddIncidents: number = 0;
-  affectedSystemCounts: { system: string, count: number }[] = [];
-  sourceCorrelations: { source: string, incidents: Incident[] }[] = [];
-  escalatedIncidents: { escalatedTo: string, count: number, incidents: Incident[] }[] = [];
-  affectedSystemsChartData: any;
-  chartOptions: any;
-  sourceChartData: any;
-  escalatedIncidentsChartData:any;
+  criticalIncident:number =0;
+  criticalHighIncidents: Incident[] = [];
+  incidentTrendData: any;
+  chartOptions: any; 
+  currentShiftUser: string = 'Loading...';
+  nextShiftUser: string = 'Loading...';
 
-  constructor(private incidentService: IncidentService) { }
+  constructor(private incidentService: IncidentService ,  private router: Router, private scheduleService: ScheduleService) {}
 
   ngOnInit(): void {
     this.getIncidentStats();
-    this.getAffectedSystemCounts();
-    this.getSourceCorrelations();
-    this.getEscalatedIncidentGroups();
+    this.getShiftDetails();
+    this.getIncidentTrend(); // Fetch incident trend data
   }
 
-  getIncidentStats() {
+  // Fetch Incident Statistics
+  getIncidentStats(): void {
     this.incidentService.getIncidents().subscribe((incidents) => {
       this.totalIncidents = incidents.length;
-      this.openIncidents = incidents.filter(incident => incident.status === 'Open').length;
-      this.closedIncidents = incidents.filter(incident => incident.status === 'Resolved').length;
-      this.escalateddIncidents = incidents.filter(incident => incident.status === 'Escalated').length;
-
+      this.criticalIncident = incidents.filter(
+        (incident) => incident.severity === 'Critical' || incident.severity === 'High'
+      ).length;
+      this.openIncidents = incidents.filter((incident) => incident.status === 'Open').length;
+      this.closedIncidents = incidents.filter((incident) => incident.status === 'Resolved').length;
     });
   }
 
-  getAffectedSystemCounts() {
-    this.incidentService.getCountByAffectedSystem().subscribe((data) => {
-      this.affectedSystemCounts = Object.entries(data).map(([system, count]) => ({
-        system,
-        count: count as number
-      }));
-      this.generateAffectedSystemsChartData(); // Populate chart data after fetching counts
-    });
-  }
-  generateAffectedSystemsChartData() {
-    this.affectedSystemsChartData = {
-      labels: this.affectedSystemCounts.map(item => item.system),
-      datasets: [
-        {
-          data: this.affectedSystemCounts.map(item => item.count),
-          backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'], // Add more colors if needed
-          hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
-        }
-      ]
-    };
+  // Fetch Incident Trends (Fluctuating Data)
+  getIncidentTrend(): void {
+    this.incidentService.getIncidentTrend().subscribe((trendData) => {
+      // Extract dates and their corresponding counts
+      const dates = Object.keys(trendData);
+      const incidentCounts = dates.map(date => trendData[date]); // Directly use the count
   
-    this.chartOptions = {
-      responsive: true,
-      maintainAspectRatio: false, // This allows the chart to adjust to container's aspect ratio
-      plugins: {
-        legend: {
-          position: 'top',
-          labels: {
-            font: {
-              size: 14 // Adjust this as needed for readability
-            }
-          }
-        }
-      }
-    };
-  }
+      this.incidentTrendData = {
+        labels: dates, // Dates for X-axis
+        datasets: [
+          {
+            label: 'Incident Trend',
+            data: incidentCounts, // Incident counts for Y-axis
+            borderColor: '#FF5733',
+            backgroundColor: 'rgba(255, 87, 51, 0.2)',
+            fill: true,
+            tension: 0.4, // Smooth line
+          },
+        ],
+      };
   
-  
-  getSourceCorrelations() {
-    this.incidentService.getIncidentsWithMultipleSources().subscribe((data) => {
-      this.sourceCorrelations = Object.entries(data).map(([source, incidents]) => ({
-        source,
-        incidents: incidents as Incident[]
-      }));
-      this.generateSourceChartData(); // Generate chart data for source correlations
-    });
-  }
-
-  // Generate chart data for source correlations (Bar Chart)
-  generateSourceChartData() {
-    this.sourceChartData = {
-      labels: this.sourceCorrelations.map(item => item.source), // Source names
-      datasets: [
-        {
-          label: 'Incident Count',
-          data: this.sourceCorrelations.map(item => item.incidents.length), // Incident counts
-          backgroundColor: this.sourceCorrelations.map(item => {
-            const incidentCount = item.incidents.length;
-            if (incidentCount > 2) {
-              return '#36A2EB';  
-            } else if (incidentCount > 1) {
-              return '#FF6384'; 
-            } else {
-              return '#4CAF50';  
-            }
-          }),
-          borderColor: this.sourceCorrelations.map(item => {
-            const incidentCount = item.incidents.length;
-            if (incidentCount > 2) {
-              return '#36A2EB';  
-            } else if (incidentCount > 1) {
-              return '#FF6384';  
-            } else {
-              return '#388E3C';  
-            }
-          }),
-          borderWidth: 1
-        }
-      ]
-    };
-  }
-  
-
-  
-  
-  getEscalatedIncidentGroups() {
-    this.incidentService.getEscalatedIncidentsGroupedByEscalatedTo().subscribe((data) => {
-      this.escalatedIncidents = Object.entries(data).map(([escalatedTo, incidents]) => ({
-        escalatedTo,
-        count: (incidents as Incident[]).length,  // Get the count of incidents for each escalatedTo
-        incidents: incidents as Incident[]  // Explicitly cast incidents to Incident[]
-      }));
-  
-      // Generate data for the bar chart
-      this.generateEscalatedIncidentsChartData();
-    });
-  }
-  
-  // Method to generate the bar chart data for escalated incidents
-  generateEscalatedIncidentsChartData() {
-    this.escalatedIncidentsChartData = {
-      labels: this.escalatedIncidents.map(group => group.escalatedTo),
-      datasets: [
-        {
-          label: 'Incident Count',
-          data: this.escalatedIncidents.map(group => group.count),
-          backgroundColor: ['#FF4C4C', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
-          hoverBackgroundColor: ['#FF4C4C', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
-        }
-      ]
-    };
-
-    this.chartOptions = {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          position: 'top',
-          labels: {
-            font: {
-              size: 14
-            }
-          }
+      this.chartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          tooltip: {
+            callbacks: {
+              label: (tooltipItem: any) => `${tooltipItem.raw} incidents`, // Custom tooltip text
+            },
+          },
         },
-        tooltip: {
-          callbacks: {
-            label: (tooltipItem: any) => {  
-              return `${tooltipItem.label}: ${tooltipItem.raw} incidents`; // Custom tooltip text
-            }
-          }
-        }
-      }
-    };
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Date',
+            },
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Number of Incidents',
+            },
+            beginAtZero: true,
+          },
+        },
+      };
+    });
   }
+  getShiftDetails(): void {
+    this.scheduleService.getCurrentShift().subscribe((data) => {
+      this.currentShiftUser = data.shift || 'No Analyst on Duty';  // Get shift value from JSON response
+    });
+  
+    this.scheduleService.getNextShift().subscribe((data) => {
+      this.nextShiftUser = data.shift || 'No Analyst Assigned';  // Get shift value from JSON response
+    });
+  }
+  redirectToIncidentList(filter?: string): void {
+    const queryParams: any = {};
+    if (filter) {
+      queryParams.status = filter === 'CriticalHigh' ? ['Critical', 'High'] : filter;
+    }
+    this.router.navigate(['/incidents'], { queryParams });
+  }
+  
+  
 }

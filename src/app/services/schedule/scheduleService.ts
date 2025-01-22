@@ -8,7 +8,7 @@ import { Schedule } from '../../models/schedule';
 })
 export class ScheduleService {
   private httpOptions: { headers: HttpHeaders };
-  private apiServiceUrl = 'http://localhost:8091/api/schedules'; // Update as needed for deployment.
+  private apiServiceUrl = 'http://localhost:8091/api/schedules'; 
 
   constructor(private http: HttpClient) {
     this.httpOptions = {
@@ -70,4 +70,13 @@ export class ScheduleService {
       params,
     });
   }
+  getCurrentShift(): Observable<any> {
+    return this.http.get<any>(`${this.apiServiceUrl}/current-shift`);
+  }
+  
+  getNextShift(): Observable<any> {
+    return this.http.get<any>(`${this.apiServiceUrl}/next-shift`);
+  }
+  
+  
 }

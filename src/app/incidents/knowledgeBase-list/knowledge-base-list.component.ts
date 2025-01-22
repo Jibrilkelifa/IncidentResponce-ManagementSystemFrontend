@@ -16,6 +16,8 @@ export class KnowledgeBaseListComponent implements OnInit {
   totalPages: number[] = [];
   currentPage: number = 0;
   rows: number = 10;
+  visiblePages: number[] = []; // Pages to display in the UI
+  pageRange = 3
 
   constructor(private knowledgeBaseService: KnowledgeBaseService, private router: Router) {}
 
@@ -44,11 +46,17 @@ export class KnowledgeBaseListComponent implements OnInit {
   // Calculate total pages based on the total records and rows per page
   calculateTotalPages(): void {
     const totalPages = Math.ceil(this.totalRecords / this.rows);
-    this.totalPages = Array.from({ length: totalPages }, (_, i) => i);
+    this.totalPages = Array(totalPages).fill(0).map((_, i) => i);
+    this.updateVisiblePages();
   }
 
   // Paginate the articles
   paginate(): void {
+    const start = this.currentPage * this.rows;
+    const end = start + this.rows;
+    this.paginatedArticles = this.articles.slice(start, end);
+  }
+  loadPage(): void {
     const start = this.currentPage * this.rows;
     const end = start + this.rows;
     this.paginatedArticles = this.articles.slice(start, end);
@@ -70,11 +78,30 @@ export class KnowledgeBaseListComponent implements OnInit {
     }
   }
 
-  // Go to a specific page
-  goToPage(page: number): void {
-    this.currentPage = page;
-    this.paginate();
+  goToPage(index: number): void {
+    if (index >= 0 && index < this.totalPages.length) {
+      this.currentPage = index;
+      this.loadPage();
+      this.updateVisiblePages();
+    }
   }
+  
+updateVisiblePages(): void {
+      const start = Math.max(0, this.currentPage - this.pageRange);
+      const end = Math.min(this.totalPages.length, this.currentPage + this.pageRange + 1);
+    
+      this.visiblePages = [];
+      if (start > 0) this.visiblePages.push(0); // Always include the first page
+      if (start > 1) this.visiblePages.push(-1); // Indicator for skipped pages
+    
+      for (let i = start; i < end; i++) {
+        this.visiblePages.push(i);
+      }
+    
+      if (end < this.totalPages.length - 1) this.visiblePages.push(-1); // Indicator for skipped pages
+      if (end < this.totalPages.length) this.visiblePages.push(this.totalPages.length - 1); // Always include the last page
+  }
+
 
   // View details of an article
   viewArticle(id: number): void {

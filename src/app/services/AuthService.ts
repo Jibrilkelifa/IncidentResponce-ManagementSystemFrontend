@@ -10,7 +10,8 @@ import { User } from '../models/user';
 })
 export class AuthService {
 
-  private apiUrl = 'http://localhost:8091/api/auth';
+   private apiUrl = 'http://localhost:8091/api/auth';
+  // private apiUrl = 'http://localhost:8091/api/auth';
 
 
   
@@ -26,7 +27,7 @@ export class AuthService {
         const token = response.token;
         if (token) {
           localStorage.setItem('token', token);
-          this.authStatus.next(true);  // Notify that user is now authenticated
+          this.authStatus.next(true);  
         }
         return response;
       }));

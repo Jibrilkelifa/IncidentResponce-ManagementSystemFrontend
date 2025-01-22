@@ -50,7 +50,6 @@
     <p>No articles found.</p>
   </div>
 
-  <!-- Tailwind-based Pagination -->
   <div *ngIf="totalPages.length > 1" class="flex justify-center mt-4">
     <ul class="inline-flex space-x-2">
       <li>
@@ -62,17 +61,19 @@
           Previous
         </button>
       </li>
-      <li *ngFor="let page of totalPages; let i = index">
+      <li *ngFor="let page of visiblePages">
         <button
-          (click)="goToPage(i)"
+          *ngIf="page !== -1"
+          (click)="goToPage(page)"
           class="px-3 py-2 rounded-md"
           [ngClass]="{
-            'bg-blue-500 text-white': i === currentPage,
-            'bg-gray-700 text-gray-300 hover:bg-gray-600': i !== currentPage
+            'bg-blue-500 text-white': page === currentPage,
+            'bg-gray-700 text-gray-300 hover:bg-gray-600': page !== currentPage
           }"
         >
-          {{ i + 1 }}
+          {{ page + 1 }}
         </button>
+        <span *ngIf="page === -1" class="px-3 py-2 text-gray-500">...</span>
       </li>
       <li>
         <button
@@ -85,4 +86,4 @@
       </li>
     </ul>
   </div>
-</div>
+  

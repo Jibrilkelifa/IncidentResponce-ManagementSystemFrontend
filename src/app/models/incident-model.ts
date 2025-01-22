@@ -14,6 +14,7 @@ export interface Incident {
   escalatedToPhones?: string[]; // Array of phone numbers for multiple users
   escalatedBy?: string;
   affectedSystems: string[];
+  escalationMessage: string ;
   sources: string[];
   createdAt: Date;
   updatedAt: Date;

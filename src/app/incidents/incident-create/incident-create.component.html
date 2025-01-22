@@ -152,11 +152,12 @@
   <!-- Submit Button -->
   <div class="flex justify-end mt-4">
     <button
-      type="submit"
-      [disabled]="incidentForm.invalid || loading"
-      class="px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:ring-2 focus:ring-green-500 disabled:opacity-50"
-    >
-      Create Incident
-    </button>
+  type="submit"
+  [disabled]="incidentForm.invalid || loading"
+  class="px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:ring-2 focus:ring-green-500 disabled:opacity-50"
+>
+  {{ incident.id ? 'Update Incident' : 'Create Incident' }}
+</button>
+
   </div>
 </form>
