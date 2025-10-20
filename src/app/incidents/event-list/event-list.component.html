@@ -1,0 +1,102 @@
+<div class="bg-gray-900 min-h-screen text-gray-200 p-6">
+  <h2 class="text-3xl font-bold text-center text-blue-400 mb-8">
+    AI Events
+  </h2>
+
+  <!-- Filters -->
+  <div class="flex flex-wrap gap-4 mb-6">
+    <select
+      [(ngModel)]="filter.eventType"
+      class="bg-gray-800 text-gray-200 p-2 rounded"
+    >
+      <option value="">All Event Types</option>
+      <option value="phishing">Phishing</option>
+      <option value="anomaly">Anomaly</option>
+      <option value="threat-intel">Threat Intel</option>
+    </select>
+
+    <select
+      [(ngModel)]="filter.status"
+      class="bg-gray-800 text-gray-200 p-2 rounded"
+    >
+      <option value="">All Status</option>
+      <option value="Processed">Processed</option>
+      <option value="Pending">Pending</option>
+      <option value="Error">Error</option>
+    </select>
+
+    <input
+      type="date"
+      [(ngModel)]="filter.startDate"
+      class="bg-gray-800 text-gray-200 p-2 rounded"
+    />
+    <input
+      type="date"
+      [(ngModel)]="filter.endDate"
+      class="bg-gray-800 text-gray-200 p-2 rounded"
+    />
+
+    <button
+      (click)="applyFilters()"
+      class="bg-blue-600 px-4 py-2 rounded hover:bg-blue-500"
+    >
+      Apply Filters
+    </button>
+  </div>
+
+  <!-- Events Table -->
+  <div class="overflow-x-auto">
+    <table class="w-full border-collapse border border-gray-700">
+      <thead class="bg-gray-800 text-gray-300">
+        <tr>
+          <th class="p-3 border border-gray-700">Event ID</th>
+          <th class="p-3 border border-gray-700">Source</th>
+          <th class="p-3 border border-gray-700">Event Type</th>
+          <th class="p-3 border border-gray-700">Processed By</th>
+          <th class="p-3 border border-gray-700">Status</th>
+          <th class="p-3 border border-gray-700">Probability</th>
+          <th class="p-3 border border-gray-700">Threat Category</th>
+          <th class="p-3 border border-gray-700">Created At</th>
+          <th class="p-3 border border-gray-700">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr
+          *ngFor="let e of filteredEvents"
+          class="hover:bg-gray-800 transition duration-200"
+          [ngClass]="{'bg-red-900/30': e.malicious}"
+        >
+          <td class="p-3 border border-gray-700">{{ e.eventId }}</td>
+          <td class="p-3 border border-gray-700">{{ e.source }}</td>
+          <td class="p-3 border border-gray-700 capitalize">{{ e.eventType }}</td>
+          <td class="p-3 border border-gray-700">{{ e.processedBy }}</td>
+          <td class="p-3 border border-gray-700">{{ e.status }}</td>
+
+          <td
+            class="p-3 border border-gray-700 font-bold"
+            [ngClass]="{
+              'text-green-400': e.probability < 0.4,
+              'text-yellow-400': e.probability >= 0.4 && e.probability < 0.7,
+              'text-red-400': e.probability >= 0.7
+            }"
+          >
+            {{ e.probability | number: '1.2-2' }}
+          </td>
+
+          <td class="p-3 border border-gray-700">{{ e.threatCategory || '-' }}</td>
+          <td class="p-3 border border-gray-700">{{ e.createdAt | date:'short' }}</td>
+
+          <td class="p-3 border border-gray-700 text-center">
+            <button
+              (click)="viewDetails(e)"
+              class="bg-blue-600 px-3 py-1 rounded hover:bg-blue-500"
+            >
+              View
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

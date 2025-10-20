@@ -8,7 +8,7 @@ import { Schedule } from '../../models/schedule';
 })
 export class ScheduleService {
   private httpOptions: { headers: HttpHeaders };
-  private apiServiceUrl = 'http://localhost:8091/api/schedules'; 
+  private apiServiceUrl = 'https://irsm.coopbankoromiasc.com:8443/api/schedules'; 
 
   constructor(private http: HttpClient) {
     this.httpOptions = {

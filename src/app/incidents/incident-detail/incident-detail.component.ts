@@ -28,6 +28,9 @@ export class IncidentDetailComponent implements OnInit {
     updatedAt: new Date(),
     description: '',
     updates: [],
+    category: '',
+subcategory: ''
+
   };
 
   loggedInUser: string = ''; // Store logged-in user's name

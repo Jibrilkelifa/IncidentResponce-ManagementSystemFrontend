@@ -15,6 +15,22 @@
             <i class="fas fa-tachometer-alt text-blue-400 mr-2"></i> Dashboard
           </a>
         </li>
+        <li>
+          <a routerLink="/" class="flex items-center p-2 rounded hover:bg-gray-700 text-gray-300">
+            <i class="fas fa-plus-circle text-blue-400 mr-2"></i> Sytem Health
+          </a>
+        </li>
+        <!-- Alerts -->
+<li>
+  <a routerLink="/events" class="flex items-center p-2 rounded hover:bg-gray-700 text-gray-300">
+    <i class="fas fa-bell text-blue-400 mr-2"></i> AI Events
+  </a>
+</li>
+         <li>
+          <a routerLink="/threat" class="flex items-center p-2 rounded hover:bg-gray-700 text-gray-300">
+            <i class="fas fa-plus-circle text-blue-400 mr-2"></i> Threat Intelligence
+          </a>
+        </li>
 
         <!-- Incidents -->
         <li>
@@ -102,18 +118,21 @@
         </li>
 
         <!-- Logout -->
+
+         <li>
+          <a routerLink="download" class="flex items-center p-2 rounded hover:bg-gray-700 text-gray-300">
+            <i class="fas fa-file-alt text-green-400 mr-2"></i> Incident Report
+          </a>
+        </li>
+
         <li>
           <button (click)="authService.logout()" class="flex items-center p-2 rounded hover:bg-gray-700 text-gray-300">
             <i class="fas fa-sign-out-alt text-blue-400 mr-2"></i> Logout
           </button>
         </li>
 
-        <!-- Settings -->
-        <!-- <li>
-          <a routerLink="/settings" class="flex items-center p-2 rounded hover:bg-gray-700 text-gray-300">
-            <i class="fas fa-cog text-blue-400 mr-2"></i> Settings
-          </a>
-        </li> -->
+
+
       </ul>
     </nav>
   </aside>

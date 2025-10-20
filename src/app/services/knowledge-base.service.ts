@@ -8,8 +8,8 @@ import { KnowledgeBaseArticle } from '../models/KnowledgeBaseArticle';
   providedIn: 'root',
 })
 export class KnowledgeBaseService {
-   private apiUrl = `http://localhost:8091/api/knowledge-base`;
-  //  private apiUrl = `http://10.12.51.70:8091/api/knowledge-base`;
+   private apiUrl = `https://irsm.coopbankoromiasc.com:8443/api/knowledge-base`;
+    // private apiUrl = `http://10.12.51.70:8091/api/knowledge-base`;
 
 
   constructor(private http: HttpClient) {}

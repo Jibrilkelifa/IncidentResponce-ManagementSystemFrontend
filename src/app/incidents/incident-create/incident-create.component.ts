@@ -31,11 +31,32 @@ export class CreateIncidentComponent implements OnInit {
     escalated: false,
     sources: [],
     affectedSystems: [],
-  };
+    category: '',
+    subcategory: ''
 
+  };
+showSubcategory: boolean = false;
   newSource: string = '';
   newAsset: string = '';
   loading: boolean = false;
+  customSubcategory: string = '';
+  showCustomSubcategory: boolean = false;
+
+  categoryMap: { [key: string]: string[] } = {
+  'Phishing': ['Other'],
+  'Malware': ['Botnet Incidents', 'Crypto Mining', 'Keylogger Attacks', 'Ransomware', 'Other'],
+  'Unauthorized Access': ['Other'],
+  'Network Attack': [
+    'DDoS (Distributed DoS)', 'Man-in-the-Middle (MITM)', 'ARP Spoofing / Poisoning',
+    'DNS Spoofing / Poisoning', 'Port Scanning / Network Reconnaissance', 'Other'
+  ],
+  'Web Application Attack': [
+    'SQL Injection (SQLi)', 'Cross-Site Scripting (XSS)', 'Cross-Site Request Forgery (CSRF)',
+    'Command Injection', 'Directory Traversal', 'Session Hijacking',
+    'Server-Side (Client-Side) Request Forgery (SSRF)', 'Path Traversal'
+  ]
+};
+
 
   severityOptions = [
     { label: 'Critical', value: 'Critical' },
@@ -74,6 +95,24 @@ export class CreateIncidentComponent implements OnInit {
     );
   }
 
+  getCategories(): string[] {
+  return Object.keys(this.categoryMap);
+}
+onSubcategoryChange(): void {
+  this.showCustomSubcategory = this.incident.subcategory === 'Other';
+}
+
+onCategoryChange(): void {
+  this.showSubcategory = !!this.incident.category;
+  this.incident.subcategory = '';
+  this.customSubcategory = '';
+  this.showCustomSubcategory = false;
+}
+
+getSubcategories(): string[] {
+  return this.categoryMap[this.incident.category] || [];
+}
+
   populateLoggedInUser(): void {
     this.authService.getCurrentUser().subscribe(
       (user) => {
@@ -110,7 +149,11 @@ export class CreateIncidentComponent implements OnInit {
   onSubmit(form: NgForm): void {
     if (form.valid) {
       this.loading = true;
-  
+  // this.incident.title = `${this.incident.category}:${this.incident.subcategory}`;
+if (this.incident.subcategory === 'Other' && this.customSubcategory.trim()) {
+  this.incident.subcategory = this.customSubcategory.trim();
+}
+
       if (this.incident.id) {
         // Update incident logic
         const updatableFields = {

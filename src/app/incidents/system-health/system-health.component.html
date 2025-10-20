@@ -1,0 +1,68 @@
+<div class="bg-gray-900 min-h-screen text-gray-300 p-8">
+  <h2 class="text-3xl font-bold text-center text-blue-400 mb-8">
+    🩺 System Health Monitor
+  </h2>
+
+  <!-- Health Status Cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <!-- RabbitMQ -->
+    <div
+      class="bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-transform duration-300 hover:scale-105 cursor-pointer"
+    >
+      <h3 class="text-xl font-semibold text-gray-200 mb-2">
+        RabbitMQ Connection
+      </h3>
+      <p
+        class="text-lg font-bold"
+        [ngClass]="rabbitStatus === 'Up' ? 'text-green-400' : 'text-red-400'"
+      >
+        {{ rabbitStatus }}
+      </p>
+    </div>
+
+    <!-- CoreHub -->
+    <div
+      class="bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-transform duration-300 hover:scale-105 cursor-pointer"
+    >
+      <h3 class="text-xl font-semibold text-gray-200 mb-2">CoreHub Status</h3>
+      <p
+        class="text-lg font-bold"
+        [ngClass]="coreHubStatus === 'Running' ? 'text-green-400' : 'text-red-400'"
+      >
+        {{ coreHubStatus }}
+      </p>
+    </div>
+
+    <!-- Microservice Heartbeat -->
+    <div
+      class="bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-transform duration-300 hover:scale-105 cursor-pointer"
+    >
+      <h3 class="text-xl font-semibold text-gray-200 mb-2">
+        Microservice Heartbeat
+      </h3>
+      <p class="text-lg font-bold">
+        <span
+          class="inline-block w-3 h-3 rounded-full mr-2"
+          [ngClass]="microserviceHeartbeat ? 'bg-green-400' : 'bg-red-400'"
+        ></span>
+        {{ microserviceHeartbeat ? 'Alive' : 'Down' }}
+      </p>
+    </div>
+
+    <!-- Queue Backlog -->
+    <div
+      class="bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-transform duration-300 hover:scale-105 cursor-pointer"
+    >
+      <h3 class="text-xl font-semibold text-gray-200 mb-2">Queue Backlog</h3>
+      <p class="text-lg font-bold text-yellow-400">{{ queueBacklog }} messages</p>
+    </div>
+  </div>
+
+  <!-- Optional: Line Chart for System Load -->
+  <div class="mt-10 bg-gray-800 p-6 rounded-lg shadow-lg">
+    <h3 class="text-xl font-semibold text-gray-200 mb-4 text-center">
+      System Load Trend
+    </h3>
+    <canvas id="systemHealthChart"></canvas>
+  </div>
+</div>

@@ -1,81 +1,34 @@
-<!-- Toast for Notifications -->
-<p-toast></p-toast>
+<div class="bg-gray-800 p-6 rounded-md shadow-md w-full max-w-3xl mx-auto">
+  <h2 class="text-xl text-gray-200 font-semibold mb-6 flex items-center gap-2">
+    <i class="fas fa-file-alt text-blue-400"></i> Export Incidents Report
+  </h2>
 
-<!-- Form container -->
-<form (ngSubmit)="downloadReport()" class="bg-gray-800 p-6 rounded-lg shadow-md">
-  <div class="flex flex-wrap gap-3 mb-2 text-gray-200">
-    
-   <!-- Shift Selection -->
-<div class="flex-auto">
-  <label for="shift" class="block mb-2 font-semibold text-gray-200">Shift:</label>
-  <p-dropdown
-    id="shift"
-    [(ngModel)]="selectedShift"
-    name="shift"
-    [options]="shifts"
-    optionLabel="label"
-    optionValue="value"
-    [showClear]="true"
-    placeholder="Select Shift"
-    class="w-full"
-    styleClass="dark-dropdown p-password"
-    [style]="{ width: '30vw', height: '45px' }"
-    [required]="true"
-  >
-    <ng-template pTemplate="selectedItem">
-      <div class="flex align-items-center gap-2" *ngIf="selectedShift">
-        <div>{{ selectedShift }}</div>
+  <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
+    <!-- Date Range Inputs -->
+    <div class="flex flex-col sm:flex-row gap-4 w-full">
+      <div class="w-full">
+        <label class="block text-gray-300 mb-1">From:</label>
+        <input type="datetime-local"
+               [(ngModel)]="fromDate"
+               class="w-full p-2 rounded-md bg-gray-700 text-gray-200 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 shadow-sm" />
       </div>
-    </ng-template>
-    <ng-template let-shift pTemplate="item">
-      <div class="flex align-items-center gap-2">
-        <div>{{ shift.label }}</div>
+      <div class="w-full">
+        <label class="block text-gray-300 mb-1">To:</label>
+        <input type="datetime-local"
+               [(ngModel)]="toDate"
+               class="w-full p-2 rounded-md bg-gray-700 text-gray-200 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 shadow-sm" />
       </div>
-    </ng-template>
-  </p-dropdown>
-</div>
-
-
-    <!-- Report Date Selection -->
-    <div class="flex-auto">
-      <label for="createdAt" class="block mb-2 font-semibold">Report Date:</label>
-      <p-calendar
-        id="createdAt"
-        [(ngModel)]="reportDate"
-        name="reportDate" 
-        class="dark-input"
-        [showIcon]="true"
-        [dateFormat]="'yy-mm-dd'"
-        [showTime]="false"
-        [selectionMode]="'single'"
-        required
-      ></p-calendar>
     </div>
-  </div>
-  
-  <!-- Loading Indicator -->
-  <div *ngIf="loading" class="text-gray-300 mt-4">
-    <p>Generating SOC Report...</p>
-    <p-progressSpinner strokeWidth="5" styleClass="custom-spinner"></p-progressSpinner>
+
+    <!-- Download Button -->
+    <button (click)="downloadReport()"
+            class="px-5 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md whitespace-nowrap shadow-md transition duration-200"
+            [disabled]="loading">
+      <i class="fas fa-download mr-2"></i>
+      {{ loading ? 'Downloading...' : 'Download Report' }}
+    </button>
   </div>
 
-  <!-- Submit and Download Button -->
-  <div class="flex gap-3 mt-4">
-    <p-button
-      label="Download PDF"
-      icon="pi pi-download"
-      type="submit" 
-      class="p-button-secondary"
-      [disabled]="loading"
-    ></p-button>
-
-    <!-- Send via Email Button -->
-    <p-button
-      label="Send via Email"
-      icon="pi pi-send"
-      (click)="sendReportByEmail()"
-      class="p-button-primary"
-      [disabled]="loading"
-    ></p-button>
-  </div>
-</form>
+  <!-- Error Message -->
+  <p *ngIf="errorMessage" class="mt-4 text-red-400 text-sm">{{ errorMessage }}</p>
+</div>

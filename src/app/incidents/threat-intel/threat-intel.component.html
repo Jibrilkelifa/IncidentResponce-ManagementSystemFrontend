@@ -1,0 +1,89 @@
+<div class="bg-gray-900 min-h-screen p-8 text-gray-200">
+  <div class="max-w-4xl mx-auto bg-gray-800 rounded-lg shadow-lg p-6">
+    <h2 class="text-3xl font-semibold text-center mb-6 text-blue-400">
+      🔍 Threat Intelligence Lookup (QRadar + X-Force)
+    </h2>
+
+    <!-- Search Section -->
+    <div class="flex flex-col sm:flex-row items-center gap-3 mb-6">
+      <input
+        [(ngModel)]="query"
+        placeholder="Enter IP, domain, or hash"
+        class="w-full sm:w-2/3 bg-gray-700 border border-gray-600 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+      <button
+        (click)="performLookup()"
+        class="w-full sm:w-auto px-5 py-2 bg-blue-600 hover:bg-blue-700 rounded text-white transition"
+      >
+        Lookup
+      </button>
+    </div>
+
+    <!-- Loading / Error -->
+    <div *ngIf="loading" class="text-center text-yellow-400 text-lg my-4 animate-pulse">
+      Searching QRadar X-Force data...
+    </div>
+    <div *ngIf="error" class="text-center text-red-400 text-lg my-4">
+      {{ error }}
+    </div>
+
+    <!-- Result Card -->
+    <div *ngIf="result" class="mt-6">
+      <div
+        class="bg-gray-700 p-5 rounded-lg border-l-4"
+        [ngClass]="{
+          'border-red-500': result.reputation === 'malicious',
+          'border-yellow-500': result.reputation === 'suspicious',
+          'border-green-500': result.reputation === 'benign'
+        }"
+      >
+        <h3 class="text-xl font-semibold mb-3 text-gray-100">
+          Result for: <span class="text-blue-400">{{ result.query }}</span>
+        </h3>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <p><strong>Reputation:</strong> 
+            <span
+              [ngClass]="{
+                'text-red-400': result.reputation === 'malicious',
+                'text-yellow-400': result.reputation === 'suspicious',
+                'text-green-400': result.reputation === 'benign'
+              }"
+              >{{ result.reputation | titlecase }}</span
+            >
+          </p>
+
+          <p><strong>Threat Score:</strong> {{ result.threat_score }}</p>
+          <p><strong>Confidence:</strong> {{ result.confidence }}%</p>
+          <p><strong>Source:</strong> {{ result.source }}</p>
+          <p><strong>Last Seen:</strong> {{ result.last_seen | date: 'medium' }}</p>
+        </div>
+
+        <div class="mt-4">
+          <strong>Categories:</strong>
+          <div class="flex flex-wrap gap-2 mt-2">
+            <span
+              *ngFor="let cat of result.categories"
+              class="bg-gray-600 text-sm px-3 py-1 rounded-full text-gray-100 border border-gray-500"
+              >{{ cat }}</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Example Section (for testing) -->
+    <div class="mt-10 border-t border-gray-700 pt-5">
+      <h4 class="text-lg text-gray-400 mb-2">💡 Try Example Inputs:</h4>
+      <div class="flex flex-wrap gap-3">
+        <button
+          *ngFor="let item of mockData"
+          (click)="query = item.query"
+          class="bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded border border-gray-600"
+        >
+          {{ item.query }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

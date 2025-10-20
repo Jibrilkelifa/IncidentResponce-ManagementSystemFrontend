@@ -14,45 +14,49 @@ export class DownloadComponent {
     { label: 'Shift 2', value: 'Shift 2' },
     { label: 'Shift 3', value: 'Shift 3' }
   ];
+    fromDate!: string;
+  toDate!: string;
+  loading = false;
+  errorMessage = '';
 
   reportDate?: Date;
   selectedShift: string = this.shifts[0].value;
-  loading: boolean = false;
 
   constructor(
     private socReportService: IncidentService,
     private messageService: MessageService
   ) {}
 
-  downloadReport(): void {
-    if (!this.reportDate || !this.selectedShift) {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'Please select a report date and shift.' });
-      return;
-    }
-
-    this.loading = true;
-
-    // Format reportDate to 'yyyy-MM-dd' before passing it to the service
-    const formattedDate = this.formatDate(this.reportDate);
-
-    // Fetch the reportId based on formattedDate and selectedShift
-    this.socReportService.getSOCReportId(formattedDate, this.selectedShift).subscribe(
-      (reportId) => {
-        if (reportId) {
-          // Download the report PDF using the obtained reportId
-          this.downloadSOCReport(reportId);
-        } else {
-          this.loading = false;
-          this.messageService.add({ severity: 'warn', summary: 'No Report Found', detail: 'No report found for the given date and shift.' });
-        }
-      },
-      (error) => {
-        this.loading = false;
-        console.error('Error fetching report ID:', error);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to fetch report ID.' });
-      }
-    );
+downloadReport() {
+  if (!this.fromDate || !this.toDate) {
+    this.errorMessage = 'Please select both start and end dates.';
+    return;
   }
+
+  this.loading = true;
+  this.errorMessage = ''; // Clear any previous error before making the request
+
+  this.socReportService.getExportedIncidents(this.fromDate, this.toDate).subscribe({
+    next: (blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'incidents.xlsx';
+      a.click();
+      window.URL.revokeObjectURL(url);
+
+      this.loading = false;
+      this.errorMessage = ''; // Ensure error message is cleared on success
+    },
+    error: (err) => {
+      console.error(err);
+      this.errorMessage = err?.error?.error || 'Failed to download report.';
+      this.loading = false;
+    }
+  });
+}
+
+  
 
   sendReportByEmail(): void {
     if (!this.reportDate || !this.selectedShift) {

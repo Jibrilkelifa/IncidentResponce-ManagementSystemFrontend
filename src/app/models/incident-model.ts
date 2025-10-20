@@ -19,4 +19,7 @@ export interface Incident {
   createdAt: Date;
   updatedAt: Date;
   updates?: Update[];
+  category: string;
+  subcategory: string;
+
 }

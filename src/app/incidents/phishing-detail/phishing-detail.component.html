@@ -1,0 +1,37 @@
+<div class="bg-gray-900 min-h-screen text-gray-200 p-6">
+  <h2 class="text-3xl font-bold text-blue-400 mb-4">
+    Phishing Analysis (Event ID: {{ id }})
+  </h2>
+
+  <div *ngIf="loading" class="text-gray-400">Loading event details...</div>
+
+  <div *ngIf="!loading && event">
+    <div class="bg-gray-800 p-6 rounded-lg shadow-md mb-6">
+      <h3 class="text-xl font-semibold mb-2">Event Information</h3>
+      <p><strong>Source:</strong> {{ event.source }}</p>
+      <p><strong>Status:</strong> {{ event.status }}</p>
+      <p><strong>Created:</strong> {{ event.createdAt }}</p>
+    </div>
+
+    <div class="bg-gray-800 p-6 rounded-lg shadow-md mb-6">
+      <h3 class="text-xl font-semibold mb-2">AI Score Breakdown</h3>
+      <p>Phishing Probability: <span class="text-red-400 font-bold">{{ phishingScore }}</span></p>
+      <p>TF-IDF Keywords: {{ keywords.join(', ') }}</p>
+    </div>
+
+   <div class="bg-gray-800 p-6 rounded-lg shadow-md mb-6">
+  <h3 class="text-xl font-semibold mb-2">Extracted URLs (Raw JSON)</h3>
+  <pre class="bg-gray-900 p-4 rounded">{{ event?.indicatorsJson }}</pre>
+</div>
+
+
+    <div class="flex gap-4">
+      <button (click)="markFeedback('false-positive')" class="bg-yellow-500 px-4 py-2 rounded">
+        Mark as False Positive
+      </button>
+      <button (click)="markFeedback('confirmed')" class="bg-green-600 px-4 py-2 rounded">
+        Confirm Phishing
+      </button>
+    </div>
+  </div>
+</div>

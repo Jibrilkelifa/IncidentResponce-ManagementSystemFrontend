@@ -37,11 +37,19 @@ import { ScheduleViewComponent } from './components/schedule-view/schedule-view.
 import { AnalystViewComponent } from './components/analyst-view/analyst-view.component';
 import { GenerateScheduleComponent } from './components/generate-schedule/generate-schedule.component';
 import { CreateAnalystComponent } from './components/create-analyst/create-analyst.component';
+import { GrafanaAlertsComponent } from './grafana/grafana.alert.omponent';
+import { PhishingDetailComponent } from './phishing-detail/phishing-detail.component';
+import { AnomalyDetailComponent } from './anomaly-detail/anomaly-detail.component';
+import { ThreatIntelComponent } from './threat-intel/threat-intel.component';
+import { EventListComponent } from './event-list/event-list.component';
+import { SystemHealthComponent } from './system-health/system-health.component';
+import { CyberaiDashboardComponent } from './cyberai-dashboard/cyberai-dashboard.component';
 
 
 @NgModule({
   declarations: [
-    IncidentListComponent,  
+    IncidentListComponent,
+    EventListComponent,
     CreateIncidentComponent,
     DashboardComponent,
     IncidentDetailComponent,
@@ -59,7 +67,13 @@ import { CreateAnalystComponent } from './components/create-analyst/create-analy
     ScheduleViewComponent,
     AnalystViewComponent,
     GenerateScheduleComponent,
-    CreateAnalystComponent
+    CreateAnalystComponent,
+    GrafanaAlertsComponent,
+    PhishingDetailComponent,
+    AnomalyDetailComponent,
+    ThreatIntelComponent,
+    CyberaiDashboardComponent,
+    SystemHealthComponent,
     
 
     // HeaderComponent,

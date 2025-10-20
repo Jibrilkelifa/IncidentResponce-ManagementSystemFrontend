@@ -1,0 +1,91 @@
+<div class="dashboard-container max-w-6xl mx-auto bg-gray-900 rounded-lg p-6 shadow-lg">
+  <h2 class="dashboard-title text-3xl font-semibold text-gray-200 mb-6 text-center">
+    AI Operations Dashboard
+  </h2>
+   <div class="flex justify-end mb-6">
+  <button
+    routerLink="/dashboard"
+   class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-md shadow-lg hover:shadow-green-400/30 transition-all duration-200"
+  >
+     Switch to IRMS Dashboard
+  </button>
+</div>
+
+  <!-- Summary Cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <!-- Total Events -->
+    <div class="card bg-gray-800 rounded-lg p-5 shadow-lg hover:scale-105 transition-transform duration-300">
+      <h3 class="text-lg font-medium text-gray-400">Total Events Processed</h3>
+      <p class="text-4xl font-bold text-blue-400">{{ totalEvents }}</p>
+    </div>
+
+    <!-- Phishing -->
+    <div class="card bg-gray-800 rounded-lg p-5 shadow-lg hover:scale-105 transition-transform duration-300">
+      <h3 class="text-lg font-medium text-gray-400">Phishing Detections</h3>
+      <div class="mt-2 space-y-1 text-sm">
+        <p><span class="text-green-400 font-bold">{{ benignCount }}</span> Benign</p>
+        <p><span class="text-yellow-400 font-bold">{{ suspiciousCount }}</span> Suspicious</p>
+        <p><span class="text-red-400 font-bold">{{ maliciousCount }}</span> Malicious</p>
+      </div>
+    </div>
+
+    <!-- Anomalies -->
+    <div class="card bg-gray-800 rounded-lg p-5 shadow-lg hover:scale-105 transition-transform duration-300">
+      <h3 class="text-lg font-medium text-gray-400">Anomaly Detections</h3>
+      <div class="mt-2 space-y-1 text-sm">
+        <p><span class="text-green-400 font-bold">{{ normalCount }}</span> Normal</p>
+        <p><span class="text-red-400 font-bold">{{ abnormalCount }}</span> Abnormal</p>
+      </div>
+    </div>
+
+    <!-- Threat Intel -->
+    <div class="card bg-gray-800 rounded-lg p-5 shadow-lg hover:scale-105 transition-transform duration-300">
+      <h3 class="text-lg font-medium text-gray-400">Threat Intel Lookups</h3>
+      <div class="mt-2 space-y-1 text-sm">
+        <p><span class="text-blue-400 font-bold">{{ abuseIPLookups }}</span> QRadar + X-Force</p>
+      </div>
+    </div>
+  </div>
+  <div class="flex justify-end mb-4">
+  <button
+    routerLink="/events"
+    class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium rounded-md shadow transition-all duration-200"
+  >
+    📊 View Events
+  </button>
+</div>
+
+
+  <!-- Chart -->
+ <div class="mt-10">
+  <h2 class="text-2xl font-semibold text-gray-200 mb-4 text-center">Recent Events</h2>
+  <div class="overflow-x-auto rounded-lg shadow-lg">
+    <table class="min-w-full bg-gray-800 text-sm text-left text-gray-300">
+      <thead class="bg-gray-700 text-gray-400 uppercase tracking-wider">
+        <tr>
+          <th class="px-4 py-3">ID</th>
+          <th class="px-4 py-3">Type</th>
+          <th class="px-4 py-3">Result</th>
+          <th class="px-4 py-3">Confidence</th>
+          <th class="px-4 py-3">Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let e of recentEvents" class="border-b border-gray-700 hover:bg-gray-700 transition">
+          <td class="px-4 py-2 font-medium">{{ e.eventId }}</td>
+          <td class="px-4 py-2">{{ e.processedBy || 'Pending' }}</td>
+          <td class="px-4 py-2">{{ e.malicious ? 'Malicious' : 'Benign' }}</td>
+          <td class="px-4 py-2">
+            <span [ngClass]="{
+              'text-red-400': e.probability > 0.8,
+              'text-yellow-400': e.probability > 0.5 && e.probability <= 0.8,
+              'text-green-400': e.probability <= 0.5
+            }">{{ (e.probability * 100) | number:'1.0-0' }}%</span>
+          </td>
+          <td class="px-4 py-2">{{ e.createdAt | date:'short' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+

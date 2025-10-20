@@ -1,0 +1,29 @@
+<div class="bg-gray-900 min-h-screen text-gray-200 p-6">
+  <h2 class="text-3xl font-bold text-blue-400 mb-4">
+    Anomaly Analysis (Event ID: {{ id }})
+  </h2>
+
+  <div *ngIf="loading" class="text-gray-400">Loading event details...</div>
+
+  <div *ngIf="!loading && event">
+    <div class="bg-gray-800 p-6 rounded-lg mb-6">
+      <p><strong>Source:</strong> {{ event.source }}</p>
+      <p><strong>Status:</strong> {{ event.status }}</p>
+      <p><strong>Created:</strong> {{ event.createdAt }}</p>
+    </div>
+
+    <div class="bg-gray-800 p-6 rounded-lg mb-6">
+      <p><strong>Anomaly Score:</strong> <span class="text-yellow-400">{{ anomalyScore }}</span></p>
+    </div>
+
+    <div class="bg-gray-800 p-6 rounded-lg mb-6">
+      <h3 class="text-xl mb-2 font-semibold">Feature Vector</h3>
+      <pre class="bg-gray-900 p-4 rounded">{{ featureVector | json }}</pre>
+    </div>
+
+    <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+      <h3 class="text-xl mb-4 font-semibold text-center">Top Contributing Features</h3>
+      <canvas id="anomalyChart"></canvas>
+    </div>
+  </div>
+</div>

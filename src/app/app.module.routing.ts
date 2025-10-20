@@ -21,6 +21,13 @@ import { KnowledgeBaseCreateComponent } from './incidents/knowledgeBase-create/k
 import { GenerateScheduleComponent } from './incidents/components/generate-schedule/generate-schedule.component';
 import { ScheduleViewComponent } from './incidents/components/schedule-view/schedule-view.component';
 import { CreateAnalystComponent } from './incidents/components/create-analyst/create-analyst.component';
+import { GrafanaAlertsComponent } from './incidents/grafana/grafana.alert.omponent';
+import { CyberaiDashboardComponent } from './incidents/cyberai-dashboard/cyberai-dashboard.component';
+import { EventListComponent } from './incidents/event-list/event-list.component';
+import { PhishingDetailComponent } from './incidents/phishing-detail/phishing-detail.component';
+import { AnomalyDetailComponent } from './incidents/anomaly-detail/anomaly-detail.component';
+import { ThreatIntelComponent } from './incidents/threat-intel/threat-intel.component';
+import { SystemHealthComponent } from './incidents/system-health/system-health.component';
 
 const routes: Routes = [
   // Public Routes
@@ -30,7 +37,17 @@ const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
 
-  // Protected Routes
+// Protected Routes
+  
+  { path: 'cyberai-dashboard', component: CyberaiDashboardComponent, canActivate: [AuthGuard]},
+  { path: 'events', component: EventListComponent , canActivate: [AuthGuard]},
+  { path: 'phishing/:id', component: PhishingDetailComponent,  canActivate: [AuthGuard]},
+  { path: 'anomaly/:id', component: AnomalyDetailComponent, canActivate: [AuthGuard] },
+  { path: 'threat', component: ThreatIntelComponent, canActivate: [AuthGuard] },
+  { path: 'health', component: SystemHealthComponent, canActivate: [AuthGuard] },
+
+
+  // { path: 'anomaly/:id', component: AnomalyDetailComponent,  canActivate: [AuthGuard]},
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'incidents', component: IncidentListComponent, canActivate: [AuthGuard] },
   { path: 'incident/:id', component: IncidentDetailComponent, canActivate: [AuthGuard] },
@@ -45,7 +62,7 @@ const routes: Routes = [
   { path: 'scheduler/generate', component: GenerateScheduleComponent, canActivate: [AuthGuard] },
   { path: 'scheduler/view', component: ScheduleViewComponent, canActivate: [AuthGuard] },
   { path: 'scheduler/create-analyst', component: CreateAnalystComponent, canActivate: [AuthGuard] },
-
+  { path: 'alerts', component: GrafanaAlertsComponent },
   // Wildcard Route for 404 Page
   { path: '**', redirectTo: '/signin' }
 ];

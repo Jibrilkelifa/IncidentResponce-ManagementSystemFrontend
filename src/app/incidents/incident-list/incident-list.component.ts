@@ -18,6 +18,10 @@ pageRange = 3
   rows = 10;                                            
   totalPages: number[] = [];           
   searchTerm: string = '';            
+  totalIncidents: any;
+  criticalIncident: any;
+  closedIncidents: any;
+  openIncidents: any;
   constructor(private incidentService: IncidentService, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
@@ -43,6 +47,14 @@ pageRange = 3
     });
   }
   
+getIncidentStats(): void {
+  this.incidentService.getIncidentSummary().subscribe(summary => {
+    this.totalIncidents = summary.totalIncidents;
+    this.closedIncidents = summary.resolvedIncidents;
+    this.openIncidents = summary.openIncidents;
+    this.criticalIncident = summary.criticalHighIncidents;
+  });
+}
 
 
   calculateTotalPages(): void {

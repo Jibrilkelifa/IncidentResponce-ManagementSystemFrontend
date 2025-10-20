@@ -11,8 +11,11 @@ import { Group } from '../models/group';
   providedIn: 'root'
 })
 export class IncidentService {
-  private apiUrl = 'http://localhost:8091/api/incidents';
-  private apiUrl2 = 'http://localhost:8091/api/groups';
+  // private apiUrl = 'https://irsm.coopbankoromiasc.com:8443/api/incidents';
+  // private apiUrl2 = 'https://irsm.coopbankoromiasc.com:8443/api/groups';
+    private apiUrl2 = 'http://localhost:8443/api/groups';
+  private apiUrl = 'http://localhost:8443/api/incidents';
+
 
   constructor(private http: HttpClient) {}
 
@@ -48,6 +51,10 @@ export class IncidentService {
   getIncidents(): Observable<Incident[]> {
     return this.http.get<Incident[]>(`${this.apiUrl}/list/all`);
   }
+  getIncidentSummary(): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/metrics/summary`);
+}
+
 
   searchIncidents(searchTerm: string): Observable<Incident[]> {
     return this.http.get<Incident[]>(`${this.apiUrl}/search`, { params: { searchTerm } });
@@ -75,6 +82,14 @@ export class IncidentService {
   addUpdate(incidentId: number, update: Update): Observable<Update> {
     return this.http.post<Update>(`${this.apiUrl}/${incidentId}/updates`, update);
   }
+
+  getExportedIncidents(from: string, to: string): Observable<Blob> {
+  return this.http.get(`${this.apiUrl}/export`, {
+    params: { from, to },
+    responseType: 'blob'  // Important: we expect a binary file
+  });
+}
+
 
   createSOCReport(report: SOCReport): Observable<SOCReport> {
     return this.http.post<SOCReport>(`${this.apiUrl2}/report`, report);
@@ -104,7 +119,7 @@ export class IncidentService {
   }
 
   getIncidentTrend(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/trends`);
+    return this.http.get<any>(`${this.apiUrl}/metrics/trends`);
   }
   
 }
