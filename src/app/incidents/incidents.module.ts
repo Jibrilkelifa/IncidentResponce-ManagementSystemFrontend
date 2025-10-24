@@ -44,6 +44,7 @@ import { ThreatIntelComponent } from './threat-intel/threat-intel.component';
 import { EventListComponent } from './event-list/event-list.component';
 import { SystemHealthComponent } from './system-health/system-health.component';
 import { CyberaiDashboardComponent } from './cyberai-dashboard/cyberai-dashboard.component';
+import { ToolHealthCheckComponent } from './health-check/tool-health-check.component';
 
 
 @NgModule({
@@ -74,7 +75,7 @@ import { CyberaiDashboardComponent } from './cyberai-dashboard/cyberai-dashboard
     ThreatIntelComponent,
     CyberaiDashboardComponent,
     SystemHealthComponent,
-    
+    ToolHealthCheckComponent,
 
     // HeaderComponent,
     // SidebarComponent,

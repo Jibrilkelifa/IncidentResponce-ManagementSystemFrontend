@@ -1,0 +1,118 @@
+<div class="bg-gray-800 p-6 rounded-lg shadow-md text-gray-200">
+  <h2 class="text-xl font-bold mb-4">System & Tool Health Check</h2>
+
+  <!-- Analyst Info -->
+  <div class="flex gap-4 mb-6">
+    <div class="w-1/2">
+      <label class="block mb-2 font-semibold">Analyst Name:</label>
+      <input
+        type="text"
+        [(ngModel)]="check.analystName"
+        required
+        class="dark-input"
+        placeholder="Enter analyst name"
+      />
+    </div>
+    <div class="w-1/2">
+      <label class="block mb-2 font-semibold">Shift Time:</label>
+      <select [(ngModel)]="check.shiftTime" required class="dark-input">
+        <option value="" disabled>Select Shift</option>
+        <option value="Morning">Morning</option>
+        <option value="Evening">Evening</option>
+        <option value="Night">Night</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Tool Selector -->
+<!-- Tool Selector -->
+<div class="flex flex-wrap gap-2 mb-6">
+  <button
+    *ngFor="let tool of getToolNames()"
+    class="px-4 py-2 rounded-md flex items-center gap-2"
+    [ngClass]="selectedTool === tool ? 'bg-green-500 text-white' : 'bg-gray-700 text-gray-200 hover:bg-gray-600'"
+    (click)="selectTool(tool)"
+  >
+    <i [class]="toolIcons[tool]"></i>
+    <span>{{ tool }}</span>
+  </button>
+</div>
+
+
+  <!-- Tool Form -->
+  <div *ngIf="selectedTool" class="space-y-4">
+    <h3 class="text-lg font-semibold mb-2">{{ selectedTool }} Health Check</h3>
+    <div *ngFor="let item of tools[selectedTool]" class="flex flex-col gap-2">
+      <label class="font-medium">{{ item.label }}</label>
+
+      <!-- Binary -->
+      <div *ngIf="item.type === 'binary'" class="flex gap-2">
+        <button
+          type="button"
+          class="px-3 py-1 rounded-md"
+          [ngClass]="getBinaryClass(selectedTool, item.label, 'Yes')"
+          (click)="addResponse(selectedTool, item.label, 'Yes')"
+        >
+          Yes
+        </button>
+        <button
+          type="button"
+          class="px-3 py-1 rounded-md"
+          [ngClass]="getBinaryClass(selectedTool, item.label, 'No')"
+          (click)="addResponse(selectedTool, item.label, 'No')"
+        >
+          No
+        </button>
+      </div>
+
+      <!-- Up/Down -->
+      <div *ngIf="item.type === 'updown'" class="flex gap-2">
+        <button
+          type="button"
+          class="px-3 py-1 rounded-md"
+          [ngClass]="getBinaryClass(selectedTool, item.label, 'Up')"
+          (click)="addResponse(selectedTool, item.label, 'Up')"
+        >
+          Up
+        </button>
+        <button
+          type="button"
+          class="px-3 py-1 rounded-md"
+          [ngClass]="getBinaryClass(selectedTool, item.label, 'Down')"
+          (click)="addResponse(selectedTool, item.label, 'Down')"
+        >
+          Down
+        </button>
+      </div>
+
+      <!-- Number -->
+      <input
+        *ngIf="item.type === 'number'"
+        type="number"
+        class="dark-input w-1/2"
+        placeholder="Enter number"
+        (input)="addResponse(selectedTool, item.label, $any($event.target).value)"
+      />
+
+      <!-- Text -->
+      <textarea
+        *ngIf="item.type === 'text'"
+        rows="2"
+        class="dark-input resize-vertical"
+        placeholder="Enter details..."
+        (input)="addResponse(selectedTool, item.label, $any($event.target).value)"
+      ></textarea>
+    </div>
+  </div>
+
+  <!-- Submit Button -->
+  <div class="flex justify-end mt-6">
+    <button
+      (click)="submit()"
+      [disabled]="!check.analystName || !check.shiftTime || filledTools.size !== getToolNames().length"
+      class="px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:ring-2 focus:ring-green-500 disabled:opacity-50"
+    >
+      Submit Health Check
+    </button>
+  </div>
+</div>

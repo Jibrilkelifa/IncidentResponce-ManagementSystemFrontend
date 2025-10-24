@@ -28,6 +28,7 @@ import { PhishingDetailComponent } from './incidents/phishing-detail/phishing-de
 import { AnomalyDetailComponent } from './incidents/anomaly-detail/anomaly-detail.component';
 import { ThreatIntelComponent } from './incidents/threat-intel/threat-intel.component';
 import { SystemHealthComponent } from './incidents/system-health/system-health.component';
+import { ToolHealthCheckComponent } from './incidents/health-check/tool-health-check.component';
 
 const routes: Routes = [
   // Public Routes
@@ -52,6 +53,7 @@ const routes: Routes = [
   { path: 'incidents', component: IncidentListComponent, canActivate: [AuthGuard] },
   { path: 'incident/:id', component: IncidentDetailComponent, canActivate: [AuthGuard] },
   { path: 'create', component: CreateIncidentComponent, canActivate: [AuthGuard] },
+   { path: 'healthAdd', component: ToolHealthCheckComponent, canActivate: [AuthGuard] },
   { path: 'escalation', component: EscalationListComponent, canActivate: [AuthGuard] },
   { path: 'incident/:id/escalate', component: EscalationFormComponent, canActivate: [AuthGuard] },
   { path: 'reports', component: SOCReportComponent, canActivate: [AuthGuard] },
