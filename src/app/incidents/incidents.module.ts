@@ -45,6 +45,7 @@ import { EventListComponent } from './event-list/event-list.component';
 import { SystemHealthComponent } from './system-health/system-health.component';
 import { CyberaiDashboardComponent } from './cyberai-dashboard/cyberai-dashboard.component';
 import { ToolHealthCheckComponent } from './health-check/tool-health-check.component';
+import { ShiftHandoverComponent } from './shift-handover/shift-handover.component';
 
 
 @NgModule({
@@ -76,6 +77,7 @@ import { ToolHealthCheckComponent } from './health-check/tool-health-check.compo
     CyberaiDashboardComponent,
     SystemHealthComponent,
     ToolHealthCheckComponent,
+    ShiftHandoverComponent,
 
     // HeaderComponent,
     // SidebarComponent,
