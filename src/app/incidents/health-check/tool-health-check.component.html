@@ -5,13 +5,7 @@
   <div class="flex gap-4 mb-6">
     <div class="w-1/2">
       <label class="block mb-2 font-semibold">Analyst Name:</label>
-      <input
-        type="text"
-        [(ngModel)]="check.analystName"
-        required
-        class="dark-input"
-        placeholder="Enter analyst name"
-      />
+      <input type="text" [(ngModel)]="check.analystName" required class="dark-input" placeholder="Enter analyst name" />
     </div>
     <div class="w-1/2">
       <label class="block mb-2 font-semibold">Shift Time:</label>
@@ -25,87 +19,92 @@
   </div>
 
   <!-- Tool Selector -->
-<!-- Tool Selector -->
-<div class="flex flex-wrap gap-2 mb-6">
-  <button
-    *ngFor="let tool of getToolNames()"
-    class="px-4 py-2 rounded-md flex items-center gap-2"
-    [ngClass]="selectedTool === tool ? 'bg-green-500 text-white' : 'bg-gray-700 text-gray-200 hover:bg-gray-600'"
-    (click)="selectTool(tool)"
-  >
-    <i [class]="toolIcons[tool]"></i>
-    <span>{{ tool }}</span>
-  </button>
-</div>
-
+  <div class="flex flex-wrap gap-2 mb-6">
+    <button
+      *ngFor="let tool of getToolNames()"
+      class="px-4 py-2 rounded-md flex items-center gap-2"
+      [ngClass]="selectedTool === tool ? 'bg-green-500 text-white' : 'bg-gray-700 text-gray-200 hover:bg-gray-600'"
+      (click)="selectTool(tool)"
+    >
+      <i [class]="toolIcons[tool]"></i>
+      <span>{{ tool }}</span>
+    </button>
+  </div>
 
   <!-- Tool Form -->
   <div *ngIf="selectedTool" class="space-y-4">
-    <h3 class="text-lg font-semibold mb-2">{{ selectedTool }} Health Check</h3>
-    <div *ngFor="let item of tools[selectedTool]" class="flex flex-col gap-2">
-      <label class="font-medium">{{ item.label }}</label>
+    <h3 class="text-lg font-semibold mb-3">{{ selectedTool }} Health Check</h3>
 
-      <!-- Binary -->
-      <div *ngIf="item.type === 'binary'" class="flex gap-2">
-        <button
-          type="button"
-          class="px-3 py-1 rounded-md"
-          [ngClass]="getBinaryClass(selectedTool, item.label, 'Yes')"
-          (click)="addResponse(selectedTool, item.label, 'Yes')"
-        >
-          Yes
-        </button>
-        <button
-          type="button"
-          class="px-3 py-1 rounded-md"
-          [ngClass]="getBinaryClass(selectedTool, item.label, 'No')"
-          (click)="addResponse(selectedTool, item.label, 'No')"
-        >
-          No
-        </button>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div *ngFor="let item of tools[selectedTool]" class="p-3 bg-gray-700 rounded-md shadow-sm flex flex-col">
+        <label class="font-medium mb-1 text-sm">{{ item.label }}</label>
+
+        <!-- Binary -->
+        <div *ngIf="item.type === 'binary'" class="flex gap-2">
+          <button
+            type="button"
+            class="px-3 py-1 rounded-md"
+            [ngClass]="getBinaryClass(selectedTool, item.label, 'Yes')"
+            (click)="addResponse(selectedTool!, item.label, 'Yes')"
+          >
+            Yes
+          </button>
+          <button
+            type="button"
+            class="px-3 py-1 rounded-md"
+            [ngClass]="getBinaryClass(selectedTool, item.label, 'No')"
+            (click)="addResponse(selectedTool!, item.label, 'No')"
+          >
+            No
+          </button>
+        </div>
+
+        <!-- Up/Down -->
+        <div *ngIf="item.type === 'updown'" class="flex gap-2">
+          <button
+            type="button"
+            class="px-3 py-1 rounded-md"
+            [ngClass]="getBinaryClass(selectedTool!, item.label, 'Up')"
+            (click)="addResponse(selectedTool!, item.label, 'Up')"
+          >
+            Up
+          </button>
+          <button
+            type="button"
+            class="px-3 py-1 rounded-md"
+            [ngClass]="getBinaryClass(selectedTool!, item.label, 'Down')"
+            (click)="addResponse(selectedTool!, item.label, 'Down')"
+          >
+            Down
+          </button>
+        </div>
+
+        <!-- Number -->
+        <input
+          *ngIf="item.type === 'number'"
+          type="number"
+          class="dark-input small-input"
+          placeholder="Enter number"
+          [(ngModel)]="tempResponses[selectedTool + '-' + item.label]"
+          (ngModelChange)="addResponse(selectedTool!, item.label, $event)"
+          [value]="getResponse(selectedTool!, item.label)"
+        />
+
+        <!-- Text -->
+        <input
+          *ngIf="item.type === 'text'"
+          type="text"
+          class="dark-input small-input"
+          placeholder="Enter details..."
+          [(ngModel)]="tempResponses[selectedTool + '-' + item.label]"
+          (ngModelChange)="addResponse(selectedTool!, item.label, $event)"
+          [value]="getResponse(selectedTool!, item.label)"
+        />
       </div>
-
-      <!-- Up/Down -->
-      <div *ngIf="item.type === 'updown'" class="flex gap-2">
-        <button
-          type="button"
-          class="px-3 py-1 rounded-md"
-          [ngClass]="getBinaryClass(selectedTool, item.label, 'Up')"
-          (click)="addResponse(selectedTool, item.label, 'Up')"
-        >
-          Up
-        </button>
-        <button
-          type="button"
-          class="px-3 py-1 rounded-md"
-          [ngClass]="getBinaryClass(selectedTool, item.label, 'Down')"
-          (click)="addResponse(selectedTool, item.label, 'Down')"
-        >
-          Down
-        </button>
-      </div>
-
-      <!-- Number -->
-      <input
-        *ngIf="item.type === 'number'"
-        type="number"
-        class="dark-input w-1/2"
-        placeholder="Enter number"
-        (input)="addResponse(selectedTool, item.label, $any($event.target).value)"
-      />
-
-      <!-- Text -->
-      <textarea
-        *ngIf="item.type === 'text'"
-        rows="2"
-        class="dark-input resize-vertical"
-        placeholder="Enter details..."
-        (input)="addResponse(selectedTool, item.label, $any($event.target).value)"
-      ></textarea>
     </div>
   </div>
 
-  <!-- Submit Button -->
+  <!-- Submit -->
   <div class="flex justify-end mt-6">
     <button
       (click)="submit()"
