@@ -11,10 +11,10 @@ import { Group } from '../models/group';
   providedIn: 'root'
 })
 export class IncidentService {
-  // private apiUrl = 'https://irsm.coopbankoromiasc.com:8443/api/incidents';
-  // private apiUrl2 = 'https://irsm.coopbankoromiasc.com:8443/api/groups';
-    private apiUrl2 = 'http://localhost:8443/api/groups';
-  private apiUrl = 'http://localhost:8443/api/incidents';
+  private apiUrl = 'https://irsm.coopbankoromiasc.com:8443/api/incidents';
+  private apiUrl2 = 'https://irsm.coopbankoromiasc.com:8443/api/groups';
+  //   private apiUrl2 = 'http://localhost:8443/api/groups';
+  // private apiUrl = 'http://localhost:8443/api/incidents';
 
 
   constructor(private http: HttpClient) {}

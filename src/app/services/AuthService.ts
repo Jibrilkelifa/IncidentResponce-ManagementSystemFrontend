@@ -10,8 +10,8 @@ import { User } from '../models/user';
 })
 export class AuthService {
 
-   private apiUrl = 'http://localhost:8443/api/auth';
-  // private apiUrl = 'https://irsm.coopbankoromiasc.com:8443/api/auth';
+  //  private apiUrl = 'http://localhost:8443/api/auth';
+  private apiUrl = 'https://irsm.coopbankoromiasc.com:8443/api/auth';
 
 
   

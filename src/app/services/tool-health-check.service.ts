@@ -17,5 +17,10 @@ export class ToolHealthCheckService {
 
   getSession(id: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/${id}`);
+ 
   }
+
+    getAllChecks(): Observable<any[]> {
+  return this.http.get<any[]>(`${this.apiUrl}`);
+}
 }

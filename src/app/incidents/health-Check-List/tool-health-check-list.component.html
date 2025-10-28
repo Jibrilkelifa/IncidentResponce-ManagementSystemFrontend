@@ -1,0 +1,26 @@
+<div class="bg-gray-800 p-6 rounded-lg text-gray-200 shadow-md">
+  <h2 class="text-xl font-bold mb-4">Tool Health Checks</h2>
+
+  <div *ngIf="loading" class="text-gray-400">Loading...</div>
+
+  <table *ngIf="!loading && checks.length" class="w-full text-left border-collapse">
+    <thead>
+      <tr class="bg-gray-700 text-gray-300">
+        <th class="p-2">Analyst</th>
+        <th class="p-2">Shift</th>
+        <th class="p-2">Date</th>
+        <th class="p-2">Tools Checked</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let c of checks" class="border-t border-gray-600 hover:bg-gray-700">
+        <td class="p-2">{{ c.analystName }}</td>
+        <td class="p-2">{{ c.shiftTime }}</td>
+        <td class="p-2">{{ c.createdAt | date:'medium' }}</td>
+        <td class="p-2">{{ c.items?.length }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="!loading && !checks.length" class="text-gray-400">No records found.</p>
+</div>
